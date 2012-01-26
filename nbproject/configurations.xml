@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configurationDescriptor version="80">
+  <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
+    <df name="autodock" root=".">
+      <df name="build">
+        <df name="linux">
+          <df name="debug">
+          </df>
+          <df name="release">
+          </df>
+        </df>
+        <df name="mac">
+          <df name="debug">
+          </df>
+          <df name="release">
+          </df>
+        </df>
+      </df>
+      <df name="src">
+        <df name="lib">
+          <in>array3d.h</in>
+          <in>atom.h</in>
+          <in>atom_base.h</in>
+          <in>atom_constants.h</in>
+          <in>atom_type.h</in>
+          <in>bfgs.h</in>
+          <in>brick.h</in>
+          <in>cache.cpp</in>
+          <in>cache.h</in>
+          <in>common.h</in>
+          <in>conf.h</in>
+          <in>convert_substring.h</in>
+          <in>coords.cpp</in>
+          <in>coords.h</in>
+          <in>curl.h</in>
+          <in>current_weights.cpp</in>
+          <in>current_weights.h</in>
+          <in>everything.cpp</in>
+          <in>everything.h</in>
+          <in>file.h</in>
+          <in>grid.cpp</in>
+          <in>grid.h</in>
+          <in>grid_dim.h</in>
+          <in>igrid.h</in>
+          <in>incrementable.h</in>
+          <in>int_pow.h</in>
+          <in>macros.h</in>
+          <in>manifold.cpp</in>
+          <in>manifold.h</in>
+          <in>matrix.h</in>
+          <in>model.cpp</in>
+          <in>model.h</in>
+          <in>monte_carlo.cpp</in>
+          <in>monte_carlo.h</in>
+          <in>mutate.cpp</in>
+          <in>mutate.h</in>
+          <in>my_pid.cpp</in>
+          <in>my_pid.h</in>
+          <in>naive_non_cache.cpp</in>
+          <in>naive_non_cache.h</in>
+          <in>non_cache.cpp</in>
+          <in>non_cache.h</in>
+          <in>parallel.h</in>
+          <in>parallel_mc.cpp</in>
+          <in>parallel_mc.h</in>
+          <in>parallel_progress.cpp</in>
+          <in>parallel_progress.h</in>
+          <in>parse_error.h</in>
+          <in>parse_pdbqt.cpp</in>
+          <in>parse_pdbqt.h</in>
+          <in>pdb.cpp</in>
+          <in>pdb.h</in>
+          <in>precalculate.h</in>
+          <in>quasi_newton.cpp</in>
+          <in>quasi_newton.h</in>
+          <in>quaternion.cpp</in>
+          <in>quaternion.h</in>
+          <in>random.cpp</in>
+          <in>random.h</in>
+          <in>recent_history.h</in>
+          <in>scoring_function.h</in>
+          <in>ssd.cpp</in>
+          <in>ssd.h</in>
+          <in>statistics.h</in>
+          <in>szv_grid.cpp</in>
+          <in>szv_grid.h</in>
+          <in>tee.h</in>
+          <in>terms.cpp</in>
+          <in>terms.h</in>
+          <in>tree.h</in>
+          <in>triangular_matrix_index.h</in>
+          <in>weighted_terms.cpp</in>
+          <in>weighted_terms.h</in>
+        </df>
+        <df name="main">
+          <in>main.cpp</in>
+        </df>
+        <df name="split">
+          <in>split.cpp</in>
+        </df>
+      </df>
+    </df>
+    <logicalFolder name="ExternalFiles"
+                   displayName="Important Files"
+                   projectFiles="false"
+                   kind="IMPORTANT_FILES_FOLDER">
+      <itemPath>build/linux/debug/Makefile</itemPath>
+    </logicalFolder>
+  </logicalFolder>
+  <sourceFolderFilter>^(nbproject)$</sourceFolderFilter>
+  <sourceRootList>
+    <Elem>.</Elem>
+  </sourceRootList>
+  <projectmakefile>build/linux/debug/Makefile</projectmakefile>
+  <confs>
+    <conf name="Default" type="0">
+      <toolsSet>
+        <remote-sources-mode>LOCAL_SOURCES</remote-sources-mode>
+        <compilerSet>default</compilerSet>
+      </toolsSet>
+      <makefileType>
+        <makeTool>
+          <buildCommandWorkingDir>build/linux/debug</buildCommandWorkingDir>
+          <buildCommand>${MAKE} -f Makefile</buildCommand>
+          <cleanCommand>${MAKE} -f Makefile clean</cleanCommand>
+          <executablePath></executablePath>
+        </makeTool>
+      </makefileType>
+    </conf>
+  </confs>
+</configurationDescriptor>
