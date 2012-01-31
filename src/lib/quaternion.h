@@ -31,6 +31,8 @@
 
 typedef boost::math::quaternion<fl> qt;
 
+bool quaternion_is_normalized(const qt& q);
+
 // non-intrusive free function split serialization
 namespace boost {
 	namespace serialization {
