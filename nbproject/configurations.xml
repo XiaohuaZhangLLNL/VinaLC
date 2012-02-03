@@ -2,8 +2,6 @@
 <configurationDescriptor version="80">
   <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
     <df name="autodock" root=".">
-      <df name=".git">
-      </df>
       <df name="build">
         <df name="linux">
           <df name="debug">
@@ -126,176 +124,401 @@
           <buildCommand>${MAKE} -f Makefile</buildCommand>
           <cleanCommand>${MAKE} -f Makefile clean</cleanCommand>
           <executablePath>build/linux/debug/vina</executablePath>
+          <ccTool>
+            <incDir>
+              <pElem>../../../inst/include</pElem>
+            </incDir>
+          </ccTool>
         </makeTool>
       </makefileType>
+      <folder path="autodock/src/lib">
+        <ccTool>
+          <incDir>
+            <pElem>/opt/mvapich-gnu-debug-gen2-1.2/include</pElem>
+            <pElem>../../../inst/include</pElem>
+          </incDir>
+        </ccTool>
+      </folder>
       <folder path="autodock/src/main">
         <ccTool>
           <incDir>
-            <pElem>../../../inst/include</pElem>
+            <pElem>/usr/local/tools/mvapich-gnu/include</pElem>
+            <pElem>/g/g92/zhang30/inst//include</pElem>
             <pElem>build/linux/debug</pElem>
             <pElem>src/lib</pElem>
           </incDir>
+          <preprocessorList>
+            <Elem>HAVE_STDARG_H=1</Elem>
+            <Elem>HAVE_STDLIB_H=1</Elem>
+            <Elem>HAVE_STRING_H=1</Elem>
+            <Elem>HAVE_UNISTD_H=1</Elem>
+            <Elem>MALLOC_RET_VOID=1</Elem>
+            <Elem>USE_MPI</Elem>
+            <Elem>USE_STDARG=1</Elem>
+          </preprocessorList>
         </ccTool>
       </folder>
       <folder path="autodock/src/split">
         <ccTool>
           <incDir>
-            <pElem>../../../inst/include</pElem>
+            <pElem>/usr/local/tools/mvapich-gnu/include</pElem>
+            <pElem>/opt/mvapich-gnu-debug-gen2-1.2/include</pElem>
             <pElem>build/linux/debug</pElem>
+            <pElem>../../../inst/include</pElem>
+            <pElem>/g/g92/zhang30/inst/include</pElem>
             <pElem>src/lib</pElem>
           </incDir>
+          <preprocessorList>
+            <Elem>HAVE_STDARG_H=1</Elem>
+            <Elem>HAVE_STDLIB_H=1</Elem>
+            <Elem>HAVE_STRING_H=1</Elem>
+            <Elem>HAVE_UNISTD_H=1</Elem>
+            <Elem>MALLOC_RET_VOID=1</Elem>
+            <Elem>USE_MPI</Elem>
+            <Elem>USE_STDARG=1</Elem>
+          </preprocessorList>
         </ccTool>
       </folder>
       <item path="src/lib/cache.cpp" ex="false" tool="1" flavor="0">
         <ccTool>
           <incDir>
+            <pElem>/usr/local/tools/mvapich-gnu/include</pElem>
             <pElem>build/linux/debug</pElem>
-            <pElem>../../../inst/include</pElem>
+            <pElem>/g/g92/zhang30/inst/include</pElem>
           </incDir>
+          <preprocessorList>
+            <Elem>HAVE_STDARG_H=1</Elem>
+            <Elem>HAVE_STDLIB_H=1</Elem>
+            <Elem>HAVE_STRING_H=1</Elem>
+            <Elem>HAVE_UNISTD_H=1</Elem>
+            <Elem>MALLOC_RET_VOID=1</Elem>
+            <Elem>USE_MPI</Elem>
+            <Elem>USE_STDARG=1</Elem>
+          </preprocessorList>
         </ccTool>
       </item>
       <item path="src/lib/coords.cpp" ex="false" tool="1" flavor="0">
         <ccTool>
           <incDir>
+            <pElem>/usr/local/tools/mvapich-gnu/include</pElem>
             <pElem>build/linux/debug</pElem>
-            <pElem>../../../inst/include</pElem>
+            <pElem>/g/g92/zhang30/inst/include</pElem>
           </incDir>
+          <preprocessorList>
+            <Elem>HAVE_STDARG_H=1</Elem>
+            <Elem>HAVE_STDLIB_H=1</Elem>
+            <Elem>HAVE_STRING_H=1</Elem>
+            <Elem>HAVE_UNISTD_H=1</Elem>
+            <Elem>MALLOC_RET_VOID=1</Elem>
+            <Elem>USE_MPI</Elem>
+            <Elem>USE_STDARG=1</Elem>
+          </preprocessorList>
         </ccTool>
       </item>
       <item path="src/lib/current_weights.cpp" ex="false" tool="1" flavor="0">
         <ccTool>
           <incDir>
+            <pElem>/usr/local/tools/mvapich-gnu/include</pElem>
             <pElem>build/linux/debug</pElem>
-            <pElem>../../../inst/include</pElem>
+            <pElem>/g/g92/zhang30/inst/include</pElem>
           </incDir>
+          <preprocessorList>
+            <Elem>HAVE_STDARG_H=1</Elem>
+            <Elem>HAVE_STDLIB_H=1</Elem>
+            <Elem>HAVE_STRING_H=1</Elem>
+            <Elem>HAVE_UNISTD_H=1</Elem>
+            <Elem>MALLOC_RET_VOID=1</Elem>
+            <Elem>USE_MPI</Elem>
+            <Elem>USE_STDARG=1</Elem>
+          </preprocessorList>
         </ccTool>
       </item>
       <item path="src/lib/everything.cpp" ex="false" tool="1" flavor="0">
         <ccTool>
           <incDir>
+            <pElem>/usr/local/tools/mvapich-gnu/include</pElem>
             <pElem>build/linux/debug</pElem>
-            <pElem>../../../inst/include</pElem>
+            <pElem>/g/g92/zhang30/inst/include</pElem>
           </incDir>
+          <preprocessorList>
+            <Elem>HAVE_STDARG_H=1</Elem>
+            <Elem>HAVE_STDLIB_H=1</Elem>
+            <Elem>HAVE_STRING_H=1</Elem>
+            <Elem>HAVE_UNISTD_H=1</Elem>
+            <Elem>MALLOC_RET_VOID=1</Elem>
+            <Elem>USE_MPI</Elem>
+            <Elem>USE_STDARG=1</Elem>
+          </preprocessorList>
         </ccTool>
       </item>
       <item path="src/lib/grid.cpp" ex="false" tool="1" flavor="0">
         <ccTool>
           <incDir>
+            <pElem>/usr/local/tools/mvapich-gnu/include</pElem>
             <pElem>build/linux/debug</pElem>
-            <pElem>../../../inst/include</pElem>
+            <pElem>/g/g92/zhang30/inst/include</pElem>
           </incDir>
+          <preprocessorList>
+            <Elem>HAVE_STDARG_H=1</Elem>
+            <Elem>HAVE_STDLIB_H=1</Elem>
+            <Elem>HAVE_STRING_H=1</Elem>
+            <Elem>HAVE_UNISTD_H=1</Elem>
+            <Elem>MALLOC_RET_VOID=1</Elem>
+            <Elem>USE_MPI</Elem>
+            <Elem>USE_STDARG=1</Elem>
+          </preprocessorList>
         </ccTool>
       </item>
       <item path="src/lib/manifold.cpp" ex="false" tool="1" flavor="0">
         <ccTool>
           <incDir>
+            <pElem>/usr/local/tools/mvapich-gnu/include</pElem>
             <pElem>build/linux/debug</pElem>
-            <pElem>../../../inst/include</pElem>
+            <pElem>/g/g92/zhang30/inst/include</pElem>
           </incDir>
+          <preprocessorList>
+            <Elem>HAVE_STDARG_H=1</Elem>
+            <Elem>HAVE_STDLIB_H=1</Elem>
+            <Elem>HAVE_STRING_H=1</Elem>
+            <Elem>HAVE_UNISTD_H=1</Elem>
+            <Elem>MALLOC_RET_VOID=1</Elem>
+            <Elem>USE_MPI</Elem>
+            <Elem>USE_STDARG=1</Elem>
+          </preprocessorList>
         </ccTool>
       </item>
       <item path="src/lib/model.cpp" ex="false" tool="1" flavor="0">
         <ccTool>
           <incDir>
+            <pElem>/usr/local/tools/mvapich-gnu/include</pElem>
             <pElem>build/linux/debug</pElem>
-            <pElem>../../../inst/include</pElem>
+            <pElem>/g/g92/zhang30/inst/include</pElem>
           </incDir>
+          <preprocessorList>
+            <Elem>HAVE_STDARG_H=1</Elem>
+            <Elem>HAVE_STDLIB_H=1</Elem>
+            <Elem>HAVE_STRING_H=1</Elem>
+            <Elem>HAVE_UNISTD_H=1</Elem>
+            <Elem>MALLOC_RET_VOID=1</Elem>
+            <Elem>USE_MPI</Elem>
+            <Elem>USE_STDARG=1</Elem>
+          </preprocessorList>
         </ccTool>
       </item>
       <item path="src/lib/monte_carlo.cpp" ex="false" tool="1" flavor="0">
         <ccTool>
           <incDir>
+            <pElem>/usr/local/tools/mvapich-gnu/include</pElem>
             <pElem>build/linux/debug</pElem>
-            <pElem>../../../inst/include</pElem>
+            <pElem>/g/g92/zhang30/inst/include</pElem>
           </incDir>
+          <preprocessorList>
+            <Elem>HAVE_STDARG_H=1</Elem>
+            <Elem>HAVE_STDLIB_H=1</Elem>
+            <Elem>HAVE_STRING_H=1</Elem>
+            <Elem>HAVE_UNISTD_H=1</Elem>
+            <Elem>MALLOC_RET_VOID=1</Elem>
+            <Elem>USE_MPI</Elem>
+            <Elem>USE_STDARG=1</Elem>
+          </preprocessorList>
         </ccTool>
       </item>
       <item path="src/lib/mutate.cpp" ex="false" tool="1" flavor="0">
         <ccTool>
           <incDir>
+            <pElem>/usr/local/tools/mvapich-gnu/include</pElem>
             <pElem>build/linux/debug</pElem>
-            <pElem>../../../inst/include</pElem>
+            <pElem>/g/g92/zhang30/inst/include</pElem>
           </incDir>
+          <preprocessorList>
+            <Elem>HAVE_STDARG_H=1</Elem>
+            <Elem>HAVE_STDLIB_H=1</Elem>
+            <Elem>HAVE_STRING_H=1</Elem>
+            <Elem>HAVE_UNISTD_H=1</Elem>
+            <Elem>MALLOC_RET_VOID=1</Elem>
+            <Elem>USE_MPI</Elem>
+            <Elem>USE_STDARG=1</Elem>
+          </preprocessorList>
         </ccTool>
       </item>
       <item path="src/lib/my_pid.cpp" ex="false" tool="1" flavor="0">
         <ccTool>
           <incDir>
+            <pElem>/usr/local/tools/mvapich-gnu/include</pElem>
             <pElem>build/linux/debug</pElem>
-            <pElem>../../../inst/include</pElem>
+            <pElem>/g/g92/zhang30/inst/include</pElem>
           </incDir>
+          <preprocessorList>
+            <Elem>HAVE_STDARG_H=1</Elem>
+            <Elem>HAVE_STDLIB_H=1</Elem>
+            <Elem>HAVE_STRING_H=1</Elem>
+            <Elem>HAVE_UNISTD_H=1</Elem>
+            <Elem>MALLOC_RET_VOID=1</Elem>
+            <Elem>USE_MPI</Elem>
+            <Elem>USE_STDARG=1</Elem>
+          </preprocessorList>
         </ccTool>
       </item>
       <item path="src/lib/naive_non_cache.cpp" ex="false" tool="1" flavor="0">
         <ccTool>
           <incDir>
+            <pElem>/usr/local/tools/mvapich-gnu/include</pElem>
             <pElem>build/linux/debug</pElem>
-            <pElem>../../../inst/include</pElem>
+            <pElem>/g/g92/zhang30/inst/include</pElem>
           </incDir>
+          <preprocessorList>
+            <Elem>HAVE_STDARG_H=1</Elem>
+            <Elem>HAVE_STDLIB_H=1</Elem>
+            <Elem>HAVE_STRING_H=1</Elem>
+            <Elem>HAVE_UNISTD_H=1</Elem>
+            <Elem>MALLOC_RET_VOID=1</Elem>
+            <Elem>USE_MPI</Elem>
+            <Elem>USE_STDARG=1</Elem>
+          </preprocessorList>
         </ccTool>
       </item>
       <item path="src/lib/non_cache.cpp" ex="false" tool="1" flavor="0">
         <ccTool>
           <incDir>
+            <pElem>/usr/local/tools/mvapich-gnu/include</pElem>
             <pElem>build/linux/debug</pElem>
-            <pElem>../../../inst/include</pElem>
+            <pElem>/g/g92/zhang30/inst/include</pElem>
           </incDir>
+          <preprocessorList>
+            <Elem>HAVE_STDARG_H=1</Elem>
+            <Elem>HAVE_STDLIB_H=1</Elem>
+            <Elem>HAVE_STRING_H=1</Elem>
+            <Elem>HAVE_UNISTD_H=1</Elem>
+            <Elem>MALLOC_RET_VOID=1</Elem>
+            <Elem>USE_MPI</Elem>
+            <Elem>USE_STDARG=1</Elem>
+          </preprocessorList>
         </ccTool>
       </item>
       <item path="src/lib/parallel_mc.cpp" ex="false" tool="1" flavor="0">
         <ccTool>
           <incDir>
+            <pElem>/usr/local/tools/mvapich-gnu/include</pElem>
             <pElem>build/linux/debug</pElem>
-            <pElem>../../../inst/include</pElem>
+            <pElem>/g/g92/zhang30/inst/include</pElem>
           </incDir>
+          <preprocessorList>
+            <Elem>HAVE_STDARG_H=1</Elem>
+            <Elem>HAVE_STDLIB_H=1</Elem>
+            <Elem>HAVE_STRING_H=1</Elem>
+            <Elem>HAVE_UNISTD_H=1</Elem>
+            <Elem>MALLOC_RET_VOID=1</Elem>
+            <Elem>USE_MPI</Elem>
+            <Elem>USE_STDARG=1</Elem>
+          </preprocessorList>
         </ccTool>
       </item>
       <item path="src/lib/parse_pdbqt.cpp" ex="false" tool="1" flavor="0">
         <ccTool>
           <incDir>
+            <pElem>/usr/local/tools/mvapich-gnu/include</pElem>
             <pElem>build/linux/debug</pElem>
-            <pElem>../../../inst/include</pElem>
+            <pElem>/g/g92/zhang30/inst/include</pElem>
           </incDir>
+          <preprocessorList>
+            <Elem>HAVE_STDARG_H=1</Elem>
+            <Elem>HAVE_STDLIB_H=1</Elem>
+            <Elem>HAVE_STRING_H=1</Elem>
+            <Elem>HAVE_UNISTD_H=1</Elem>
+            <Elem>MALLOC_RET_VOID=1</Elem>
+            <Elem>USE_MPI</Elem>
+            <Elem>USE_STDARG=1</Elem>
+          </preprocessorList>
         </ccTool>
       </item>
       <item path="src/lib/pdb.cpp" ex="false" tool="1" flavor="0">
         <ccTool>
           <incDir>
+            <pElem>/usr/local/tools/mvapich-gnu/include</pElem>
             <pElem>build/linux/debug</pElem>
-            <pElem>../../../inst/include</pElem>
+            <pElem>/g/g92/zhang30/inst/include</pElem>
           </incDir>
+          <preprocessorList>
+            <Elem>HAVE_STDARG_H=1</Elem>
+            <Elem>HAVE_STDLIB_H=1</Elem>
+            <Elem>HAVE_STRING_H=1</Elem>
+            <Elem>HAVE_UNISTD_H=1</Elem>
+            <Elem>MALLOC_RET_VOID=1</Elem>
+            <Elem>USE_MPI</Elem>
+            <Elem>USE_STDARG=1</Elem>
+          </preprocessorList>
         </ccTool>
       </item>
       <item path="src/lib/quasi_newton.cpp" ex="false" tool="1" flavor="0">
         <ccTool>
           <incDir>
+            <pElem>/usr/local/tools/mvapich-gnu/include</pElem>
             <pElem>build/linux/debug</pElem>
-            <pElem>../../../inst/include</pElem>
+            <pElem>/g/g92/zhang30/inst/include</pElem>
           </incDir>
+          <preprocessorList>
+            <Elem>HAVE_STDARG_H=1</Elem>
+            <Elem>HAVE_STDLIB_H=1</Elem>
+            <Elem>HAVE_STRING_H=1</Elem>
+            <Elem>HAVE_UNISTD_H=1</Elem>
+            <Elem>MALLOC_RET_VOID=1</Elem>
+            <Elem>USE_MPI</Elem>
+            <Elem>USE_STDARG=1</Elem>
+          </preprocessorList>
         </ccTool>
       </item>
       <item path="src/lib/quaternion.cpp" ex="false" tool="1" flavor="0">
         <ccTool>
           <incDir>
+            <pElem>/usr/local/tools/mvapich-gnu/include</pElem>
             <pElem>build/linux/debug</pElem>
-            <pElem>../../../inst/include</pElem>
+            <pElem>/g/g92/zhang30/inst/include</pElem>
           </incDir>
+          <preprocessorList>
+            <Elem>HAVE_STDARG_H=1</Elem>
+            <Elem>HAVE_STDLIB_H=1</Elem>
+            <Elem>HAVE_STRING_H=1</Elem>
+            <Elem>HAVE_UNISTD_H=1</Elem>
+            <Elem>MALLOC_RET_VOID=1</Elem>
+            <Elem>USE_MPI</Elem>
+            <Elem>USE_STDARG=1</Elem>
+          </preprocessorList>
         </ccTool>
       </item>
       <item path="src/lib/random.cpp" ex="false" tool="1" flavor="0">
         <ccTool>
           <incDir>
+            <pElem>/usr/local/tools/mvapich-gnu/include</pElem>
             <pElem>build/linux/debug</pElem>
-            <pElem>../../../inst/include</pElem>
+            <pElem>/g/g92/zhang30/inst/include</pElem>
           </incDir>
+          <preprocessorList>
+            <Elem>HAVE_STDARG_H=1</Elem>
+            <Elem>HAVE_STDLIB_H=1</Elem>
+            <Elem>HAVE_STRING_H=1</Elem>
+            <Elem>HAVE_UNISTD_H=1</Elem>
+            <Elem>MALLOC_RET_VOID=1</Elem>
+            <Elem>USE_MPI</Elem>
+            <Elem>USE_STDARG=1</Elem>
+          </preprocessorList>
         </ccTool>
       </item>
       <item path="src/lib/ssd.cpp" ex="false" tool="1" flavor="0">
         <ccTool>
           <incDir>
+            <pElem>/usr/local/tools/mvapich-gnu/include</pElem>
             <pElem>build/linux/debug</pElem>
-            <pElem>../../../inst/include</pElem>
+            <pElem>/g/g92/zhang30/inst/include</pElem>
           </incDir>
+          <preprocessorList>
+            <Elem>HAVE_STDARG_H=1</Elem>
+            <Elem>HAVE_STDLIB_H=1</Elem>
+            <Elem>HAVE_STRING_H=1</Elem>
+            <Elem>HAVE_UNISTD_H=1</Elem>
+            <Elem>MALLOC_RET_VOID=1</Elem>
+            <Elem>USE_MPI</Elem>
+            <Elem>USE_STDARG=1</Elem>
+          </preprocessorList>
         </ccTool>
       </item>
       <item path="src/lib/statistics.h" ex="true" tool="3" flavor="0">
@@ -303,25 +526,55 @@
       <item path="src/lib/szv_grid.cpp" ex="false" tool="1" flavor="0">
         <ccTool>
           <incDir>
+            <pElem>/usr/local/tools/mvapich-gnu/include</pElem>
             <pElem>build/linux/debug</pElem>
-            <pElem>../../../inst/include</pElem>
+            <pElem>/g/g92/zhang30/inst/include</pElem>
           </incDir>
+          <preprocessorList>
+            <Elem>HAVE_STDARG_H=1</Elem>
+            <Elem>HAVE_STDLIB_H=1</Elem>
+            <Elem>HAVE_STRING_H=1</Elem>
+            <Elem>HAVE_UNISTD_H=1</Elem>
+            <Elem>MALLOC_RET_VOID=1</Elem>
+            <Elem>USE_MPI</Elem>
+            <Elem>USE_STDARG=1</Elem>
+          </preprocessorList>
         </ccTool>
       </item>
       <item path="src/lib/terms.cpp" ex="false" tool="1" flavor="0">
         <ccTool>
           <incDir>
+            <pElem>/usr/local/tools/mvapich-gnu/include</pElem>
             <pElem>build/linux/debug</pElem>
-            <pElem>../../../inst/include</pElem>
+            <pElem>/g/g92/zhang30/inst/include</pElem>
           </incDir>
+          <preprocessorList>
+            <Elem>HAVE_STDARG_H=1</Elem>
+            <Elem>HAVE_STDLIB_H=1</Elem>
+            <Elem>HAVE_STRING_H=1</Elem>
+            <Elem>HAVE_UNISTD_H=1</Elem>
+            <Elem>MALLOC_RET_VOID=1</Elem>
+            <Elem>USE_MPI</Elem>
+            <Elem>USE_STDARG=1</Elem>
+          </preprocessorList>
         </ccTool>
       </item>
       <item path="src/lib/weighted_terms.cpp" ex="false" tool="1" flavor="0">
         <ccTool>
           <incDir>
+            <pElem>/usr/local/tools/mvapich-gnu/include</pElem>
             <pElem>build/linux/debug</pElem>
-            <pElem>../../../inst/include</pElem>
+            <pElem>/g/g92/zhang30/inst/include</pElem>
           </incDir>
+          <preprocessorList>
+            <Elem>HAVE_STDARG_H=1</Elem>
+            <Elem>HAVE_STDLIB_H=1</Elem>
+            <Elem>HAVE_STRING_H=1</Elem>
+            <Elem>HAVE_UNISTD_H=1</Elem>
+            <Elem>MALLOC_RET_VOID=1</Elem>
+            <Elem>USE_MPI</Elem>
+            <Elem>USE_STDARG=1</Elem>
+          </preprocessorList>
         </ccTool>
       </item>
     </conf>
