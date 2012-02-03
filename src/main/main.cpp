@@ -21,6 +21,7 @@
  */
 // which copy
 #include <iostream>
+#include <fstream>
 #include <string>
 #include <sstream>
 #include <exception>
@@ -45,6 +46,7 @@
 #include "quasi_newton.h"
 #include "tee.h"
 #include "coords.h" // add_to_output_container
+#include "tokenize.h"
 
 #ifdef USE_MPI
 #include <mpi.h>
@@ -530,9 +532,76 @@ int dockjob(std::string& rigid_name, std::string& ligand_name,
     
 }
 
-int main(int argc, char* argv[]) {
+void saveStrList(std::string& fileName, std::vector<std::string>& strList){
+    std::ifstream inFile;
+    try {
+        inFile.open(fileName.c_str());
+    }
+    catch(...){
+        std::cout << "Cannot open file" << fileName << std::endl;
+    } 
+
+    std::string fileLine;
+    while(inFile){
+        std::getline(inFile, fileLine);
+        std::vector<std::string> tokens;
+        tokenize(fileLine, tokens); 
+        if(tokens.size() > 0){
+            strList.push_back(tokens[0]);
+        }        
+    }
+    
+}
+
+void saveGeoList(std::string& fileName, std::vector<std::vector<double> >& geoList){
+    std::ifstream inFile;
+    try {
+        inFile.open(fileName.c_str());
+    }
+    catch(...){
+        std::cout << "Cannot open file" << fileName << std::endl;
+    } 
+
+    std::string fileLine;
+    while(inFile){
+        std::getline(inFile, fileLine);
+        std::vector<std::string> tokens;
+        tokenize(fileLine, tokens); 
+        if(tokens.size() == 6){
+            std::vector<double> geo;
+            for(unsigned i=0; i< 6; ++i){
+                geo.push_back(atof(tokens[i].c_str()));
+            }
+            geoList.push_back(geo);
+        }        
+    }
+    
+}
+
+int mpiParser(int argc, char* argv[], 
+        std::vector<std::string>& ligList,
+        std::vector<std::string>& recList,
+        std::vector<std::vector<double> >& geoList){
     using namespace boost::program_options;
-    const std::string version_string = "AutoDock Vina MPI Version 1.1.2 (May 11, 2011)";
+    const std::string version_string = "AutoDock Vina 1.1.2 (May 11, 2011)";
+    const std::string error_message = "\n\n\
+Please contact the author, Dr. Oleg Trott <ot14@columbia.edu>, so\n\
+that this problem can be resolved. The reproducibility of the\n\
+error may be vital, so please remember to include the following in\n\
+your problem report:\n\
+* the EXACT error message,\n\
+* your version of the program,\n\
+* the type of computer system you are running it on,\n\
+* all command line options,\n\
+* configuration file (if used),\n\
+* ligand file as PDBQT,\n\
+* receptor file as PDBQT,\n\
+* flexible side chains file as PDBQT (if used),\n\
+* output file as PDBQT (if any),\n\
+* input (if possible),\n\
+* random seed the program used (this is printed when the program starts).\n\
+\n\
+Thank you!\n";
 
     const std::string cite_message = "\
 #################################################################\n\
@@ -547,7 +616,105 @@ int main(int argc, char* argv[]) {
 # DOI 10.1002/jcc.21334                                         #\n\
 #                                                               #\n\
 # Please see http://vina.scripps.edu for more information.      #\n\
-#################################################################\n";
+#################################################################\n";    
+    try {
+        std::string recFile;
+        std::string ligFile;
+        std::string geoFile;
+        bool help;
+        
+        positional_options_description positional; // remains empty
+        
+        options_description inputs("Input");
+        inputs.add_options()
+                ("recList", value<std::string > (&recFile), "receptor list file")
+                ("ligList", value<std::string > (&ligFile), "ligand list file")
+                ("geoList", value<std::string > (&geoFile), "ligand (PDBQT)")
+                ;   
+        options_description info("Information (optional)");
+        info.add_options()
+                ("help", bool_switch(&help), "display usage summary")
+                ;
+        options_description desc;
+        desc.add(inputs).add(info);        
+
+        variables_map vm;
+        try {
+            //store(parse_command_line(argc, argv, desc, command_line_style::default_style ^ command_line_style::allow_guessing), vm);
+            store(command_line_parser(argc, argv)
+                    .options(desc)
+                    .style(command_line_style::default_style ^ command_line_style::allow_guessing)
+                    .positional(positional)
+                    .run(),
+                    vm);
+            notify(vm);
+        } catch (boost::program_options::error& e) {
+            std::cerr << "Command line parse error: " << e.what() << '\n' << "\nCorrect usage:\n" << desc << '\n';
+            return 1;
+        } 
+        
+        if (help) {
+            std::cout << desc << '\n';
+            return 0;
+        }    
+        
+        if (vm.count("recList") <= 0) {
+            std::cerr << "Missing receptor List file.\n" << "\nCorrect usage:\n" << desc << '\n';
+            return 1;
+        }else{
+            saveStrList(recFile, recList);
+        }
+        
+        if (vm.count("ligList") <= 0) {
+            std::cerr << "Missing ligand List file.\n" << "\nCorrect usage:\n" << desc << '\n';
+            return 1;
+        }else{
+            saveStrList(ligFile, ligList);
+        }  
+
+        if (vm.count("geoList") <= 0) {
+            std::cerr << "Missing ligand List file.\n" << "\nCorrect usage:\n" << desc << '\n';
+            return 1;
+        }else{
+            saveGeoList(geoFile, geoList);
+        }  
+        
+        if(geoList.size() != recList.size()){
+            std::cerr << "Receptor and geometry lists are not equal.\n" ;
+            return 1;        
+        }
+        
+    } catch (file_error& e) {
+        std::cerr << "\n\nError: could not open \"" << e.name.string() << "\" for " << (e.in ? "reading" : "writing") << ".\n";
+        return 1;
+    } catch (boost::filesystem::filesystem_error& e) {
+        std::cerr << "\n\nFile system error: " << e.what() << '\n';
+        return 1;
+    } catch (usage_error& e) {
+        std::cerr << "\n\nUsage error: " << e.what() << ".\n";
+        return 1;
+    } catch (parse_error& e) {
+        std::cerr << "\n\nParse error on line " << e.line << " in file \"" << e.file.string() << "\": " << e.reason << '\n';
+        return 1;
+    } catch (std::bad_alloc&) {
+        std::cerr << "\n\nError: insufficient memory!\n";
+        return 1;
+    }// Errors that shouldn't happen:
+    catch (std::exception& e) {
+        std::cerr << "\n\nAn error occurred: " << e.what() << ". " << error_message;
+        return 1;
+    } catch (internal_error& e) {
+        std::cerr << "\n\nAn internal error occurred in " << e.file << "(" << e.line << "). " << error_message;
+        return 1;
+    } catch (...) {
+        std::cerr << "\n\nAn unknown error occurred. " << error_message;
+        return 1;
+    }
+    
+    return 0;
+}
+
+int main(int argc, char* argv[]) {
 
     int nproc, rank, rc;
 
@@ -587,30 +754,40 @@ int main(int argc, char* argv[]) {
         //            procList.push(i);
         //        }
         
-        std::string rec = "3KF4.pdbqt";
+//        std::string rec = "3KF4.pdbqt";
+//        std::vector<std::string> recList;
+//        recList.push_back(rec);
+//
+//        std::vector<std::string> ligList;
+//        for (unsigned i = 1; i < 8; ++i) {
+//            std::stringstream ss;
+//            ss << "model" << i << ".pdbqt";
+//            ligList.push_back(ss.str());
+//        }
+//        double center_x = 19.4856;
+//        double center_y = 77.8487;
+//        double center_z = 64.5852;
+//        double size_x = 32;
+//        double size_y = 29;
+//        double size_z = 26;
+//        geometry[0]= center_x;   
+//        geometry[1]= center_y;
+//        geometry[2]= center_z;
+//        geometry[3]= size_x;
+//        geometry[4]= size_y;
+//        geometry[5]= size_z;
+        
         std::vector<std::string> recList;
-        recList.push_back(rec);
-
         std::vector<std::string> ligList;
-        for (unsigned i = 1; i < 8; ++i) {
-            std::stringstream ss;
-            ss << "model" << i << ".pdbqt";
-            ligList.push_back(ss.str());
-        }
-        double center_x = 19.4856;
-        double center_y = 77.8487;
-        double center_z = 64.5852;
-        double size_x = 32;
-        double size_y = 29;
-        double size_z = 26;
-        geometry[0]= center_x;   
-        geometry[1]= center_y;
-        geometry[2]= center_z;
-        geometry[3]= size_x;
-        geometry[4]= size_y;
-        geometry[5]= size_z;
+        std::vector<std::vector<double> > geoList;
+        
+        mpiParser(argc, argv, ligList, recList, geoList);
         
         for(unsigned i=0; i<recList.size(); ++i){
+            std::vector<double> geo=geoList[i];
+            for(unsigned k=0;k<6; ++k){
+                geometry[k]=geo[k];
+            }
             for(unsigned j=0; j<ligList.size(); ++j){
                 int freeProc;
                 MPI_Recv(&freeProc, 1, MPI_INTEGER, MPI_ANY_SOURCE, rankTag, MPI_COMM_WORLD, &status1);
