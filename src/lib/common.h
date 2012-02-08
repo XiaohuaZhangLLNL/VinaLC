@@ -213,6 +213,12 @@ inline bool eq(fl a, fl b) {
 	return std::abs(a - b) < fl_tolerance; 
 }
 
+const fl fl_tolerance_r2 = fl(0.000001);
+
+inline bool eq_r2(fl a, fl b) {
+	return std::abs(a - b) < fl_tolerance_r2; 
+}
+
 inline bool eq(const vec& a, const vec& b) {
 	return eq(a[0], b[0]) && eq(a[1], b[1]) && eq(a[2], b[2]);
 }

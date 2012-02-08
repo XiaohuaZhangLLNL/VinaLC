@@ -795,11 +795,14 @@ void model::verify_bond_lengths() const {
 		const atom& a = get_atom(ai);
 		VINA_FOR_IN(j, a.bonds) {
 			const bond& b = a.bonds[j];
-			fl d = std::sqrt(distance_sqr_between(ai, b.connected_atom_index));
-			bool ok = eq(d, b.length);
+//			fl d = std::sqrt(distance_sqr_between(ai, b.connected_atom_index));
+//			bool ok = eq(d, b.length);
+                        fl d = distance_sqr_between(ai, b.connected_atom_index);
+                        bool ok = eq_r2(d, b.length*b.length);
 			if(!ok) {
-				VINA_SHOW(d);
-				VINA_SHOW(b.length);
+//				VINA_SHOW(d);
+                                VINA_SHOW(std::sqrt(d));
+                                VINA_SHOW(b.length);
 			}
 			VINA_CHECK(ok);
 		}

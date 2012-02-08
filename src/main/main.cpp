@@ -432,7 +432,7 @@ int dockjob(std::string& rigid_name, std::string& ligand_name,
 
         //            out_name="3KF4-STI-all.pdbqt";
 
-        exhaustiveness = 10;
+        exhaustiveness = 12;
 
         bool search_box_needed = !score_only; // randomize_only and local_only still need the search space
         bool output_produced = !score_only;
@@ -739,6 +739,9 @@ int main(int argc, char* argv[]) {
 
     MPI_Comm_size(MPI_COMM_WORLD, &nproc);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+    
+//    MPI_Barrier(MPI_COMM_WORLD);
+    double time=MPI_Wtime();
 
     if (nproc < 2) {
         std::cerr << "Error: Total process less than 2" << std::endl;
@@ -836,6 +839,8 @@ int main(int argc, char* argv[]) {
     }
 
 //    MPI_Barrier(MPI_COMM_WORLD);
+    time=MPI_Wtime()-time;
+    std::cout << "Rank= " << rank << " MPI Wall Time= " << time << std::endl;
     MPI_Finalize();
     return (0);
 

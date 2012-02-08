@@ -241,7 +241,8 @@ struct num_tors_sqrt : public conf_independent {
 	sz size() const { return 1; }
 	fl eval(const conf_independent_inputs& in, fl x, flv::const_iterator& i) const {
 		fl w = 0.1 * read_iterator(i); // [-1 .. 1]
-		return x + w * std::sqrt(fl(in.num_tors)) / sqrt(5.0);
+//		return x + w * std::sqrt(fl(in.num_tors)) / sqrt(5.0);
+                return x + w * std::sqrt(fl(in.num_tors)/5.0);
 	}
 };
 

@@ -120,7 +120,8 @@ fl bfgs(F& f, Conf& x, Change& g, const unsigned max_steps, const fl average_req
 		f_values.push_back(f1);
 		f0 = f1;
 		x = x_new;
-		if(!(std::sqrt(scalar_product(g, g, n)) >= 1e-5)) break; // breaks for nans too // FIXME !!?? 
+		//if(!(std::sqrt(scalar_product(g, g, n)) >= 1e-5)) break; // breaks for nans too // FIXME !!?? 
+                if(scalar_product(g, g, n) < 1e-10 ) break;
 		g = g_new; // ?
 
 		if(step == 0) {

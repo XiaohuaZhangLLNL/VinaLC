@@ -87,6 +87,7 @@
           <in>tee.h</in>
           <in>terms.cpp</in>
           <in>terms.h</in>
+          <in>tokenize.h</in>
           <in>tree.h</in>
           <in>triangular_matrix_index.h</in>
           <in>weighted_terms.cpp</in>
@@ -124,21 +125,8 @@
           <buildCommand>${MAKE} -f Makefile</buildCommand>
           <cleanCommand>${MAKE} -f Makefile clean</cleanCommand>
           <executablePath>build/linux/debug/vina</executablePath>
-          <ccTool>
-            <incDir>
-              <pElem>../../../inst/include</pElem>
-            </incDir>
-          </ccTool>
         </makeTool>
       </makefileType>
-      <folder path="autodock/src/lib">
-        <ccTool>
-          <incDir>
-            <pElem>/opt/mvapich-gnu-debug-gen2-1.2/include</pElem>
-            <pElem>../../../inst/include</pElem>
-          </incDir>
-        </ccTool>
-      </folder>
       <folder path="autodock/src/main">
         <ccTool>
           <incDir>
@@ -162,10 +150,8 @@
         <ccTool>
           <incDir>
             <pElem>/usr/local/tools/mvapich-gnu/include</pElem>
-            <pElem>/opt/mvapich-gnu-debug-gen2-1.2/include</pElem>
+            <pElem>/g/g92/zhang30/inst//include</pElem>
             <pElem>build/linux/debug</pElem>
-            <pElem>../../../inst/include</pElem>
-            <pElem>/g/g92/zhang30/inst/include</pElem>
             <pElem>src/lib</pElem>
           </incDir>
           <preprocessorList>
@@ -183,8 +169,8 @@
         <ccTool>
           <incDir>
             <pElem>/usr/local/tools/mvapich-gnu/include</pElem>
+            <pElem>/g/g92/zhang30/inst//include</pElem>
             <pElem>build/linux/debug</pElem>
-            <pElem>/g/g92/zhang30/inst/include</pElem>
           </incDir>
           <preprocessorList>
             <Elem>HAVE_STDARG_H=1</Elem>
@@ -201,8 +187,8 @@
         <ccTool>
           <incDir>
             <pElem>/usr/local/tools/mvapich-gnu/include</pElem>
+            <pElem>/g/g92/zhang30/inst//include</pElem>
             <pElem>build/linux/debug</pElem>
-            <pElem>/g/g92/zhang30/inst/include</pElem>
           </incDir>
           <preprocessorList>
             <Elem>HAVE_STDARG_H=1</Elem>
@@ -219,8 +205,8 @@
         <ccTool>
           <incDir>
             <pElem>/usr/local/tools/mvapich-gnu/include</pElem>
+            <pElem>/g/g92/zhang30/inst//include</pElem>
             <pElem>build/linux/debug</pElem>
-            <pElem>/g/g92/zhang30/inst/include</pElem>
           </incDir>
           <preprocessorList>
             <Elem>HAVE_STDARG_H=1</Elem>
@@ -237,8 +223,8 @@
         <ccTool>
           <incDir>
             <pElem>/usr/local/tools/mvapich-gnu/include</pElem>
+            <pElem>/g/g92/zhang30/inst//include</pElem>
             <pElem>build/linux/debug</pElem>
-            <pElem>/g/g92/zhang30/inst/include</pElem>
           </incDir>
           <preprocessorList>
             <Elem>HAVE_STDARG_H=1</Elem>
@@ -255,8 +241,8 @@
         <ccTool>
           <incDir>
             <pElem>/usr/local/tools/mvapich-gnu/include</pElem>
+            <pElem>/g/g92/zhang30/inst//include</pElem>
             <pElem>build/linux/debug</pElem>
-            <pElem>/g/g92/zhang30/inst/include</pElem>
           </incDir>
           <preprocessorList>
             <Elem>HAVE_STDARG_H=1</Elem>
@@ -273,8 +259,8 @@
         <ccTool>
           <incDir>
             <pElem>/usr/local/tools/mvapich-gnu/include</pElem>
+            <pElem>/g/g92/zhang30/inst//include</pElem>
             <pElem>build/linux/debug</pElem>
-            <pElem>/g/g92/zhang30/inst/include</pElem>
           </incDir>
           <preprocessorList>
             <Elem>HAVE_STDARG_H=1</Elem>
@@ -291,8 +277,8 @@
         <ccTool>
           <incDir>
             <pElem>/usr/local/tools/mvapich-gnu/include</pElem>
+            <pElem>/g/g92/zhang30/inst//include</pElem>
             <pElem>build/linux/debug</pElem>
-            <pElem>/g/g92/zhang30/inst/include</pElem>
           </incDir>
           <preprocessorList>
             <Elem>HAVE_STDARG_H=1</Elem>
@@ -309,8 +295,8 @@
         <ccTool>
           <incDir>
             <pElem>/usr/local/tools/mvapich-gnu/include</pElem>
+            <pElem>/g/g92/zhang30/inst//include</pElem>
             <pElem>build/linux/debug</pElem>
-            <pElem>/g/g92/zhang30/inst/include</pElem>
           </incDir>
           <preprocessorList>
             <Elem>HAVE_STDARG_H=1</Elem>
@@ -327,8 +313,8 @@
         <ccTool>
           <incDir>
             <pElem>/usr/local/tools/mvapich-gnu/include</pElem>
+            <pElem>/g/g92/zhang30/inst//include</pElem>
             <pElem>build/linux/debug</pElem>
-            <pElem>/g/g92/zhang30/inst/include</pElem>
           </incDir>
           <preprocessorList>
             <Elem>HAVE_STDARG_H=1</Elem>
@@ -345,8 +331,8 @@
         <ccTool>
           <incDir>
             <pElem>/usr/local/tools/mvapich-gnu/include</pElem>
+            <pElem>/g/g92/zhang30/inst//include</pElem>
             <pElem>build/linux/debug</pElem>
-            <pElem>/g/g92/zhang30/inst/include</pElem>
           </incDir>
           <preprocessorList>
             <Elem>HAVE_STDARG_H=1</Elem>
@@ -363,8 +349,8 @@
         <ccTool>
           <incDir>
             <pElem>/usr/local/tools/mvapich-gnu/include</pElem>
+            <pElem>/g/g92/zhang30/inst//include</pElem>
             <pElem>build/linux/debug</pElem>
-            <pElem>/g/g92/zhang30/inst/include</pElem>
           </incDir>
           <preprocessorList>
             <Elem>HAVE_STDARG_H=1</Elem>
@@ -381,8 +367,8 @@
         <ccTool>
           <incDir>
             <pElem>/usr/local/tools/mvapich-gnu/include</pElem>
+            <pElem>/g/g92/zhang30/inst//include</pElem>
             <pElem>build/linux/debug</pElem>
-            <pElem>/g/g92/zhang30/inst/include</pElem>
           </incDir>
           <preprocessorList>
             <Elem>HAVE_STDARG_H=1</Elem>
@@ -399,8 +385,8 @@
         <ccTool>
           <incDir>
             <pElem>/usr/local/tools/mvapich-gnu/include</pElem>
+            <pElem>/g/g92/zhang30/inst//include</pElem>
             <pElem>build/linux/debug</pElem>
-            <pElem>/g/g92/zhang30/inst/include</pElem>
           </incDir>
           <preprocessorList>
             <Elem>HAVE_STDARG_H=1</Elem>
@@ -413,12 +399,20 @@
           </preprocessorList>
         </ccTool>
       </item>
+      <item path="src/lib/parallel_progress.cpp" ex="false" tool="1" flavor="0">
+        <ccTool>
+          <incDir>
+            <pElem>/opt/mvapich-gnu-debug-gen2-1.2/include</pElem>
+            <pElem>../../../inst/include</pElem>
+          </incDir>
+        </ccTool>
+      </item>
       <item path="src/lib/parse_pdbqt.cpp" ex="false" tool="1" flavor="0">
         <ccTool>
           <incDir>
             <pElem>/usr/local/tools/mvapich-gnu/include</pElem>
+            <pElem>/g/g92/zhang30/inst//include</pElem>
             <pElem>build/linux/debug</pElem>
-            <pElem>/g/g92/zhang30/inst/include</pElem>
           </incDir>
           <preprocessorList>
             <Elem>HAVE_STDARG_H=1</Elem>
@@ -435,8 +429,8 @@
         <ccTool>
           <incDir>
             <pElem>/usr/local/tools/mvapich-gnu/include</pElem>
+            <pElem>/g/g92/zhang30/inst//include</pElem>
             <pElem>build/linux/debug</pElem>
-            <pElem>/g/g92/zhang30/inst/include</pElem>
           </incDir>
           <preprocessorList>
             <Elem>HAVE_STDARG_H=1</Elem>
@@ -453,8 +447,8 @@
         <ccTool>
           <incDir>
             <pElem>/usr/local/tools/mvapich-gnu/include</pElem>
+            <pElem>/g/g92/zhang30/inst//include</pElem>
             <pElem>build/linux/debug</pElem>
-            <pElem>/g/g92/zhang30/inst/include</pElem>
           </incDir>
           <preprocessorList>
             <Elem>HAVE_STDARG_H=1</Elem>
@@ -471,8 +465,8 @@
         <ccTool>
           <incDir>
             <pElem>/usr/local/tools/mvapich-gnu/include</pElem>
+            <pElem>/g/g92/zhang30/inst//include</pElem>
             <pElem>build/linux/debug</pElem>
-            <pElem>/g/g92/zhang30/inst/include</pElem>
           </incDir>
           <preprocessorList>
             <Elem>HAVE_STDARG_H=1</Elem>
@@ -489,8 +483,8 @@
         <ccTool>
           <incDir>
             <pElem>/usr/local/tools/mvapich-gnu/include</pElem>
+            <pElem>/g/g92/zhang30/inst//include</pElem>
             <pElem>build/linux/debug</pElem>
-            <pElem>/g/g92/zhang30/inst/include</pElem>
           </incDir>
           <preprocessorList>
             <Elem>HAVE_STDARG_H=1</Elem>
@@ -507,8 +501,8 @@
         <ccTool>
           <incDir>
             <pElem>/usr/local/tools/mvapich-gnu/include</pElem>
+            <pElem>/g/g92/zhang30/inst//include</pElem>
             <pElem>build/linux/debug</pElem>
-            <pElem>/g/g92/zhang30/inst/include</pElem>
           </incDir>
           <preprocessorList>
             <Elem>HAVE_STDARG_H=1</Elem>
@@ -527,8 +521,8 @@
         <ccTool>
           <incDir>
             <pElem>/usr/local/tools/mvapich-gnu/include</pElem>
+            <pElem>/g/g92/zhang30/inst//include</pElem>
             <pElem>build/linux/debug</pElem>
-            <pElem>/g/g92/zhang30/inst/include</pElem>
           </incDir>
           <preprocessorList>
             <Elem>HAVE_STDARG_H=1</Elem>
@@ -545,8 +539,8 @@
         <ccTool>
           <incDir>
             <pElem>/usr/local/tools/mvapich-gnu/include</pElem>
+            <pElem>/g/g92/zhang30/inst//include</pElem>
             <pElem>build/linux/debug</pElem>
-            <pElem>/g/g92/zhang30/inst/include</pElem>
           </incDir>
           <preprocessorList>
             <Elem>HAVE_STDARG_H=1</Elem>
@@ -563,8 +557,8 @@
         <ccTool>
           <incDir>
             <pElem>/usr/local/tools/mvapich-gnu/include</pElem>
+            <pElem>/g/g92/zhang30/inst//include</pElem>
             <pElem>build/linux/debug</pElem>
-            <pElem>/g/g92/zhang30/inst/include</pElem>
           </incDir>
           <preprocessorList>
             <Elem>HAVE_STDARG_H=1</Elem>
