@@ -418,7 +418,7 @@ int dockjob(std::string& rigid_name, std::string& ligand_name,
     try {
         std::string flex_name, config_name, out_name, log_name;
 //        fl center_x, center_y, center_z, size_x, size_y, size_z;
-        int cpu = 0, seed, exhaustiveness, verbosity = 2, num_modes = 9;
+        int cpu = 0, seed, exhaustiveness, verbosity = 1, num_modes = 9;
         fl energy_range = 2.0;
 
         // -0.035579, -0.005156, 0.840245, -0.035069, -0.587439, 0.05846
@@ -474,7 +474,8 @@ int dockjob(std::string& rigid_name, std::string& ligand_name,
         }
 
         tee log;
-        log_name = "vina.log";
+//        log_name = "vina.log";
+        log_name = ligand_name +".log";
         log.init(log_name);
 
         unsigned num_cpus = boost::thread::hardware_concurrency();
@@ -719,17 +720,21 @@ int main(int argc, char* argv[]) {
     int nproc, rank, rc;
 
 //    int totJobs;
-    char ligBuffer[100];
-    char recBuffer[100];
     char jobBuffer[20];
-    double geometry[6];
+    struct JobInputData{
+        char ligBuffer[100];
+        char recBuffer[100];
+        double geometry[6];
+    } jobInput;
+    
     MPI_Status status1, status2;
         
     int rankTag=1;
     int jobTag=2;
-    int ligTag=3;
-    int recTag=4;
-    int geoTag=5;
+//    int ligTag=3;
+//    int recTag=4;
+//    int geoTag=5;
+    int inpTag=6;
 
     rc = MPI_Init(&argc, &argv);
     if (rc != MPI_SUCCESS) {
@@ -789,7 +794,7 @@ int main(int argc, char* argv[]) {
         for(unsigned i=0; i<recList.size(); ++i){
             std::vector<double> geo=geoList[i];
             for(unsigned k=0;k<6; ++k){
-                geometry[k]=geo[k];
+                jobInput.geometry[k]=geo[k];
             }
             for(unsigned j=0; j<ligList.size(); ++j){
                 int freeProc;
@@ -797,11 +802,12 @@ int main(int argc, char* argv[]) {
                 strcpy(jobBuffer, "DOING");
                 MPI_Send(jobBuffer, 20, MPI_CHAR, freeProc, jobTag, MPI_COMM_WORLD); 
                 // Start to send parameters
-                strcpy(ligBuffer, ligList[j].c_str());
-                MPI_Send(ligBuffer, 100, MPI_CHAR, freeProc, ligTag, MPI_COMM_WORLD);  
-                strcpy(recBuffer, recList[i].c_str());
-                MPI_Send(recBuffer, 100, MPI_CHAR, freeProc, recTag, MPI_COMM_WORLD);
-                MPI_Send(geometry, 6, MPI_DOUBLE, freeProc, geoTag, MPI_COMM_WORLD);
+                strcpy(jobInput.ligBuffer, ligList[j].c_str());
+//                MPI_Send(ligBuffer, 100, MPI_CHAR, freeProc, ligTag, MPI_COMM_WORLD);  
+                strcpy(jobInput.recBuffer, recList[i].c_str());
+//                MPI_Send(recBuffer, 100, MPI_CHAR, freeProc, recTag, MPI_COMM_WORLD);
+//                MPI_Send(geometry, 6, MPI_DOUBLE, freeProc, geoTag, MPI_COMM_WORLD);
+                MPI_Send(&jobInput, sizeof(JobInputData), MPI_CHAR, freeProc, inpTag, MPI_COMM_WORLD);
             }
         }
         
@@ -820,18 +826,19 @@ int main(int argc, char* argv[]) {
                 break;
             }
             // Receive parameters
-            MPI_Recv(ligBuffer, 100, MPI_CHAR, 0, ligTag, MPI_COMM_WORLD, &status1);
-            MPI_Recv(recBuffer, 100, MPI_CHAR, 0, recTag, MPI_COMM_WORLD, &status1);
-            MPI_Recv(geometry, 6, MPI_DOUBLE, 0, geoTag, MPI_COMM_WORLD, &status1);
+//            MPI_Recv(ligBuffer, 100, MPI_CHAR, 0, ligTag, MPI_COMM_WORLD, &status1);
+//            MPI_Recv(recBuffer, 100, MPI_CHAR, 0, recTag, MPI_COMM_WORLD, &status1);
+//            MPI_Recv(geometry, 6, MPI_DOUBLE, 0, geoTag, MPI_COMM_WORLD, &status1);
+            MPI_Recv(&jobInput, sizeof(JobInputData), MPI_CHAR, 0, inpTag, MPI_COMM_WORLD, &status1);
             
-            std::string ligand_name = ligBuffer;
-            std::string rigid_name = recBuffer;
-            double center_x = geometry[0];
-            double center_y = geometry[1];
-            double center_z = geometry[2];
-            double size_x = geometry[3];
-            double size_y = geometry[4];
-            double size_z = geometry[5];
+            std::string ligand_name = jobInput.ligBuffer;
+            std::string rigid_name = jobInput.recBuffer;
+            double center_x = jobInput.geometry[0];
+            double center_y = jobInput.geometry[1];
+            double center_z = jobInput.geometry[2];
+            double size_x = jobInput.geometry[3];
+            double size_y = jobInput.geometry[4];
+            double size_z = jobInput.geometry[5];
             
             dockjob(rigid_name, ligand_name, center_x, center_y, center_z, size_x, size_y, size_z);           
      
