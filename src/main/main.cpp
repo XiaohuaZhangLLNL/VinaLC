@@ -413,6 +413,7 @@ model parse_bundle(const boost::optional<std::string>& rigid_name_opt, const boo
 #ifdef USE_MPI
 
 struct JobInputData{
+    int cpu;
     int exhaustiveness;
     double geometry[6];        
     char ligBuffer[100];
@@ -422,7 +423,7 @@ struct JobInputData{
 int dockjob(JobInputData& jobInput){
     try {
         std::string flex_name, config_name, out_name, log_name;
-        int cpu = 0, seed, verbosity = 1, num_modes = 9;
+        int seed, verbosity = 1, num_modes = 9;
         fl energy_range = 2.0;
 
         // -0.035579, -0.005156, 0.840245, -0.035069, -0.587439, 0.05846
@@ -433,7 +434,6 @@ int dockjob(JobInputData& jobInput){
         fl weight_hydrogen = -0.587439;
         fl weight_rot = 0.05846;
         bool score_only = false, local_only = false, randomize_only = false; // FIXME
-
 
         bool search_box_needed = !score_only; // randomize_only and local_only still need the search space
         bool output_produced = !score_only;
@@ -448,8 +448,7 @@ int dockjob(JobInputData& jobInput){
         double size_y = jobInput.geometry[4];
         double size_z = jobInput.geometry[5];
         int exhaustiveness=jobInput.exhaustiveness;
-
-        cpu = 1;
+        int cpu=jobInput.cpu;
 
         sz max_modes_sz = static_cast<sz> (num_modes);
 
@@ -485,21 +484,8 @@ int dockjob(JobInputData& jobInput){
         }
 
         tee log;
-//        log_name = "vina.log";
         log_name = ligand_name +".log";
         log.init(log_name);
-
-        unsigned num_cpus = boost::thread::hardware_concurrency();
-        if (verbosity > 1) {
-            if (num_cpus > 0)
-                log << "Detected " << num_cpus << " CPU" << ((num_cpus > 1) ? "s" : "") << '\n';
-            else
-                log << "Could not detect the number of CPUs, using 1\n";
-        }
-        if (num_cpus > 0)
-            cpu = num_cpus;
-        else
-            cpu = 1;
 
         doing(verbosity, "Reading input", log);
 
@@ -777,12 +763,18 @@ int main(int argc, char* argv[]) {
         std::vector<std::string> recList;
         std::vector<std::string> ligList;
         std::vector<std::vector<double> > geoList;
-        
+       
         int success=mpiParser(argc, argv, ligList, recList, geoList, jobInput.exhaustiveness);
         if(success!=0) {
             std::cerr << "Error: Parser input error" << std::endl;
             return 1;            
         }
+        
+        unsigned num_cpus = boost::thread::hardware_concurrency();
+        if (num_cpus > 0)
+            jobInput.cpu = num_cpus;
+        else
+            jobInput.cpu = 1;        
         
         for(unsigned i=0; i<recList.size(); ++i){
             std::vector<double> geo=geoList[i];
