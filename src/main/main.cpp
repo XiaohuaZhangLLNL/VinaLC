@@ -412,13 +412,17 @@ model parse_bundle(const boost::optional<std::string>& rigid_name_opt, const boo
 
 #ifdef USE_MPI
 
-int dockjob(std::string& rigid_name, std::string& ligand_name, 
-        double center_x, double center_y, double center_z, 
-        double size_x, double size_y,double size_z){
+struct JobInputData{
+    int exhaustiveness;
+    double geometry[6];        
+    char ligBuffer[100];
+    char recBuffer[100];
+};
+
+int dockjob(JobInputData& jobInput){
     try {
         std::string flex_name, config_name, out_name, log_name;
-//        fl center_x, center_y, center_z, size_x, size_y, size_z;
-        int cpu = 0, seed, exhaustiveness, verbosity = 1, num_modes = 9;
+        int cpu = 0, seed, verbosity = 1, num_modes = 9;
         fl energy_range = 2.0;
 
         // -0.035579, -0.005156, 0.840245, -0.035069, -0.587439, 0.05846
@@ -428,15 +432,22 @@ int dockjob(std::string& rigid_name, std::string& ligand_name,
         fl weight_hydrophobic = -0.035069;
         fl weight_hydrogen = -0.587439;
         fl weight_rot = 0.05846;
-        bool score_only = false, local_only = false, randomize_only = false, help = false, help_advanced = false, version = false; // FIXME
+        bool score_only = false, local_only = false, randomize_only = false; // FIXME
 
-        //            out_name="3KF4-STI-all.pdbqt";
-
-        exhaustiveness = 12;
 
         bool search_box_needed = !score_only; // randomize_only and local_only still need the search space
         bool output_produced = !score_only;
         bool receptor_needed = !randomize_only;
+        
+        std::string ligand_name = jobInput.ligBuffer;
+        std::string rigid_name = jobInput.recBuffer;
+        double center_x = jobInput.geometry[0];
+        double center_y = jobInput.geometry[1];
+        double center_z = jobInput.geometry[2];
+        double size_x = jobInput.geometry[3];
+        double size_y = jobInput.geometry[4];
+        double size_z = jobInput.geometry[5];
+        int exhaustiveness=jobInput.exhaustiveness;
 
         cpu = 1;
 
@@ -582,7 +593,8 @@ void saveGeoList(std::string& fileName, std::vector<std::vector<double> >& geoLi
 int mpiParser(int argc, char* argv[], 
         std::vector<std::string>& ligList,
         std::vector<std::string>& recList,
-        std::vector<std::vector<double> >& geoList){
+        std::vector<std::vector<double> >& geoList,
+        int& exhaustiveness){
     using namespace boost::program_options;
     const std::string version_string = "AutoDock Vina 1.1.2 (May 11, 2011)";
     const std::string error_message = "\n\n\
@@ -630,7 +642,8 @@ Thank you!\n";
         inputs.add_options()
                 ("recList", value<std::string > (&recFile), "receptor list file")
                 ("ligList", value<std::string > (&ligFile), "ligand list file")
-                ("geoList", value<std::string > (&geoFile), "ligand (PDBQT)")
+                ("geoList", value<std::string > (&geoFile), "receptor geometry file")
+                ("exhaustiveness", value<int>(&exhaustiveness)->default_value(8), "exhaustiveness of the global search (roughly proportional to time): 1+")
                 ;   
         options_description info("Information (optional)");
         info.add_options()
@@ -721,11 +734,14 @@ int main(int argc, char* argv[]) {
 
 //    int totJobs;
     char jobBuffer[20];
-    struct JobInputData{
-        char ligBuffer[100];
-        char recBuffer[100];
-        double geometry[6];
-    } jobInput;
+//    struct JobInputData{
+//        int exhaustiveness;
+//        double geometry[6];        
+//        char ligBuffer[100];
+//        char recBuffer[100];
+//    } jobInput;
+    
+    JobInputData jobInput;
     
     MPI_Status status1, status2;
         
@@ -734,7 +750,7 @@ int main(int argc, char* argv[]) {
 //    int ligTag=3;
 //    int recTag=4;
 //    int geoTag=5;
-    int inpTag=6;
+    int inpTag=3;
 
     rc = MPI_Init(&argc, &argv);
     if (rc != MPI_SUCCESS) {
@@ -757,39 +773,16 @@ int main(int argc, char* argv[]) {
 
     if (rank == 0) {
         std::cout << "Master Node: " << nproc << " My rank= " << rank << std::endl;
-        //        std::stack<int> procList;
-        //        for (unsigned i = 1; i < nproc; ++i) {
-        //            procList.push(i);
-        //        }
-        
-//        std::string rec = "3KF4.pdbqt";
-//        std::vector<std::string> recList;
-//        recList.push_back(rec);
-//
-//        std::vector<std::string> ligList;
-//        for (unsigned i = 1; i < 8; ++i) {
-//            std::stringstream ss;
-//            ss << "model" << i << ".pdbqt";
-//            ligList.push_back(ss.str());
-//        }
-//        double center_x = 19.4856;
-//        double center_y = 77.8487;
-//        double center_z = 64.5852;
-//        double size_x = 32;
-//        double size_y = 29;
-//        double size_z = 26;
-//        geometry[0]= center_x;   
-//        geometry[1]= center_y;
-//        geometry[2]= center_z;
-//        geometry[3]= size_x;
-//        geometry[4]= size_y;
-//        geometry[5]= size_z;
-        
+      
         std::vector<std::string> recList;
         std::vector<std::string> ligList;
         std::vector<std::vector<double> > geoList;
         
-        mpiParser(argc, argv, ligList, recList, geoList);
+        int success=mpiParser(argc, argv, ligList, recList, geoList, jobInput.exhaustiveness);
+        if(success!=0) {
+            std::cerr << "Error: Parser input error" << std::endl;
+            return 1;            
+        }
         
         for(unsigned i=0; i<recList.size(); ++i){
             std::vector<double> geo=geoList[i];
@@ -830,17 +823,8 @@ int main(int argc, char* argv[]) {
 //            MPI_Recv(recBuffer, 100, MPI_CHAR, 0, recTag, MPI_COMM_WORLD, &status1);
 //            MPI_Recv(geometry, 6, MPI_DOUBLE, 0, geoTag, MPI_COMM_WORLD, &status1);
             MPI_Recv(&jobInput, sizeof(JobInputData), MPI_CHAR, 0, inpTag, MPI_COMM_WORLD, &status1);
-            
-            std::string ligand_name = jobInput.ligBuffer;
-            std::string rigid_name = jobInput.recBuffer;
-            double center_x = jobInput.geometry[0];
-            double center_y = jobInput.geometry[1];
-            double center_z = jobInput.geometry[2];
-            double size_x = jobInput.geometry[3];
-            double size_y = jobInput.geometry[4];
-            double size_z = jobInput.geometry[5];
-            
-            dockjob(rigid_name, ligand_name, center_x, center_y, center_z, size_x, size_y, size_z);           
+                        
+            dockjob(jobInput);           
      
         }
     }
