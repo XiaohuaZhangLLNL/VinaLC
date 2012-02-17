@@ -415,7 +415,9 @@ model parse_bundle(const boost::optional<std::string>& rigid_name_opt, const boo
 struct JobInputData{
     int cpu;
     int exhaustiveness;
-    double geometry[6];        
+    int n[3]; 
+    double begin[3];
+    double end[3];        
     char ligBuffer[100];
     char recBuffer[100];
 };
@@ -434,19 +436,9 @@ int dockjob(JobInputData& jobInput){
         fl weight_hydrogen = -0.587439;
         fl weight_rot = 0.05846;
         bool score_only = false, local_only = false, randomize_only = false; // FIXME
-
-        bool search_box_needed = !score_only; // randomize_only and local_only still need the search space
-        bool output_produced = !score_only;
-        bool receptor_needed = !randomize_only;
         
         std::string ligand_name = jobInput.ligBuffer;
         std::string rigid_name = jobInput.recBuffer;
-        double center_x = jobInput.geometry[0];
-        double center_y = jobInput.geometry[1];
-        double center_z = jobInput.geometry[2];
-        double size_x = jobInput.geometry[3];
-        double size_y = jobInput.geometry[4];
-        double size_z = jobInput.geometry[5];
         int exhaustiveness=jobInput.exhaustiveness;
         int cpu=jobInput.cpu;
 
@@ -469,20 +461,13 @@ int dockjob(JobInputData& jobInput){
         weights.push_back(weight_hydrophobic);
         weights.push_back(weight_hydrogen);
         weights.push_back(5 * weight_rot / 0.1 - 1); // linearly maps onto a different range, internally. see everything.cpp
-
-        if (search_box_needed) {
-            const fl granularity = 0.375;
-            vec span(size_x, size_y, size_z);
-            vec center(center_x, center_y, center_z);
-
-            VINA_FOR_IN(i, gd) {
-                gd[i].n = sz(std::ceil(span[i] / granularity));
-                fl real_span = granularity * gd[i].n;
-                gd[i].begin = center[i] - real_span / 2;
-                gd[i].end = gd[i].begin + real_span;
-            }
+        
+        VINA_FOR_IN(i, gd) {
+            gd[i].n = jobInput.n[i];
+            gd[i].begin = jobInput.begin[i];
+            gd[i].end = jobInput.end[i];
         }
-
+        
         tee log;
         log_name = ligand_name +".log";
         log.init(log_name);
@@ -714,18 +699,24 @@ Thank you!\n";
     return 0;
 }
 
+inline void geometry(JobInputData& jobInput, std::vector<double>& geo){
+    const fl granularity = 0.375;
+    vec center(geo[0], geo[1], geo[2]);
+    vec span(geo[3], geo[4], geo[5]);
+
+    for(unsigned j=0;j<3; ++j){
+        jobInput.n[j]=sz(std::ceil(span[j] / granularity));
+        fl real_span = granularity * jobInput.n[j];
+        jobInput.begin[j]=center[j] - real_span / 2;
+        jobInput.end[j]=jobInput.begin[j] + real_span;
+    }    
+}
+
 int main(int argc, char* argv[]) {
 
     int nproc, rank, rc;
 
-//    int totJobs;
     char jobBuffer[20];
-//    struct JobInputData{
-//        int exhaustiveness;
-//        double geometry[6];        
-//        char ligBuffer[100];
-//        char recBuffer[100];
-//    } jobInput;
     
     JobInputData jobInput;
     
@@ -778,9 +769,8 @@ int main(int argc, char* argv[]) {
         
         for(unsigned i=0; i<recList.size(); ++i){
             std::vector<double> geo=geoList[i];
-            for(unsigned k=0;k<6; ++k){
-                jobInput.geometry[k]=geo[k];
-            }
+            geometry(jobInput, geo);
+           
             for(unsigned j=0; j<ligList.size(); ++j){
                 int freeProc;
                 MPI_Recv(&freeProc, 1, MPI_INTEGER, MPI_ANY_SOURCE, rankTag, MPI_COMM_WORLD, &status1);
