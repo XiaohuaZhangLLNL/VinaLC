@@ -44,7 +44,7 @@
 #include "weighted_terms.h"
 #include "current_weights.h"
 #include "quasi_newton.h"
-#include "tee.h"
+//#include "tee.h"
 #include "coords.h" // add_to_output_container
 #include "tokenize.h"
 
@@ -59,17 +59,17 @@ path make_path(const std::string& str) {
     return path(str);
 }
 
-void doing(int verbosity, const std::string& str, tee& log) {
+void doing(int verbosity, const std::string& str, std::stringstream& log) {
     if (verbosity > 1) {
         log << str << std::string(" ... ");
         log.flush();
     }
 }
 
-void done(int verbosity, tee& log) {
+void done(int verbosity, std::stringstream& log) {
     if (verbosity > 1) {
         log << "done.";
-        log.endl();
+        log << std::endl;
     }
 }
 
@@ -81,27 +81,27 @@ std::string default_output(const std::string& input_name) {
 }
 
 void write_all_output(model& m, const output_container& out, sz how_many,
-        const std::string& output_name,
+        std::stringstream& output_name,
         const std::vector<std::string>& remarks) {
     if (out.size() < how_many)
         how_many = out.size();
     VINA_CHECK(how_many <= remarks.size());
-    ofile f(make_path(output_name));
+//    ofile f(make_path(output_name));
 
     VINA_FOR(i, how_many) {
         m.set(out[i].c);
-        m.write_model(f, i + 1, remarks[i]); // so that model numbers start with 1
+        m.write_model(output_name, i + 1, remarks[i]); // so that model numbers start with 1
     }
 }
 
 void do_randomization(model& m,
-        const std::string& out_name,
-        const vec& corner1, const vec& corner2, int seed, int verbosity, tee& log) {
+        std::stringstream& out_name,
+        const vec& corner1, const vec& corner2, int seed, int verbosity, std::stringstream& log) {
     conf init_conf = m.get_initial_conf();
     rng generator(static_cast<rng::result_type> (seed));
     if (verbosity > 1) {
         log << "Using random seed: " << seed;
-        log.endl();
+        log << std::endl;
     }
     const sz attempts = 10000;
     conf best_conf = init_conf;
@@ -120,9 +120,9 @@ void do_randomization(model& m,
     m.set(best_conf);
     if (verbosity > 1) {
         log << "Clash penalty: " << best_clash_penalty; // FIXME rm?
-        log.endl();
+        log << std::endl;
     }
-    m.write_structure(make_path(out_name));
+    m.write_structure(out_name);
 }
 
 void refine_structure(model& m, const precalculate& prec, non_cache& nc, output_type& out, const vec& cap, sz max_steps = 1000) {
@@ -164,10 +164,10 @@ output_container remove_redundant(const output_container& in, fl min_rmsd) {
 }
 
 void do_search(model& m, const boost::optional<model>& ref, const scoring_function& sf, const precalculate& prec, const igrid& ig, const precalculate& prec_widened, const igrid& ig_widened, non_cache& nc, // nc.slope is changed
-        const std::string& out_name,
+        std::stringstream& out_name,
         const vec& corner1, const vec& corner2,
         const parallel_mc& par, fl energy_range, sz num_modes,
-        int seed, int verbosity, bool score_only, bool local_only, tee& log, const terms& t, const flv& weights) {
+        int seed, int verbosity, bool score_only, bool local_only, std::stringstream& log, const terms& t, const flv& weights) {
     conf_size s = m.get_size();
     conf c = m.get_initial_conf();
     fl e = max_fl;
@@ -177,7 +177,7 @@ void do_search(model& m, const boost::optional<model>& ref, const scoring_functi
         naive_non_cache nnc(&prec); // for out of grid issues
         e = m.eval_adjusted(sf, prec, nnc, authentic_v, c, intramolecular_energy);
         log << "Affinity: " << std::fixed << std::setprecision(5) << e << " (kcal/mol)";
-        log.endl();
+        log << std::endl;
         flv term_values = t.evale_robust(m);
         VINA_CHECK(term_values.size() == 5);
         log << "Intermolecular contributions to the terms, before weighting:\n";
@@ -206,7 +206,7 @@ void do_search(model& m, const boost::optional<model>& ref, const scoring_functi
         e = m.eval_adjusted(sf, prec, nc, authentic_v, out.c, intramolecular_energy);
 
         log << "Affinity: " << std::fixed << std::setprecision(5) << e << " (kcal/mol)";
-        log.endl();
+        log << std::endl;
         if (!nc.within(m))
             log << "WARNING: not all movable atoms are within the search space\n";
 
@@ -219,7 +219,7 @@ void do_search(model& m, const boost::optional<model>& ref, const scoring_functi
     } else {
         rng generator(static_cast<rng::result_type> (seed));
         log << "Using random seed: " << seed;
-        log.endl();
+        log << std::endl;
         output_container out_cont;
         doing(verbosity, "Performing search", log);
         par(m, out_cont, prec, ig, prec_widened, ig_widened, corner1, corner2, generator);
@@ -271,7 +271,7 @@ void do_search(model& m, const boost::optional<model>& ref, const scoring_functi
                     << "  " << std::setw(9) << std::setprecision(3) << ub; // FIXME need user-readable error messages in case of failures
 
             remarks.push_back(vina_remark(out_cont[i].e, lb, ub));
-            log.endl();
+            log << std::endl;
         }
         doing(verbosity, "Writing output", log);
         write_all_output(m, out_cont, how_many, out_name, remarks);
@@ -280,17 +280,17 @@ void do_search(model& m, const boost::optional<model>& ref, const scoring_functi
         if (how_many < 1) {
             log << "WARNING: Could not find any conformations completely within the search space.\n"
                     << "WARNING: Check that it is large enough for all movable atoms, including those in the flexible side chains.";
-            log.endl();
+            log << std::endl;
         }
     }
 }
 
 void main_procedure(model& m, const boost::optional<model>& ref, // m is non-const (FIXME?)
-        const std::string& out_name,
+        std::stringstream& out_name,
         bool score_only, bool local_only, bool randomize_only, bool no_cache,
         const grid_dims& gd, int exhaustiveness,
         const flv& weights,
-        int cpu, int seed, int verbosity, sz num_modes, fl energy_range, tee& log) {
+        int cpu, int seed, int verbosity, sz num_modes, fl energy_range, std::stringstream& log) {
 
     doing(verbosity, "Setting up the scoring function", log);
 
@@ -422,9 +422,14 @@ struct JobInputData{
     char recBuffer[100];
 };
 
-int dockjob(JobInputData& jobInput){
+struct JobOutData{       
+    char log[1000];
+    char poses[100000];
+};
+
+int dockjob(JobInputData& jobInput, JobOutData& jobOut){
     try {
-        std::string flex_name, config_name, out_name, log_name;
+//        std::string flex_name, config_name, out_name, log_name;
         int seed, verbosity = 1, num_modes = 9;
         fl energy_range = 2.0;
 
@@ -450,7 +455,9 @@ int dockjob(JobInputData& jobInput){
         boost::optional<std::string> flex_name_opt;
         //            flex_name_opt = flex_name;
 
-        out_name = default_output(ligand_name);
+//        out_name = default_output(ligand_name);
+        std::stringstream out_name;
+        out_name << "REMARK " << ligand_name << std::endl;
 
         grid_dims gd; // n's = 0 via default c'tor
 
@@ -468,9 +475,10 @@ int dockjob(JobInputData& jobInput){
             gd[i].end = jobInput.end[i];
         }
         
-        tee log;
-        log_name = ligand_name +".log";
-        log.init(log_name);
+        std::stringstream log;
+        log << "Liang Name: " << ligand_name << std::endl;
+//        log_name = ligand_name +".log";
+//        log.init(log_name);
 
         doing(verbosity, "Reading input", log);
 
@@ -485,6 +493,9 @@ int dockjob(JobInputData& jobInput){
                 gd, exhaustiveness,
                 weights,
                 cpu, seed, verbosity, max_modes_sz, energy_range, log);
+        strcpy(jobOut.log, log.str().c_str());
+        strcpy(jobOut.poses, out_name.str().c_str());
+        
     } catch (file_error& e) {
         std::cerr << "\n\nError: could not open \"" << e.name.string() << "\" for " << (e.in ? "reading" : "writing") << ".\n";
         return 1;
@@ -719,6 +730,7 @@ int main(int argc, char* argv[]) {
     char jobBuffer[20];
     
     JobInputData jobInput;
+    JobOutData jobOut;
     
     MPI_Status status1, status2;
         
@@ -728,6 +740,7 @@ int main(int argc, char* argv[]) {
 //    int recTag=4;
 //    int geoTag=5;
     int inpTag=3;
+    int outTag=4;
 
     rc = MPI_Init(&argc, &argv);
     if (rc != MPI_SUCCESS) {
@@ -765,13 +778,34 @@ int main(int argc, char* argv[]) {
         if (num_cpus > 0)
             jobInput.cpu = num_cpus;
         else
-            jobInput.cpu = 1;        
+            jobInput.cpu = 1;    
+        
+        
+        int count=0;
+        
+        std::string logFName;
+        std::string outFName;
+        
+        std::ofstream logFile;
+        std::ofstream outFile;
         
         for(unsigned i=0; i<recList.size(); ++i){
             std::vector<double> geo=geoList[i];
             geometry(jobInput, geo);
+            
+            logFName=recList[i]+".log";
+            logFile.open(logFName.c_str());
+
+            outFName = default_output(recList[i]);
+            outFile.open(outFName.c_str());
            
             for(unsigned j=0; j<ligList.size(); ++j){
+                ++count;
+                if(count >nproc-1){
+                    MPI_Recv(&jobOut, sizeof(JobOutData), MPI_CHAR, MPI_ANY_SOURCE, outTag, MPI_COMM_WORLD, &status2);
+                    logFile << jobOut.log << std::endl;
+                    outFile << jobOut.poses << std::endl;
+                }                  
                 int freeProc;
                 MPI_Recv(&freeProc, 1, MPI_INTEGER, MPI_ANY_SOURCE, rankTag, MPI_COMM_WORLD, &status1);
                 strcpy(jobBuffer, "DOING");
@@ -782,9 +816,25 @@ int main(int argc, char* argv[]) {
                 strcpy(jobInput.recBuffer, recList[i].c_str());
 //                MPI_Send(recBuffer, 100, MPI_CHAR, freeProc, recTag, MPI_COMM_WORLD);
 //                MPI_Send(geometry, 6, MPI_DOUBLE, freeProc, geoTag, MPI_COMM_WORLD);
-                MPI_Send(&jobInput, sizeof(JobInputData), MPI_CHAR, freeProc, inpTag, MPI_COMM_WORLD);
+                MPI_Send(&jobInput, sizeof(JobInputData), MPI_CHAR, freeProc, inpTag, MPI_COMM_WORLD);              
             }
+            
+            logFile.close();
+            outFile.close();
         }
+        
+
+        logFile.open(logFName.c_str(), std::ios::app);
+        outFile.open(outFName.c_str(), std::ios::app);
+        
+        for(unsigned i=1; i < nproc; ++i){
+            MPI_Recv(&jobOut, sizeof(JobOutData), MPI_CHAR, MPI_ANY_SOURCE, outTag, MPI_COMM_WORLD, &status2);
+            logFile << jobOut.log << std::endl;
+            outFile << jobOut.poses << std::endl;
+        }
+        logFile.close();
+        outFile.close();
+       
         
         for(unsigned i=1; i < nproc; ++i){
             int freeProc;
@@ -806,8 +856,9 @@ int main(int argc, char* argv[]) {
 //            MPI_Recv(geometry, 6, MPI_DOUBLE, 0, geoTag, MPI_COMM_WORLD, &status1);
             MPI_Recv(&jobInput, sizeof(JobInputData), MPI_CHAR, 0, inpTag, MPI_COMM_WORLD, &status1);
                         
-            dockjob(jobInput);           
-     
+            dockjob(jobInput, jobOut); 
+            
+            MPI_Send(&jobOut, sizeof(JobOutData), MPI_CHAR, 0, outTag, MPI_COMM_WORLD);
         }
     }
 
@@ -1006,7 +1057,7 @@ Thank you!\n";
         if (vm.count("flex") && !vm.count("receptor"))
             throw usage_error("Flexible side chains are not allowed without the rest of the receptor"); // that's the only way parsing works, actually
 
-        tee log;
+        std::stringstream log;
         if (vm.count("log") > 0)
             log.init(log_name);
 

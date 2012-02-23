@@ -90,16 +90,31 @@ struct model {
 
 	void write_flex  (                  const path& name, const std::string& remark) const { write_context(flex_context, name, remark); }
 	void write_ligand(sz ligand_number, const path& name, const std::string& remark) const { VINA_CHECK(ligand_number < ligands.size()); write_context(ligands[ligand_number].cont, name, remark); }
-	void write_structure(ofile& out) const {
+	void write_structure(std::stringstream& out) const {
 		VINA_FOR_IN(i, ligands)
 			write_context(ligands[i].cont, out);
 		if(num_flex() > 0) // otherwise remark is written in vain
 			write_context(flex_context, out);
 	}
+        void write_structure(ofile& out) const {
+		VINA_FOR_IN(i, ligands)
+			write_context(ligands[i].cont, out);
+		if(num_flex() > 0) // otherwise remark is written in vain
+			write_context(flex_context, out);
+	}  
+	void write_structure(std::stringstream& out, const std::string& remark) const {
+		out << remark;
+		write_structure(out);
+	}        
 	void write_structure(ofile& out, const std::string& remark) const {
 		out << remark;
 		write_structure(out);
 	}
+	void write_model(std::stringstream& out, sz model_number, const std::string& remark) const {
+		out << "MODEL " << model_number << '\n';
+		write_structure(out, remark);
+		out << "ENDMDL\n";
+	}        
 	void write_structure(const path& name) const { ofile out(name); write_structure(out); }
 	void write_model(ofile& out, sz model_number, const std::string& remark) const {
 		out << "MODEL " << model_number << '\n';
@@ -183,6 +198,7 @@ private:
 	const atom& get_atom(const atom_index& i) const { return (i.in_grid ? grid_atoms[i.i] : atoms[i.i]); }
 	      atom& get_atom(const atom_index& i)       { return (i.in_grid ? grid_atoms[i.i] : atoms[i.i]); }
 
+        void write_context(const context& c, std::stringstream& out) const;      
 	void write_context(const context& c, ofile& out) const;
 	void write_context(const context& c, ofile& out, const std::string& remark) const {
 		out << remark;
