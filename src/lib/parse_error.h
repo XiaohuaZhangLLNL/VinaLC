@@ -30,6 +30,7 @@ struct parse_error {
 	unsigned line;
 	std::string reason;
 	parse_error(const path& file_, unsigned line_, const std::string& reason_ = "") : file(file_), line(line_), reason(reason_) {}
+        parse_error(unsigned line_, const std::string& reason_ = "") : line(line_), reason(reason_) {}
 private:
 	parse_error() {}
 };

@@ -40,6 +40,9 @@ struct stream_parse_error {
 	parse_error to_parse_error(const path& name) const {
 		return parse_error(name, line, reason);
 	}
+	parse_error to_parse_error() const {
+		return parse_error(line, reason);
+	}        
 };
 
 struct parsed_atom : public atom {
@@ -365,6 +368,28 @@ void parse_pdbqt_aux(std::istream& in, unsigned& count, parsing_struct& p, conte
 	}
 }
 
+void parse_pdbqt_aux(std::stringstream& in, unsigned& count, parsing_struct& p, context& c, boost::optional<unsigned>& torsdof, bool residue) {
+	parse_pdbqt_root(in, count, p, c);
+
+	std::string str;
+	while(std::getline(in, str)) {
+		add_context(c, str);
+		++count;
+		if(str.empty()) {} // ignore ""
+		else if(starts_with(str, "WARNING")) {} // ignore - AutoDockTools bug workaround
+		else if(starts_with(str, "REMARK")) {} // ignore
+		else if(starts_with(str, "BRANCH")) parse_pdbqt_branch_aux(in, count, str, p, c);
+		else if(!residue && starts_with(str, "TORSDOF")) {
+			if(torsdof) throw stream_parse_error(count, "TORSDOF can occur only once");
+			torsdof = parse_one_unsigned(str, "TORSDOF", count);
+		}
+		else if(residue && starts_with(str, "END_RES")) return; 
+		else if(starts_with(str, "MODEL"))
+			throw stream_parse_error(count, "Unexpected multi-MODEL input. Use \"vina_split\" first?");
+		else throw stream_parse_error(count, "Unknown or inappropriate tag");
+	}
+}
+
 void add_bonds(non_rigid_parsed& nr, boost::optional<atom_reference> atm, const atom_range& r) {
 	if(atm)
 		VINA_RANGE(i, r.begin, r.end) {
@@ -483,6 +508,25 @@ void parse_pdbqt_ligand(const path& name, non_rigid_parsed& nr, context& c) {
 	}
 	catch(stream_parse_error& e) {
 		throw e.to_parse_error(name);
+	}
+	VINA_CHECK(nr.atoms_atoms_bonds.dim() == nr.atoms.size());
+}
+
+void parse_pdbqt_ligand(std::stringstream& ligSS, non_rigid_parsed& nr, context& c) {
+//	ifile in(name);
+	unsigned count = 0;
+	parsing_struct p;
+	boost::optional<unsigned> torsdof;
+	try {
+		parse_pdbqt_aux(ligSS, count, p, c, torsdof, false);
+		if(p.atoms.empty()) 
+			throw parse_error(count, "No atoms in the ligand");
+		if(!torsdof)
+			throw parse_error(count, "Missing TORSDOF");
+		postprocess_ligand(nr, p, c, unsigned(torsdof.get())); // bizarre size_t -> unsigned compiler complaint
+	}
+	catch(stream_parse_error& e) {
+		throw e.to_parse_error();
 	}
 	VINA_CHECK(nr.atoms_atoms_bonds.dim() == nr.atoms.size());
 }
@@ -619,6 +663,17 @@ model parse_ligand_pdbqt  (const path& name) { // can throw parse_error
 	non_rigid_parsed nrp;
 	context c;
 	parse_pdbqt_ligand(name, nrp, c);
+
+	pdbqt_initializer tmp;
+	tmp.initialize_from_nrp(nrp, c, true);
+	tmp.initialize(nrp.mobility_matrix());
+	return tmp.m;
+}
+
+model parse_ligand_pdbqt  (std::stringstream& ligSS) { // can throw parse_error
+	non_rigid_parsed nrp;
+	context c;
+	parse_pdbqt_ligand(ligSS, nrp, c);
 
 	pdbqt_initializer tmp;
 	tmp.initialize_from_nrp(nrp, c, true);

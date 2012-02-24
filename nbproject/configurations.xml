@@ -41,6 +41,8 @@
           <in>grid.cpp</in>
           <in>grid.h</in>
           <in>grid_dim.h</in>
+          <in>gzstream.cpp</in>
+          <in>gzstream.h</in>
           <in>igrid.h</in>
           <in>incrementable.h</in>
           <in>int_pow.h</in>
@@ -238,6 +240,24 @@
         </ccTool>
       </item>
       <item path="src/lib/grid.cpp" ex="false" tool="1" flavor="0">
+        <ccTool>
+          <incDir>
+            <pElem>/usr/local/tools/mvapich-gnu/include</pElem>
+            <pElem>build/linux/debug</pElem>
+            <pElem>/g/g92/zhang30/inst/include</pElem>
+          </incDir>
+          <preprocessorList>
+            <Elem>HAVE_STDARG_H=1</Elem>
+            <Elem>HAVE_STDLIB_H=1</Elem>
+            <Elem>HAVE_STRING_H=1</Elem>
+            <Elem>HAVE_UNISTD_H=1</Elem>
+            <Elem>MALLOC_RET_VOID=1</Elem>
+            <Elem>USE_MPI</Elem>
+            <Elem>USE_STDARG=1</Elem>
+          </preprocessorList>
+        </ccTool>
+      </item>
+      <item path="src/lib/gzstream.cpp" ex="false" tool="1" flavor="0">
         <ccTool>
           <incDir>
             <pElem>/usr/local/tools/mvapich-gnu/include</pElem>

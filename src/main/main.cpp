@@ -44,6 +44,7 @@
 #include "weighted_terms.h"
 #include "current_weights.h"
 #include "quasi_newton.h"
+#include "gzstream.h"
 //#include "tee.h"
 #include "coords.h" // add_to_output_container
 #include "tokenize.h"
@@ -387,6 +388,14 @@ void check_occurrence(boost::program_options::variables_map& vm, boost::program_
     }
 }
 
+model parse_bundle(const std::string& rigid_name, const boost::optional<std::string>& flex_name_opt, std::stringstream& ligSS) {
+    model tmp = (flex_name_opt) ? parse_receptor_pdbqt(make_path(rigid_name), make_path(flex_name_opt.get()))
+            : parse_receptor_pdbqt(make_path(rigid_name));
+//    VINA_FOR_IN(i, ligand_names)
+    tmp.append(parse_ligand_pdbqt(ligSS));
+    return tmp;
+}
+
 model parse_bundle(const std::string& rigid_name, const boost::optional<std::string>& flex_name_opt, const std::vector<std::string>& ligand_names) {
     model tmp = (flex_name_opt) ? parse_receptor_pdbqt(make_path(rigid_name), make_path(flex_name_opt.get()))
             : parse_receptor_pdbqt(make_path(rigid_name));
@@ -410,6 +419,13 @@ model parse_bundle(const boost::optional<std::string>& rigid_name_opt, const boo
         return parse_bundle(ligand_names);
 }
 
+model parse_bundle(const boost::optional<std::string>& rigid_name_opt, const boost::optional<std::string>& flex_name_opt, std::stringstream& ligSS) {
+//    if (rigid_name_opt)
+        return parse_bundle(rigid_name_opt.get(), flex_name_opt, ligSS);
+//    else
+//        return parse_bundle(ligand_names);
+}
+
 #ifdef USE_MPI
 
 struct JobInputData{
@@ -419,6 +435,7 @@ struct JobInputData{
     double begin[3];
     double end[3];        
     char ligBuffer[100];
+    char ligFile[10000];
     char recBuffer[100];
 };
 
@@ -446,6 +463,16 @@ int dockjob(JobInputData& jobInput, JobOutData& jobOut){
         std::string rigid_name = jobInput.recBuffer;
         int exhaustiveness=jobInput.exhaustiveness;
         int cpu=jobInput.cpu;
+        
+        std::stringstream ligSS;
+        ligSS << jobInput.ligFile;
+        
+//        std::cout << "===========LIG file  jobInput ===============" << std::endl;
+//        std::cout <<jobInput.ligFile;
+//        
+//        std::cout << "===========LIG file   ligSS===============" << std::endl;
+//        std::cout <<ligSS.str();        
+                
 
         sz max_modes_sz = static_cast<sz> (num_modes);
 
@@ -482,7 +509,8 @@ int dockjob(JobInputData& jobInput, JobOutData& jobOut){
 
         doing(verbosity, "Reading input", log);
 
-        model m = parse_bundle(rigid_name_opt, flex_name_opt, std::vector<std::string > (1, ligand_name));
+//        model m = parse_bundle(rigid_name_opt, flex_name_opt, std::vector<std::string > (1, ligand_name));
+        model m = parse_bundle(rigid_name_opt, flex_name_opt, ligSS);
 
         boost::optional<model> ref;
         done(verbosity, log);
@@ -786,47 +814,72 @@ int main(int argc, char* argv[]) {
         std::string logFName;
         std::string outFName;
         
-        std::ofstream logFile;
-        std::ofstream outFile;
+//        std::ofstream logFile;
+//        std::ofstream outFile;
+        
+        ogzstream logFile;
+        ogzstream outFile;
+        
+        const std::string modStr="MODEL";
+        const std::string endStr="ENDMDL";
         
         for(unsigned i=0; i<recList.size(); ++i){
             std::vector<double> geo=geoList[i];
             geometry(jobInput, geo);
             
-            logFName=recList[i]+".log";
+            logFName=recList[i]+".log.gz";
             logFile.open(logFName.c_str());
 
-            outFName = default_output(recList[i]);
+            outFName = default_output(recList[i])+".gz";
             outFile.open(outFName.c_str());
            
             for(unsigned j=0; j<ligList.size(); ++j){
-                ++count;
-                if(count >nproc-1){
-                    MPI_Recv(&jobOut, sizeof(JobOutData), MPI_CHAR, MPI_ANY_SOURCE, outTag, MPI_COMM_WORLD, &status2);
-                    logFile << jobOut.log << std::endl;
-                    outFile << jobOut.poses << std::endl;
-                }                  
-                int freeProc;
-                MPI_Recv(&freeProc, 1, MPI_INTEGER, MPI_ANY_SOURCE, rankTag, MPI_COMM_WORLD, &status1);
-                strcpy(jobBuffer, "DOING");
-                MPI_Send(jobBuffer, 20, MPI_CHAR, freeProc, jobTag, MPI_COMM_WORLD); 
-                // Start to send parameters
-                strcpy(jobInput.ligBuffer, ligList[j].c_str());
-//                MPI_Send(ligBuffer, 100, MPI_CHAR, freeProc, ligTag, MPI_COMM_WORLD);  
-                strcpy(jobInput.recBuffer, recList[i].c_str());
-//                MPI_Send(recBuffer, 100, MPI_CHAR, freeProc, recTag, MPI_COMM_WORLD);
-//                MPI_Send(geometry, 6, MPI_DOUBLE, freeProc, geoTag, MPI_COMM_WORLD);
-                MPI_Send(&jobInput, sizeof(JobInputData), MPI_CHAR, freeProc, inpTag, MPI_COMM_WORLD);              
+                std::ifstream ligFile;
+                ligFile.open(ligList[j].c_str());
+                
+                std::string fileLine;
+                std::stringstream ss;
+                while(std::getline(ligFile, fileLine)){
+                    if(fileLine.compare(0,5, modStr)==0){
+                        ss.str(std::string());
+                    }else if(fileLine.compare(0,6, endStr)==0){
+
+                        ++count;
+                        if(count >nproc-1){
+                            MPI_Recv(&jobOut, sizeof(JobOutData), MPI_CHAR, MPI_ANY_SOURCE, outTag, MPI_COMM_WORLD, &status2);
+                            logFile << jobOut.log << std::endl;
+                            outFile << jobOut.poses << std::endl;
+                        }                  
+                        int freeProc;
+                        MPI_Recv(&freeProc, 1, MPI_INTEGER, MPI_ANY_SOURCE, rankTag, MPI_COMM_WORLD, &status1);
+                        strcpy(jobBuffer, "DOING");
+                        MPI_Send(jobBuffer, 20, MPI_CHAR, freeProc, jobTag, MPI_COMM_WORLD); 
+                        // Start to send parameters                        
+                        std::stringstream ligName;
+                        ligName << "LIGAND " << count;
+                        strcpy(jobInput.ligBuffer, ligName.str().c_str());
+                        strcpy(jobInput.ligFile, ss.str().c_str());
+        //                MPI_Send(ligBuffer, 100, MPI_CHAR, freeProc, ligTag, MPI_COMM_WORLD);  
+                        strcpy(jobInput.recBuffer, recList[i].c_str());
+        //                MPI_Send(recBuffer, 100, MPI_CHAR, freeProc, recTag, MPI_COMM_WORLD);
+        //                MPI_Send(geometry, 6, MPI_DOUBLE, freeProc, geoTag, MPI_COMM_WORLD);
+                        MPI_Send(&jobInput, sizeof(JobInputData), MPI_CHAR, freeProc, inpTag, MPI_COMM_WORLD);
+                        
+                    }else {
+                        ss << fileLine << std::endl;
+                    }                        
+                }  
             }
-            
-            logFile.close();
-            outFile.close();
+            if(i !=recList.size()-1){ // ! Don't close the files if this is last loop for recs.
+                logFile.close();
+                outFile.close();
+            }
         }
         
 
-        logFile.open(logFName.c_str(), std::ios::app);
-        outFile.open(outFName.c_str(), std::ios::app);
-        
+//        logFile.open(logFName.c_str(), std::ios::app);
+//        outFile.open(outFName.c_str(), std::ios::app);
+    
         for(unsigned i=1; i < nproc; ++i){
             MPI_Recv(&jobOut, sizeof(JobOutData), MPI_CHAR, MPI_ANY_SOURCE, outTag, MPI_COMM_WORLD, &status2);
             logFile << jobOut.log << std::endl;

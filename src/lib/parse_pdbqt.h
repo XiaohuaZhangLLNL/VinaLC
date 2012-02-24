@@ -24,9 +24,11 @@
 #define VINA_PARSE_PDBQT_H
 
 #include "model.h"
+#include <sstream>
 
 model parse_receptor_pdbqt(const path& rigid, const path& flex); // can throw parse_error
 model parse_receptor_pdbqt(const path& rigid); // can throw parse_error
 model parse_ligand_pdbqt  (const path& name); // can throw parse_error
+model parse_ligand_pdbqt  (std::stringstream& ligSS); // can throw parse_error
 
 #endif
