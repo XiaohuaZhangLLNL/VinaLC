@@ -432,6 +432,7 @@ struct JobInputData{
     int cpu;
     int exhaustiveness;
     int n[3]; 
+    double granularity;
     double begin[3];
     double end[3];        
     char ligBuffer[100];
@@ -604,7 +605,7 @@ int mpiParser(int argc, char* argv[],
         std::vector<std::string>& ligList,
         std::vector<std::string>& recList,
         std::vector<std::vector<double> >& geoList,
-        int& exhaustiveness){
+        JobInputData& jobInput){
     using namespace boost::program_options;
     const std::string version_string = "AutoDock Vina 1.1.2 (May 11, 2011)";
     const std::string error_message = "\n\n\
@@ -653,7 +654,8 @@ Thank you!\n";
                 ("recList", value<std::string > (&recFile), "receptor list file")
                 ("ligList", value<std::string > (&ligFile), "ligand list file")
                 ("geoList", value<std::string > (&geoFile), "receptor geometry file")
-                ("exhaustiveness", value<int>(&exhaustiveness)->default_value(8), "exhaustiveness of the global search (roughly proportional to time): 1+")
+                ("exhaustiveness", value<int>(&(jobInput.exhaustiveness))->default_value(8), "exhaustiveness (default value 8) of the global search (roughly proportional to time): 1+")
+                ("granularity", value<double>(&(jobInput.granularity))->default_value(0.375), "the granularity of grids (default value 0.375)")
                 ;   
         options_description info("Information (optional)");
         info.add_options()
@@ -739,13 +741,13 @@ Thank you!\n";
 }
 
 inline void geometry(JobInputData& jobInput, std::vector<double>& geo){
-    const fl granularity = 0.375;
+//    const fl granularity = 0.375;
     vec center(geo[0], geo[1], geo[2]);
     vec span(geo[3], geo[4], geo[5]);
 
     for(unsigned j=0;j<3; ++j){
-        jobInput.n[j]=sz(std::ceil(span[j] / granularity));
-        fl real_span = granularity * jobInput.n[j];
+        jobInput.n[j]=sz(std::ceil(span[j] / jobInput.granularity));
+        fl real_span = jobInput.granularity * jobInput.n[j];
         jobInput.begin[j]=center[j] - real_span / 2;
         jobInput.end[j]=jobInput.begin[j] + real_span;
     }    
@@ -755,7 +757,7 @@ int main(int argc, char* argv[]) {
 
     int nproc, rank, rc;
 
-    char jobBuffer[20];
+    int jobFlag=1; // 1: doing job,  0: done job
     
     JobInputData jobInput;
     JobOutData jobOut;
@@ -796,7 +798,7 @@ int main(int argc, char* argv[]) {
         std::vector<std::string> ligList;
         std::vector<std::vector<double> > geoList;
        
-        int success=mpiParser(argc, argv, ligList, recList, geoList, jobInput.exhaustiveness);
+        int success=mpiParser(argc, argv, ligList, recList, geoList, jobInput);
         if(success!=0) {
             std::cerr << "Error: Parser input error" << std::endl;
             return 1;            
@@ -852,8 +854,7 @@ int main(int argc, char* argv[]) {
                         }                  
                         int freeProc;
                         MPI_Recv(&freeProc, 1, MPI_INTEGER, MPI_ANY_SOURCE, rankTag, MPI_COMM_WORLD, &status1);
-                        strcpy(jobBuffer, "DOING");
-                        MPI_Send(jobBuffer, 20, MPI_CHAR, freeProc, jobTag, MPI_COMM_WORLD); 
+                        MPI_Send(&jobFlag, 1, MPI_INTEGER, freeProc, jobTag, MPI_COMM_WORLD); 
                         // Start to send parameters                        
                         std::stringstream ligName;
                         ligName << "LIGAND " << count;
@@ -891,16 +892,16 @@ int main(int argc, char* argv[]) {
         
         for(unsigned i=1; i < nproc; ++i){
             int freeProc;
-            MPI_Recv(&freeProc, 1, MPI_INTEGER, MPI_ANY_SOURCE, rankTag, MPI_COMM_WORLD, &status1); 
-            strcpy(jobBuffer, "DONE");
-            MPI_Send(jobBuffer, 20, MPI_CHAR, freeProc, jobTag, MPI_COMM_WORLD);            
+            MPI_Recv(&freeProc, 1, MPI_INTEGER, MPI_ANY_SOURCE, rankTag, MPI_COMM_WORLD, &status1);
+            jobFlag=0;;
+            MPI_Send(&jobFlag, 1, MPI_INTEGER, freeProc, jobTag, MPI_COMM_WORLD);            
         }
 
     } else {
         while (1) {
             MPI_Send(&rank, 1, MPI_INTEGER, 0, rankTag, MPI_COMM_WORLD);
-            MPI_Recv(&jobBuffer, 20, MPI_CHAR, 0, jobTag, MPI_COMM_WORLD, &status2);
-            if (strcmp(jobBuffer, "DONE")==0) {
+            MPI_Recv(&jobFlag, 20, MPI_CHAR, 0, jobTag, MPI_COMM_WORLD, &status2);
+            if (jobFlag==0) {
                 break;
             }
             // Receive parameters
