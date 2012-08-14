@@ -1,20 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configurationDescriptor version="84">
   <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
-    <df name="autodock-out" root=".">
+    <df name="VinaLC" root=".">
       <df name="build">
         <df name="linux">
           <df name="debug">
+            <in>1KIJ_flex.pdbqt</in>
+            <in>1KIJ_protH.pdbqt</in>
+            <in>1KIJ_rigid.pdbqt</in>
+            <in>3KF4-STI-all.pdbqt</in>
+            <in>3KF4.pdbqt</in>
+            <in>Makefile</in>
+            <in>STI.pdbqt</in>
+            <in>dependencies</in>
+            <in>ligand1.pdbqt</in>
+            <in>model1.pdbqt</in>
+            <in>model2.pdbqt</in>
+            <in>model3.pdbqt</in>
+            <in>model4.pdbqt</in>
+            <in>model5.pdbqt</in>
+            <in>model6.pdbqt</in>
+            <in>model7.pdbqt</in>
+            <in>modelpdbqt.tar</in>
+            <in>vina</in>
+            <in>vina.input</in>
+            <in>vina.log</in>
+            <in>vina_split</in>
           </df>
           <df name="release">
+            <in>Makefile</in>
+            <in>dependencies</in>
           </df>
         </df>
         <df name="mac">
           <df name="debug">
+            <in>Makefile</in>
+            <in>dependencies</in>
           </df>
           <df name="release">
+            <in>Makefile</in>
+            <in>dependencies</in>
           </df>
         </df>
+        <in>makefile_common</in>
       </df>
       <df name="src">
         <df name="lib">
@@ -96,7 +124,11 @@
           <in>weighted_terms.h</in>
         </df>
         <df name="main">
+          <in>docking.cpp</in>
+          <in>docking.h</in>
           <in>main.cpp</in>
+          <in>mpiparser.cpp</in>
+          <in>mpiparser.h</in>
         </df>
         <df name="split">
           <in>split.cpp</in>
@@ -129,412 +161,199 @@
           <buildCommand>${MAKE} -f Makefile</buildCommand>
           <cleanCommand>${MAKE} -f Makefile clean</cleanCommand>
           <executablePath>build/linux/debug/vina</executablePath>
+          <ccTool>
+            <incDir>
+              <pElem>/usr/local/tools/mvapich-gnu/include</pElem>
+              <pElem>build/linux/debug</pElem>
+            </incDir>
+            <preprocessorList>
+              <Elem>HAVE_STDARG_H=1</Elem>
+              <Elem>HAVE_STDLIB_H=1</Elem>
+              <Elem>HAVE_STRING_H=1</Elem>
+              <Elem>HAVE_UNISTD_H=1</Elem>
+              <Elem>MALLOC_RET_VOID=1</Elem>
+              <Elem>USE_MPI</Elem>
+              <Elem>USE_STDARG=1</Elem>
+            </preprocessorList>
+          </ccTool>
         </makeTool>
       </makefileType>
-      <folder path="autodock/src/main">
+      <item path="build/linux/debug/Makefile" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="build/linux/release/Makefile" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="build/mac/debug/Makefile" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="build/mac/release/Makefile" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="build/makefile_common" ex="true" tool="3" flavor2="0">
+      </item>
+      <folder path="autodock-out/src/main">
         <ccTool>
           <incDir>
-            <pElem>/usr/local/tools/mvapich-gnu/include</pElem>
-            <pElem>build/linux/debug</pElem>
-            <pElem>/usr/gapps/cchem_software/vina//include</pElem>
+            <pElem>src/main</pElem>
+            <pElem>/usr/gapps/medchem/contrib/boost//include</pElem>
             <pElem>src/lib</pElem>
           </incDir>
-          <preprocessorList>
-            <Elem>HAVE_STDARG_H=1</Elem>
-            <Elem>HAVE_STDLIB_H=1</Elem>
-            <Elem>HAVE_STRING_H=1</Elem>
-            <Elem>HAVE_UNISTD_H=1</Elem>
-            <Elem>MALLOC_RET_VOID=1</Elem>
-            <Elem>USE_MPI</Elem>
-            <Elem>USE_STDARG=1</Elem>
-          </preprocessorList>
         </ccTool>
       </folder>
-      <folder path="autodock/src/split">
+      <folder path="autodock-out/src/split">
         <ccTool>
           <incDir>
-            <pElem>/usr/local/tools/mvapich-gnu/include</pElem>
-            <pElem>build/linux/debug</pElem>
-            <pElem>/g/g92/zhang30/inst/include</pElem>
+            <pElem>/usr/gapps/medchem/contrib/boost/include</pElem>
             <pElem>src/lib</pElem>
           </incDir>
-          <preprocessorList>
-            <Elem>HAVE_STDARG_H=1</Elem>
-            <Elem>HAVE_STDLIB_H=1</Elem>
-            <Elem>HAVE_STRING_H=1</Elem>
-            <Elem>HAVE_UNISTD_H=1</Elem>
-            <Elem>MALLOC_RET_VOID=1</Elem>
-            <Elem>USE_MPI</Elem>
-            <Elem>USE_STDARG=1</Elem>
-          </preprocessorList>
         </ccTool>
       </folder>
       <item path="src/lib/cache.cpp" ex="false" tool="1" flavor2="4">
         <ccTool>
           <incDir>
-            <pElem>/usr/local/tools/mvapich-gnu/include</pElem>
-            <pElem>build/linux/debug</pElem>
-            <pElem>/g/g92/zhang30/inst/include</pElem>
+            <pElem>/usr/gapps/medchem/contrib/boost/include</pElem>
           </incDir>
-          <preprocessorList>
-            <Elem>HAVE_STDARG_H=1</Elem>
-            <Elem>HAVE_STDLIB_H=1</Elem>
-            <Elem>HAVE_STRING_H=1</Elem>
-            <Elem>HAVE_UNISTD_H=1</Elem>
-            <Elem>MALLOC_RET_VOID=1</Elem>
-            <Elem>USE_MPI</Elem>
-            <Elem>USE_STDARG=1</Elem>
-          </preprocessorList>
         </ccTool>
       </item>
       <item path="src/lib/coords.cpp" ex="false" tool="1" flavor2="4">
         <ccTool>
           <incDir>
-            <pElem>/usr/local/tools/mvapich-gnu/include</pElem>
-            <pElem>build/linux/debug</pElem>
-            <pElem>/g/g92/zhang30/inst/include</pElem>
+            <pElem>/usr/gapps/medchem/contrib/boost/include</pElem>
           </incDir>
-          <preprocessorList>
-            <Elem>HAVE_STDARG_H=1</Elem>
-            <Elem>HAVE_STDLIB_H=1</Elem>
-            <Elem>HAVE_STRING_H=1</Elem>
-            <Elem>HAVE_UNISTD_H=1</Elem>
-            <Elem>MALLOC_RET_VOID=1</Elem>
-            <Elem>USE_MPI</Elem>
-            <Elem>USE_STDARG=1</Elem>
-          </preprocessorList>
         </ccTool>
       </item>
       <item path="src/lib/current_weights.cpp" ex="false" tool="1" flavor2="4">
         <ccTool>
           <incDir>
-            <pElem>/usr/local/tools/mvapich-gnu/include</pElem>
-            <pElem>build/linux/debug</pElem>
-            <pElem>/g/g92/zhang30/inst/include</pElem>
+            <pElem>/usr/gapps/medchem/contrib/boost/include</pElem>
           </incDir>
-          <preprocessorList>
-            <Elem>HAVE_STDARG_H=1</Elem>
-            <Elem>HAVE_STDLIB_H=1</Elem>
-            <Elem>HAVE_STRING_H=1</Elem>
-            <Elem>HAVE_UNISTD_H=1</Elem>
-            <Elem>MALLOC_RET_VOID=1</Elem>
-            <Elem>USE_MPI</Elem>
-            <Elem>USE_STDARG=1</Elem>
-          </preprocessorList>
         </ccTool>
       </item>
       <item path="src/lib/everything.cpp" ex="false" tool="1" flavor2="4">
         <ccTool>
           <incDir>
-            <pElem>/usr/local/tools/mvapich-gnu/include</pElem>
-            <pElem>build/linux/debug</pElem>
-            <pElem>/g/g92/zhang30/inst/include</pElem>
+            <pElem>/usr/gapps/medchem/contrib/boost/include</pElem>
           </incDir>
-          <preprocessorList>
-            <Elem>HAVE_STDARG_H=1</Elem>
-            <Elem>HAVE_STDLIB_H=1</Elem>
-            <Elem>HAVE_STRING_H=1</Elem>
-            <Elem>HAVE_UNISTD_H=1</Elem>
-            <Elem>MALLOC_RET_VOID=1</Elem>
-            <Elem>USE_MPI</Elem>
-            <Elem>USE_STDARG=1</Elem>
-          </preprocessorList>
         </ccTool>
       </item>
       <item path="src/lib/grid.cpp" ex="false" tool="1" flavor2="4">
         <ccTool>
           <incDir>
-            <pElem>/usr/local/tools/mvapich-gnu/include</pElem>
-            <pElem>build/linux/debug</pElem>
-            <pElem>/g/g92/zhang30/inst/include</pElem>
+            <pElem>/usr/gapps/medchem/contrib/boost/include</pElem>
           </incDir>
-          <preprocessorList>
-            <Elem>HAVE_STDARG_H=1</Elem>
-            <Elem>HAVE_STDLIB_H=1</Elem>
-            <Elem>HAVE_STRING_H=1</Elem>
-            <Elem>HAVE_UNISTD_H=1</Elem>
-            <Elem>MALLOC_RET_VOID=1</Elem>
-            <Elem>USE_MPI</Elem>
-            <Elem>USE_STDARG=1</Elem>
-          </preprocessorList>
         </ccTool>
       </item>
       <item path="src/lib/gzstream.cpp" ex="false" tool="1" flavor2="4">
         <ccTool>
           <incDir>
-            <pElem>/usr/local/tools/mvapich-gnu/include</pElem>
-            <pElem>build/linux/debug</pElem>
-            <pElem>/g/g92/zhang30/inst/include</pElem>
+            <pElem>/usr/gapps/medchem/contrib/boost/include</pElem>
           </incDir>
-          <preprocessorList>
-            <Elem>HAVE_STDARG_H=1</Elem>
-            <Elem>HAVE_STDLIB_H=1</Elem>
-            <Elem>HAVE_STRING_H=1</Elem>
-            <Elem>HAVE_UNISTD_H=1</Elem>
-            <Elem>MALLOC_RET_VOID=1</Elem>
-            <Elem>USE_MPI</Elem>
-            <Elem>USE_STDARG=1</Elem>
-          </preprocessorList>
         </ccTool>
       </item>
       <item path="src/lib/manifold.cpp" ex="false" tool="1" flavor2="4">
         <ccTool>
           <incDir>
-            <pElem>/usr/local/tools/mvapich-gnu/include</pElem>
-            <pElem>build/linux/debug</pElem>
-            <pElem>/g/g92/zhang30/inst/include</pElem>
+            <pElem>/usr/gapps/medchem/contrib/boost/include</pElem>
           </incDir>
-          <preprocessorList>
-            <Elem>HAVE_STDARG_H=1</Elem>
-            <Elem>HAVE_STDLIB_H=1</Elem>
-            <Elem>HAVE_STRING_H=1</Elem>
-            <Elem>HAVE_UNISTD_H=1</Elem>
-            <Elem>MALLOC_RET_VOID=1</Elem>
-            <Elem>USE_MPI</Elem>
-            <Elem>USE_STDARG=1</Elem>
-          </preprocessorList>
         </ccTool>
       </item>
       <item path="src/lib/model.cpp" ex="false" tool="1" flavor2="4">
         <ccTool>
           <incDir>
-            <pElem>/usr/local/tools/mvapich-gnu/include</pElem>
-            <pElem>build/linux/debug</pElem>
-            <pElem>/g/g92/zhang30/inst/include</pElem>
+            <pElem>/usr/gapps/medchem/contrib/boost/include</pElem>
           </incDir>
-          <preprocessorList>
-            <Elem>HAVE_STDARG_H=1</Elem>
-            <Elem>HAVE_STDLIB_H=1</Elem>
-            <Elem>HAVE_STRING_H=1</Elem>
-            <Elem>HAVE_UNISTD_H=1</Elem>
-            <Elem>MALLOC_RET_VOID=1</Elem>
-            <Elem>USE_MPI</Elem>
-            <Elem>USE_STDARG=1</Elem>
-          </preprocessorList>
         </ccTool>
       </item>
       <item path="src/lib/monte_carlo.cpp" ex="false" tool="1" flavor2="4">
         <ccTool>
           <incDir>
-            <pElem>/usr/local/tools/mvapich-gnu/include</pElem>
-            <pElem>build/linux/debug</pElem>
-            <pElem>/g/g92/zhang30/inst/include</pElem>
+            <pElem>/usr/gapps/medchem/contrib/boost/include</pElem>
           </incDir>
-          <preprocessorList>
-            <Elem>HAVE_STDARG_H=1</Elem>
-            <Elem>HAVE_STDLIB_H=1</Elem>
-            <Elem>HAVE_STRING_H=1</Elem>
-            <Elem>HAVE_UNISTD_H=1</Elem>
-            <Elem>MALLOC_RET_VOID=1</Elem>
-            <Elem>USE_MPI</Elem>
-            <Elem>USE_STDARG=1</Elem>
-          </preprocessorList>
         </ccTool>
       </item>
       <item path="src/lib/mutate.cpp" ex="false" tool="1" flavor2="4">
         <ccTool>
           <incDir>
-            <pElem>/usr/local/tools/mvapich-gnu/include</pElem>
-            <pElem>build/linux/debug</pElem>
-            <pElem>/g/g92/zhang30/inst/include</pElem>
+            <pElem>/usr/gapps/medchem/contrib/boost/include</pElem>
           </incDir>
-          <preprocessorList>
-            <Elem>HAVE_STDARG_H=1</Elem>
-            <Elem>HAVE_STDLIB_H=1</Elem>
-            <Elem>HAVE_STRING_H=1</Elem>
-            <Elem>HAVE_UNISTD_H=1</Elem>
-            <Elem>MALLOC_RET_VOID=1</Elem>
-            <Elem>USE_MPI</Elem>
-            <Elem>USE_STDARG=1</Elem>
-          </preprocessorList>
         </ccTool>
       </item>
       <item path="src/lib/my_pid.cpp" ex="false" tool="1" flavor2="4">
         <ccTool>
           <incDir>
-            <pElem>/usr/local/tools/mvapich-gnu/include</pElem>
-            <pElem>build/linux/debug</pElem>
-            <pElem>/g/g92/zhang30/inst/include</pElem>
+            <pElem>/usr/gapps/medchem/contrib/boost/include</pElem>
           </incDir>
-          <preprocessorList>
-            <Elem>HAVE_STDARG_H=1</Elem>
-            <Elem>HAVE_STDLIB_H=1</Elem>
-            <Elem>HAVE_STRING_H=1</Elem>
-            <Elem>HAVE_UNISTD_H=1</Elem>
-            <Elem>MALLOC_RET_VOID=1</Elem>
-            <Elem>USE_MPI</Elem>
-            <Elem>USE_STDARG=1</Elem>
-          </preprocessorList>
         </ccTool>
       </item>
       <item path="src/lib/naive_non_cache.cpp" ex="false" tool="1" flavor2="4">
         <ccTool>
           <incDir>
-            <pElem>/usr/local/tools/mvapich-gnu/include</pElem>
-            <pElem>build/linux/debug</pElem>
-            <pElem>/g/g92/zhang30/inst/include</pElem>
+            <pElem>/usr/gapps/medchem/contrib/boost/include</pElem>
           </incDir>
-          <preprocessorList>
-            <Elem>HAVE_STDARG_H=1</Elem>
-            <Elem>HAVE_STDLIB_H=1</Elem>
-            <Elem>HAVE_STRING_H=1</Elem>
-            <Elem>HAVE_UNISTD_H=1</Elem>
-            <Elem>MALLOC_RET_VOID=1</Elem>
-            <Elem>USE_MPI</Elem>
-            <Elem>USE_STDARG=1</Elem>
-          </preprocessorList>
         </ccTool>
       </item>
       <item path="src/lib/non_cache.cpp" ex="false" tool="1" flavor2="4">
         <ccTool>
           <incDir>
-            <pElem>/usr/local/tools/mvapich-gnu/include</pElem>
-            <pElem>build/linux/debug</pElem>
-            <pElem>/g/g92/zhang30/inst/include</pElem>
+            <pElem>/usr/gapps/medchem/contrib/boost/include</pElem>
           </incDir>
-          <preprocessorList>
-            <Elem>HAVE_STDARG_H=1</Elem>
-            <Elem>HAVE_STDLIB_H=1</Elem>
-            <Elem>HAVE_STRING_H=1</Elem>
-            <Elem>HAVE_UNISTD_H=1</Elem>
-            <Elem>MALLOC_RET_VOID=1</Elem>
-            <Elem>USE_MPI</Elem>
-            <Elem>USE_STDARG=1</Elem>
-          </preprocessorList>
         </ccTool>
       </item>
       <item path="src/lib/parallel_mc.cpp" ex="false" tool="1" flavor2="4">
         <ccTool>
           <incDir>
-            <pElem>/usr/local/tools/mvapich-gnu/include</pElem>
-            <pElem>build/linux/debug</pElem>
-            <pElem>/g/g92/zhang30/inst/include</pElem>
+            <pElem>/usr/gapps/medchem/contrib/boost/include</pElem>
           </incDir>
-          <preprocessorList>
-            <Elem>HAVE_STDARG_H=1</Elem>
-            <Elem>HAVE_STDLIB_H=1</Elem>
-            <Elem>HAVE_STRING_H=1</Elem>
-            <Elem>HAVE_UNISTD_H=1</Elem>
-            <Elem>MALLOC_RET_VOID=1</Elem>
-            <Elem>USE_MPI</Elem>
-            <Elem>USE_STDARG=1</Elem>
-          </preprocessorList>
         </ccTool>
       </item>
       <item path="src/lib/parallel_progress.cpp" ex="false" tool="1" flavor2="4">
         <ccTool>
           <incDir>
+            <pElem>/usr/gapps/cchem_software/vina/include</pElem>
             <pElem>/opt/mvapich-gnu-debug-gen2-1.2/include</pElem>
             <pElem>../../../inst/include</pElem>
+            <pElem>/g/g92/zhang30/inst/include</pElem>
+            <pElem>src/lib</pElem>
           </incDir>
         </ccTool>
       </item>
       <item path="src/lib/parse_pdbqt.cpp" ex="false" tool="1" flavor2="4">
         <ccTool>
           <incDir>
-            <pElem>/usr/local/tools/mvapich-gnu/include</pElem>
-            <pElem>build/linux/debug</pElem>
-            <pElem>/g/g92/zhang30/inst/include</pElem>
+            <pElem>/usr/gapps/medchem/contrib/boost/include</pElem>
           </incDir>
-          <preprocessorList>
-            <Elem>HAVE_STDARG_H=1</Elem>
-            <Elem>HAVE_STDLIB_H=1</Elem>
-            <Elem>HAVE_STRING_H=1</Elem>
-            <Elem>HAVE_UNISTD_H=1</Elem>
-            <Elem>MALLOC_RET_VOID=1</Elem>
-            <Elem>USE_MPI</Elem>
-            <Elem>USE_STDARG=1</Elem>
-          </preprocessorList>
         </ccTool>
       </item>
       <item path="src/lib/pdb.cpp" ex="false" tool="1" flavor2="4">
         <ccTool>
           <incDir>
-            <pElem>/usr/local/tools/mvapich-gnu/include</pElem>
-            <pElem>build/linux/debug</pElem>
-            <pElem>/g/g92/zhang30/inst/include</pElem>
+            <pElem>/usr/gapps/medchem/contrib/boost/include</pElem>
           </incDir>
-          <preprocessorList>
-            <Elem>HAVE_STDARG_H=1</Elem>
-            <Elem>HAVE_STDLIB_H=1</Elem>
-            <Elem>HAVE_STRING_H=1</Elem>
-            <Elem>HAVE_UNISTD_H=1</Elem>
-            <Elem>MALLOC_RET_VOID=1</Elem>
-            <Elem>USE_MPI</Elem>
-            <Elem>USE_STDARG=1</Elem>
-          </preprocessorList>
         </ccTool>
       </item>
       <item path="src/lib/quasi_newton.cpp" ex="false" tool="1" flavor2="4">
         <ccTool>
           <incDir>
-            <pElem>/usr/local/tools/mvapich-gnu/include</pElem>
-            <pElem>build/linux/debug</pElem>
-            <pElem>/g/g92/zhang30/inst/include</pElem>
+            <pElem>/usr/gapps/medchem/contrib/boost/include</pElem>
           </incDir>
-          <preprocessorList>
-            <Elem>HAVE_STDARG_H=1</Elem>
-            <Elem>HAVE_STDLIB_H=1</Elem>
-            <Elem>HAVE_STRING_H=1</Elem>
-            <Elem>HAVE_UNISTD_H=1</Elem>
-            <Elem>MALLOC_RET_VOID=1</Elem>
-            <Elem>USE_MPI</Elem>
-            <Elem>USE_STDARG=1</Elem>
-          </preprocessorList>
         </ccTool>
       </item>
       <item path="src/lib/quaternion.cpp" ex="false" tool="1" flavor2="4">
         <ccTool>
           <incDir>
-            <pElem>/usr/local/tools/mvapich-gnu/include</pElem>
-            <pElem>build/linux/debug</pElem>
-            <pElem>/g/g92/zhang30/inst/include</pElem>
+            <pElem>/usr/gapps/medchem/contrib/boost/include</pElem>
           </incDir>
-          <preprocessorList>
-            <Elem>HAVE_STDARG_H=1</Elem>
-            <Elem>HAVE_STDLIB_H=1</Elem>
-            <Elem>HAVE_STRING_H=1</Elem>
-            <Elem>HAVE_UNISTD_H=1</Elem>
-            <Elem>MALLOC_RET_VOID=1</Elem>
-            <Elem>USE_MPI</Elem>
-            <Elem>USE_STDARG=1</Elem>
-          </preprocessorList>
         </ccTool>
       </item>
       <item path="src/lib/random.cpp" ex="false" tool="1" flavor2="4">
         <ccTool>
           <incDir>
-            <pElem>/usr/local/tools/mvapich-gnu/include</pElem>
-            <pElem>build/linux/debug</pElem>
-            <pElem>/g/g92/zhang30/inst/include</pElem>
+            <pElem>/usr/gapps/medchem/contrib/boost/include</pElem>
           </incDir>
-          <preprocessorList>
-            <Elem>HAVE_STDARG_H=1</Elem>
-            <Elem>HAVE_STDLIB_H=1</Elem>
-            <Elem>HAVE_STRING_H=1</Elem>
-            <Elem>HAVE_UNISTD_H=1</Elem>
-            <Elem>MALLOC_RET_VOID=1</Elem>
-            <Elem>USE_MPI</Elem>
-            <Elem>USE_STDARG=1</Elem>
-          </preprocessorList>
         </ccTool>
       </item>
       <item path="src/lib/ssd.cpp" ex="false" tool="1" flavor2="4">
         <ccTool>
           <incDir>
-            <pElem>/usr/local/tools/mvapich-gnu/include</pElem>
-            <pElem>build/linux/debug</pElem>
-            <pElem>/g/g92/zhang30/inst/include</pElem>
+            <pElem>/usr/gapps/medchem/contrib/boost/include</pElem>
           </incDir>
-          <preprocessorList>
-            <Elem>HAVE_STDARG_H=1</Elem>
-            <Elem>HAVE_STDLIB_H=1</Elem>
-            <Elem>HAVE_STRING_H=1</Elem>
-            <Elem>HAVE_UNISTD_H=1</Elem>
-            <Elem>MALLOC_RET_VOID=1</Elem>
-            <Elem>USE_MPI</Elem>
-            <Elem>USE_STDARG=1</Elem>
-          </preprocessorList>
         </ccTool>
       </item>
       <item path="src/lib/statistics.h" ex="true" tool="3" flavor2="0">
@@ -542,19 +361,8 @@
       <item path="src/lib/szv_grid.cpp" ex="false" tool="1" flavor2="4">
         <ccTool>
           <incDir>
-            <pElem>/usr/local/tools/mvapich-gnu/include</pElem>
-            <pElem>build/linux/debug</pElem>
-            <pElem>/g/g92/zhang30/inst/include</pElem>
+            <pElem>/usr/gapps/medchem/contrib/boost/include</pElem>
           </incDir>
-          <preprocessorList>
-            <Elem>HAVE_STDARG_H=1</Elem>
-            <Elem>HAVE_STDLIB_H=1</Elem>
-            <Elem>HAVE_STRING_H=1</Elem>
-            <Elem>HAVE_UNISTD_H=1</Elem>
-            <Elem>MALLOC_RET_VOID=1</Elem>
-            <Elem>USE_MPI</Elem>
-            <Elem>USE_STDARG=1</Elem>
-          </preprocessorList>
         </ccTool>
       </item>
       <item path="src/lib/tee.h" ex="true" tool="3" flavor2="0">
@@ -562,37 +370,27 @@
       <item path="src/lib/terms.cpp" ex="false" tool="1" flavor2="4">
         <ccTool>
           <incDir>
-            <pElem>/usr/local/tools/mvapich-gnu/include</pElem>
-            <pElem>build/linux/debug</pElem>
-            <pElem>/g/g92/zhang30/inst/include</pElem>
+            <pElem>/usr/gapps/medchem/contrib/boost/include</pElem>
           </incDir>
-          <preprocessorList>
-            <Elem>HAVE_STDARG_H=1</Elem>
-            <Elem>HAVE_STDLIB_H=1</Elem>
-            <Elem>HAVE_STRING_H=1</Elem>
-            <Elem>HAVE_UNISTD_H=1</Elem>
-            <Elem>MALLOC_RET_VOID=1</Elem>
-            <Elem>USE_MPI</Elem>
-            <Elem>USE_STDARG=1</Elem>
-          </preprocessorList>
         </ccTool>
       </item>
       <item path="src/lib/weighted_terms.cpp" ex="false" tool="1" flavor2="4">
         <ccTool>
           <incDir>
-            <pElem>/usr/local/tools/mvapich-gnu/include</pElem>
-            <pElem>build/linux/debug</pElem>
-            <pElem>/g/g92/zhang30/inst/include</pElem>
+            <pElem>/usr/gapps/medchem/contrib/boost/include</pElem>
           </incDir>
-          <preprocessorList>
-            <Elem>HAVE_STDARG_H=1</Elem>
-            <Elem>HAVE_STDLIB_H=1</Elem>
-            <Elem>HAVE_STRING_H=1</Elem>
-            <Elem>HAVE_UNISTD_H=1</Elem>
-            <Elem>MALLOC_RET_VOID=1</Elem>
-            <Elem>USE_MPI</Elem>
-            <Elem>USE_STDARG=1</Elem>
-          </preprocessorList>
+        </ccTool>
+      </item>
+      <item path="src/main/docking.cpp" ex="false" tool="1" flavor2="4">
+        <ccTool>
+        </ccTool>
+      </item>
+      <item path="src/main/main.cpp" ex="false" tool="1" flavor2="4">
+        <ccTool>
+        </ccTool>
+      </item>
+      <item path="src/main/mpiparser.cpp" ex="false" tool="1" flavor2="4">
+        <ccTool>
         </ccTool>
       </item>
       <item path="src/split/split.cpp" ex="false" tool="1" flavor2="4">
