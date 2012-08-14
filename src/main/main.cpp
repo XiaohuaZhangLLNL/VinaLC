@@ -429,15 +429,22 @@ model parse_bundle(const boost::optional<std::string>& rigid_name_opt, const boo
 #ifdef USE_MPI
 
 struct JobInputData{
+    bool flexible;
+    bool randomize;
     int cpu;
     int exhaustiveness;
+    int num_modes;
+//    int mc_mult;
+    int seed;
     int n[3]; 
+    double energy_range;
     double granularity;
     double begin[3];
     double end[3];        
     char ligBuffer[100];
-    char ligFile[10000];
+    char ligFile[100000];
     char recBuffer[100];
+    char fleBuffer[100];
 };
 
 struct JobOutData{       
@@ -448,8 +455,10 @@ struct JobOutData{
 int dockjob(JobInputData& jobInput, JobOutData& jobOut){
     try {
 //        std::string flex_name, config_name, out_name, log_name;
-        int seed, verbosity = 1, num_modes = 9;
-        fl energy_range = 2.0;
+        int seed=jobInput.seed;
+        int verbosity = 1;
+        int num_modes = jobInput.num_modes;
+        fl energy_range = jobInput.energy_range;
 
         // -0.035579, -0.005156, 0.840245, -0.035069, -0.587439, 0.05846
         fl weight_gauss1 = -0.035579;
@@ -462,6 +471,7 @@ int dockjob(JobInputData& jobInput, JobOutData& jobOut){
         
         std::string ligand_name = jobInput.ligBuffer;
         std::string rigid_name = jobInput.recBuffer;
+        std::string flex_name = jobInput.fleBuffer;
         int exhaustiveness=jobInput.exhaustiveness;
         int cpu=jobInput.cpu;
         
@@ -481,11 +491,13 @@ int dockjob(JobInputData& jobInput, JobOutData& jobOut){
         rigid_name_opt = rigid_name;
 
         boost::optional<std::string> flex_name_opt;
-        //            flex_name_opt = flex_name;
-
+        if(jobInput.flexible){
+                flex_name_opt = flex_name;
+        }
 //        out_name = default_output(ligand_name);
         std::stringstream out_name;
-        out_name << "REMARK " << ligand_name << std::endl;
+        out_name << "REMARK RECEPTOR "<< rigid_name << std::endl;
+        out_name << "REMARK LIGAND " << ligand_name << std::endl;
 
         grid_dims gd; // n's = 0 via default c'tor
 
@@ -504,6 +516,7 @@ int dockjob(JobInputData& jobInput, JobOutData& jobOut){
         }
         
         std::stringstream log;
+        log << "Receptor Name: "<< rigid_name << std::endl;
         log << "Liang Name: " << ligand_name << std::endl;
 //        log_name = ligand_name +".log";
 //        log.init(log_name);
@@ -602,8 +615,12 @@ void saveGeoList(std::string& fileName, std::vector<std::vector<double> >& geoLi
 }
 
 int mpiParser(int argc, char* argv[], 
+        std::string& recFile,
+        std::string& fleFile,
+        std::string& ligFile,
         std::vector<std::string>& ligList,
         std::vector<std::string>& recList,
+        std::vector<std::string>& fleList,
         std::vector<std::vector<double> >& geoList,
         JobInputData& jobInput){
     using namespace boost::program_options;
@@ -642,8 +659,8 @@ Thank you!\n";
 # Please see http://vina.scripps.edu for more information.      #\n\
 #################################################################\n";    
     try {
-        std::string recFile;
-        std::string ligFile;
+//        std::string recFile;
+//        std::string ligFile;
         std::string geoFile;
         bool help;
         
@@ -652,10 +669,16 @@ Thank you!\n";
         options_description inputs("Input");
         inputs.add_options()
                 ("recList", value<std::string > (&recFile), "receptor list file")
+                ("fleList", value<std::string > (&fleFile), "flex part receptor list file")
                 ("ligList", value<std::string > (&ligFile), "ligand list file")
                 ("geoList", value<std::string > (&geoFile), "receptor geometry file")
                 ("exhaustiveness", value<int>(&(jobInput.exhaustiveness))->default_value(8), "exhaustiveness (default value 8) of the global search (roughly proportional to time): 1+")
                 ("granularity", value<double>(&(jobInput.granularity))->default_value(0.375), "the granularity of grids (default value 0.375)")
+                ("num_modes", value<int>(&jobInput.num_modes)->default_value(9), "maximum number (default value 9) of binding modes to generate")
+//                ("mc_mult", value<int>(&jobInput.mc_mult)->default_value(1), "MC step multiplier number (default value 1) [multiply MC steps] ")
+                ("seed", value<int>(&jobInput.seed), "explicit random seed")
+                ("randomize", value<bool>(&jobInput.randomize), "Use different random seeds for complex")
+                ("energy_range", value<fl> (&jobInput.energy_range)->default_value(2.0), "maximum energy difference (default value 2.0) between the best binding mode and the worst one displayed (kcal/mol)")
                 ;   
         options_description info("Information (optional)");
         info.add_options()
@@ -691,6 +714,10 @@ Thank you!\n";
             saveStrList(recFile, recList);
         }
         
+        if (vm.count("fleList") > 0) {
+            saveStrList(fleFile, fleList);
+        }
+        
         if (vm.count("ligList") <= 0) {
             std::cerr << "Missing ligand List file.\n" << "\nCorrect usage:\n" << desc << '\n';
             return 1;
@@ -709,6 +736,20 @@ Thank you!\n";
             std::cerr << "Receptor and geometry lists are not equal.\n" ;
             return 1;        
         }
+        
+        if (jobInput.cpu < 1)
+            jobInput.cpu = 1;
+        if (vm.count("seed") == 0)
+            jobInput.seed = auto_seed();
+        if(vm.count("randomize")==0){
+            jobInput.randomize=false;
+        }else{
+            jobInput.randomize=true;
+        }
+        if (jobInput.exhaustiveness < 1)
+            throw usage_error("exhaustiveness must be 1 or greater");
+        if (jobInput.num_modes < 1)
+            throw usage_error("num_modes must be 1 or greater");        
         
     } catch (file_error& e) {
         std::cerr << "\n\nError: could not open \"" << e.name.string() << "\" for " << (e.in ? "reading" : "writing") << ".\n";
@@ -793,12 +834,15 @@ int main(int argc, char* argv[]) {
 
     if (rank == 0) {
         std::cout << "Master Node: " << nproc << " My rank= " << rank << std::endl;
-      
+        std::string recFile;
+        std::string fleFile;
+        std::string ligFile;      
         std::vector<std::string> recList;
+        std::vector<std::string> fleList;
         std::vector<std::string> ligList;
         std::vector<std::vector<double> > geoList;
        
-        int success=mpiParser(argc, argv, ligList, recList, geoList, jobInput);
+        int success=mpiParser(argc, argv, recFile, fleFile, ligFile, ligList, recList, fleList, geoList, jobInput);
         if(success!=0) {
             std::cerr << "Error: Parser input error" << std::endl;
             return 1;            
@@ -825,17 +869,30 @@ int main(int argc, char* argv[]) {
         const std::string modStr="MODEL";
         const std::string endStr="ENDMDL";
         
+        logFName=recFile+"_"+ligFile+".log.gz";
+        logFile.open(logFName.c_str());
+
+        outFName = recFile+"_"+ligFile+".pdbqt.gz";
+        outFile.open(outFName.c_str()); 
+        
+        jobInput.flexible=false;
+        if(fleList.size()==recList.size()){
+            jobInput.flexible=true;
+        }
+        
+        if(jobInput.randomize){
+            srand(unsigned(std::time(NULL)));
+        }
+        
         for(unsigned i=0; i<recList.size(); ++i){
             std::vector<double> geo=geoList[i];
             geometry(jobInput, geo);
-            
-            logFName=recList[i]+".log.gz";
-            logFile.open(logFName.c_str());
-
-            outFName = default_output(recList[i])+".gz";
-            outFile.open(outFName.c_str());
-           
+            int ligcount=0; // make the ligand # identical to each receptor.           
             for(unsigned j=0; j<ligList.size(); ++j){
+                if(jobInput.randomize){
+                    jobInput.seed = rand();
+                }
+                
                 std::ifstream ligFile;
                 ligFile.open(ligList[j].c_str());
                 
@@ -845,8 +902,9 @@ int main(int argc, char* argv[]) {
                     if(fileLine.compare(0,5, modStr)==0){
                         ss.str(std::string());
                     }else if(fileLine.compare(0,6, endStr)==0){
-
+               
                         ++count;
+                        ++ligcount;
                         if(count >nproc-1){
                             MPI_Recv(&jobOut, sizeof(JobOutData), MPI_CHAR, MPI_ANY_SOURCE, outTag, MPI_COMM_WORLD, &status2);
                             logFile << jobOut.log << std::endl;
@@ -857,31 +915,37 @@ int main(int argc, char* argv[]) {
                         MPI_Send(&jobFlag, 1, MPI_INTEGER, freeProc, jobTag, MPI_COMM_WORLD); 
                         // Start to send parameters                        
                         std::stringstream ligName;
-                        ligName << "LIGAND " << count;
+                        ligName << "LIGAND " << ligcount;
                         strcpy(jobInput.ligBuffer, ligName.str().c_str());
                         strcpy(jobInput.ligFile, ss.str().c_str());
         //                MPI_Send(ligBuffer, 100, MPI_CHAR, freeProc, ligTag, MPI_COMM_WORLD);  
                         strcpy(jobInput.recBuffer, recList[i].c_str());
+                        if(jobInput.flexible){
+                                strcpy(jobInput.fleBuffer, fleList[i].c_str());
+                        }
         //                MPI_Send(recBuffer, 100, MPI_CHAR, freeProc, recTag, MPI_COMM_WORLD);
         //                MPI_Send(geometry, 6, MPI_DOUBLE, freeProc, geoTag, MPI_COMM_WORLD);
                         MPI_Send(&jobInput, sizeof(JobInputData), MPI_CHAR, freeProc, inpTag, MPI_COMM_WORLD);
-                        
+
                     }else {
                         ss << fileLine << std::endl;
                     }                        
                 }  
             }
-            if(i !=recList.size()-1){ // ! Don't close the files if this is last loop for recs.
-                logFile.close();
-                outFile.close();
-            }
+//            if(i !=recList.size()-1){ // ! Don't close the files if this is last loop for recs.
+//                logFile.close();
+//                outFile.close();
+//            }
         }
         
 
 //        logFile.open(logFName.c_str(), std::ios::app);
 //        outFile.open(outFName.c_str(), std::ios::app);
+        int nJobs=count;
+        int ndata=(nJobs<nproc-1)? nJobs: nproc-1;
+        std::cout << "ndata=" << ndata << " nJobs=" << nJobs << std::endl;
     
-        for(unsigned i=1; i < nproc; ++i){
+        for(unsigned i=0; i < ndata; ++i){
             MPI_Recv(&jobOut, sizeof(JobOutData), MPI_CHAR, MPI_ANY_SOURCE, outTag, MPI_COMM_WORLD, &status2);
             logFile << jobOut.log << std::endl;
             outFile << jobOut.poses << std::endl;
