@@ -210,7 +210,10 @@ int main(int argc, char* argv[]) {
                         ss << fileLine << std::endl;
                     }                        
                 }  
+                logFile.flush();
+                outFile.flush();
             }
+
 //            if(i !=recList.size()-1){ // ! Don't close the files if this is last loop for recs.
 //                logFile.close();
 //                outFile.close();
