@@ -3,6 +3,8 @@
   <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
     <df name="VinaLC" root=".">
       <df name="apps">
+        <df name=".libs">
+        </df>
         <in>docking.cpp</in>
         <in>docking.h</in>
         <in>main.cpp</in>
@@ -12,14 +14,126 @@
       <df name="autom4te.cache">
       </df>
       <df name="doc">
-        <df name="html">
-        </df>
         <df name="local">
         </df>
         <df name="pics">
         </df>
       </df>
+      <df name="lib">
+        <in>array3d.h</in>
+        <in>atom.h</in>
+        <in>atom_base.h</in>
+        <in>atom_constants.h</in>
+        <in>atom_type.h</in>
+        <in>bfgs.h</in>
+        <in>brick.h</in>
+        <in>cache.h</in>
+        <in>common.h</in>
+        <in>conf.h</in>
+        <in>convert_substring.h</in>
+        <in>coords.h</in>
+        <in>curl.h</in>
+        <in>current_weights.h</in>
+        <in>everything.h</in>
+        <in>file.h</in>
+        <in>grid.h</in>
+        <in>grid_dim.h</in>
+        <in>gzstream.h</in>
+        <in>igrid.h</in>
+        <in>incrementable.h</in>
+        <in>int_pow.h</in>
+        <in>macros.h</in>
+        <in>manifold.h</in>
+        <in>matrix.h</in>
+        <in>model.h</in>
+        <in>monte_carlo.h</in>
+        <in>mutate.h</in>
+        <in>my_pid.h</in>
+        <in>naive_non_cache.h</in>
+        <in>non_cache.h</in>
+        <in>parallel.h</in>
+        <in>parallel_mc.h</in>
+        <in>parallel_progress.h</in>
+        <in>parse_error.h</in>
+        <in>parse_pdbqt.h</in>
+        <in>pdb.h</in>
+        <in>precalculate.h</in>
+        <in>quasi_newton.h</in>
+        <in>quaternion.h</in>
+        <in>random.h</in>
+        <in>recent_history.h</in>
+        <in>scoring_function.h</in>
+        <in>ssd.h</in>
+        <in>statistics.h</in>
+        <in>szv_grid.h</in>
+        <in>tee.h</in>
+        <in>terms.h</in>
+        <in>tokenize.h</in>
+        <in>tree.h</in>
+        <in>triangular_matrix_index.h</in>
+        <in>weighted_terms.h</in>
+      </df>
       <df name="src">
+        <df name="apps">
+          <in>docking.h</in>
+          <in>mpiparser.h</in>
+        </df>
+        <df name="lib">
+          <in>array3d.h</in>
+          <in>atom.h</in>
+          <in>atom_base.h</in>
+          <in>atom_constants.h</in>
+          <in>atom_type.h</in>
+          <in>bfgs.h</in>
+          <in>brick.h</in>
+          <in>cache.h</in>
+          <in>common.h</in>
+          <in>conf.h</in>
+          <in>convert_substring.h</in>
+          <in>coords.h</in>
+          <in>curl.h</in>
+          <in>current_weights.h</in>
+          <in>everything.h</in>
+          <in>file.h</in>
+          <in>grid.h</in>
+          <in>grid_dim.h</in>
+          <in>gzstream.h</in>
+          <in>igrid.h</in>
+          <in>incrementable.h</in>
+          <in>int_pow.h</in>
+          <in>macros.h</in>
+          <in>manifold.h</in>
+          <in>matrix.h</in>
+          <in>model.h</in>
+          <in>monte_carlo.h</in>
+          <in>mutate.h</in>
+          <in>my_pid.h</in>
+          <in>naive_non_cache.h</in>
+          <in>non_cache.h</in>
+          <in>parallel.h</in>
+          <in>parallel_mc.h</in>
+          <in>parallel_progress.h</in>
+          <in>parse_error.h</in>
+          <in>parse_pdbqt.h</in>
+          <in>pdb.h</in>
+          <in>precalculate.h</in>
+          <in>quasi_newton.h</in>
+          <in>quaternion.h</in>
+          <in>random.h</in>
+          <in>recent_history.h</in>
+          <in>scoring_function.h</in>
+          <in>ssd.h</in>
+          <in>szv_grid.h</in>
+          <in>terms.h</in>
+          <in>tokenize.h</in>
+          <in>tree.h</in>
+          <in>triangular_matrix_index.h</in>
+          <in>weighted_terms.h</in>
+        </df>
+        <df name="main">
+          <in>docking.h</in>
+          <in>mpiparser.h</in>
+        </df>
         <in>array3d.h</in>
         <in>atom.h</in>
         <in>atom_base.h</in>
@@ -97,28 +211,6 @@
         <in>weighted_terms.cpp</in>
         <in>weighted_terms.h</in>
       </df>
-      <df name="testground">
-        <df name="linux">
-          <df name="debug">
-            <df name="data">
-            </df>
-            <df name="poses">
-            </df>
-          </df>
-          <df name="release">
-          </df>
-          <df name="testcase">
-            <df name="data">
-            </df>
-          </df>
-        </df>
-        <df name="mac">
-          <df name="debug">
-          </df>
-          <df name="release">
-          </df>
-        </df>
-      </df>
       <df name="tests">
       </df>
       <in>config.h</in>
@@ -127,14 +219,14 @@
                    displayName="Important Files"
                    projectFiles="false"
                    kind="IMPORTANT_FILES_FOLDER">
-      <itemPath>makefile</itemPath>
+      <itemPath>Makefile</itemPath>
     </logicalFolder>
   </logicalFolder>
   <sourceFolderFilter>^(nbproject)$</sourceFolderFilter>
   <sourceRootList>
     <Elem>.</Elem>
   </sourceRootList>
-  <projectmakefile>makefile</projectmakefile>
+  <projectmakefile>Makefile</projectmakefile>
   <confs>
     <conf name="Default" type="0">
       <toolsSet>
@@ -146,90 +238,67 @@
       <makefileType>
         <makeTool>
           <buildCommandWorkingDir>.</buildCommandWorkingDir>
-          <buildCommand>${MAKE} -f makefile</buildCommand>
-          <cleanCommand>${MAKE} -f makefile clean</cleanCommand>
+          <buildCommand>${MAKE} -f Makefile</buildCommand>
+          <cleanCommand>${MAKE} -f Makefile clean</cleanCommand>
           <executablePath></executablePath>
           <ccTool>
             <incDir>
-              <pElem>/opt/boost//include</pElem>
-              <pElem>//opt/openmpi//include</pElem>
+              <pElem>//home/zhang30/inst//include</pElem>
               <pElem>src</pElem>
               <pElem>.</pElem>
             </incDir>
             <preprocessorList>
               <Elem>HAVE_CONFIG_H</Elem>
               <Elem>NDEBUG</Elem>
-              <Elem>PIC</Elem>
               <Elem>USE_MPI</Elem>
             </preprocessorList>
           </ccTool>
         </makeTool>
       </makefileType>
-      <item path="apps/docking.cpp" ex="true" tool="1" flavor2="0">
-      </item>
-      <item path="apps/docking.h" ex="true" tool="3" flavor2="0">
-      </item>
-      <item path="apps/main.cpp" ex="true" tool="1" flavor2="0">
-      </item>
-      <item path="apps/mpiparser.cpp" ex="true" tool="1" flavor2="0">
-      </item>
-      <item path="apps/mpiparser.h" ex="true" tool="3" flavor2="0">
-      </item>
       <item path="config.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <folder path="VinaLC/apps">
+        <ccTool>
+          <incDir>
+            <pElem>apps</pElem>
+          </incDir>
+        </ccTool>
+      </folder>
+      <folder path="VinaLC/src">
+        <ccTool>
+          <incDir>
+            <pElem>../../inst/include</pElem>
+          </incDir>
+          <preprocessorList>
+            <Elem>PIC</Elem>
+          </preprocessorList>
+        </ccTool>
+      </folder>
+      <item path="src/bfgs.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="src/brick.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="src/convert_substring.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="src/int_pow.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="src/manifold.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="src/mutate.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="src/my_pid.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="src/parallel.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="src/parallel_progress.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="src/pdb.h" ex="true" tool="3" flavor2="0">
+      </item>
+      <item path="src/recent_history.h" ex="true" tool="3" flavor2="0">
       </item>
       <item path="src/statistics.h" ex="true" tool="3" flavor2="0">
       </item>
       <item path="src/tee.h" ex="true" tool="3" flavor2="0">
-      </item>
-      <item path="src/tokenize.h" ex="true" tool="3" flavor2="0">
-      </item>
-    </conf>
-    <conf name="Sierra" type="0">
-      <toolsSet>
-        <remote-sources-mode>LOCAL_SOURCES</remote-sources-mode>
-        <compilerSet>default</compilerSet>
-      </toolsSet>
-      <codeAssistance>
-      </codeAssistance>
-      <makefileType>
-        <makeTool>
-          <buildCommandWorkingDir>.</buildCommandWorkingDir>
-          <buildCommand>${MAKE} -f makefile</buildCommand>
-          <cleanCommand>${MAKE} -f makefile clean</cleanCommand>
-          <executablePath></executablePath>
-          <ccTool>
-            <incDir>
-              <pElem>/opt/boost//include</pElem>
-              <pElem>//opt/openmpi//include</pElem>
-              <pElem>src</pElem>
-              <pElem>.</pElem>
-            </incDir>
-            <preprocessorList>
-              <Elem>HAVE_CONFIG_H</Elem>
-              <Elem>NDEBUG</Elem>
-              <Elem>PIC</Elem>
-              <Elem>USE_MPI</Elem>
-            </preprocessorList>
-          </ccTool>
-        </makeTool>
-      </makefileType>
-      <item path="apps/docking.cpp" ex="true" tool="1" flavor2="0">
-      </item>
-      <item path="apps/docking.h" ex="true" tool="3" flavor2="0">
-      </item>
-      <item path="apps/main.cpp" ex="true" tool="1" flavor2="0">
-      </item>
-      <item path="apps/mpiparser.cpp" ex="true" tool="1" flavor2="0">
-      </item>
-      <item path="apps/mpiparser.h" ex="true" tool="3" flavor2="0">
-      </item>
-      <item path="config.h" ex="true" tool="3" flavor2="0">
-      </item>
-      <item path="src/statistics.h" ex="true" tool="3" flavor2="0">
-      </item>
-      <item path="src/tee.h" ex="true" tool="3" flavor2="0">
-      </item>
-      <item path="src/tokenize.h" ex="true" tool="3" flavor2="0">
       </item>
     </conf>
   </confs>
