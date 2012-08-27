@@ -1,0 +1,110 @@
+#!/bin/bash
+
+BuildDir=`pwd`
+
+CleanAll=false
+DebugOn=false
+SharedOn=false
+BuildOn=false
+arch32=false
+MPIOn=false
+StaticOn=false
+
+manual()
+{
+    echo
+    echo "Usage: makeit --build --boost=<Path-to-boost-library> --qt=<...> [debug]"
+    echo
+}
+
+
+while test $# -gt 0; do
+    case "$1" in
+        -*=*) optarg=`echo "$1" | sed 's/[-_a-zA-Z0-9]*=//'` ;;
+        *) optarg= ;;
+    esac
+    case $1 in
+        --help)
+            manual
+            ;;
+        --clean)
+            CleanAll=true
+            ;;
+        --debug)
+            DebugOn=true
+            ;;
+        --shared)
+            SharedOn=true
+            ;;
+        --boost=*)
+            boostPath=$optarg
+            ;;
+        --lapack=*)
+            lapackPath=$optarg
+            ;;
+        --mpi=*)
+            mpiPath=$optarg
+            MPIOn=true
+            ;;
+        --arch32)
+            arch32=true
+            ;;
+        --static)
+            StaticOn=true
+            ;;
+        --build)
+			BuildOn=true
+            ;;
+    esac
+    shift
+
+done
+
+if ($CleanAll) ; then
+	make clean
+    echo "Clean complete..."
+fi
+
+
+
+buildMedChem()
+{
+	cd $BuildDir
+	./autogen.sh
+    ConfArgs="$ConfArgs --with-boost=$boostPath "
+
+    if ($MPIOn) ; then
+        ConfArgs="$ConfArgs --with-mpi=$mpiPath"
+    fi
+
+	if ($DebugOn) ; then
+      	ConfArgs="$ConfArgs --enable-debug"
+    fi
+
+    if ($SharedOn) ; then
+        ConfArgs="$ConfArgs --enable-shared"
+    fi
+
+    if ($StaticOn) ; then
+        ConfArgs="$ConfArgs --enable-static"
+    fi
+
+	if ($arch32) ; then
+		ConfArgs="CFLAGS=-m32 CXXFLAGS=-m32 $ConfArgs --disable-shared"
+	fi
+
+	echo "Build with following configuration"
+	echo
+	echo "configure $ConfArgs"
+
+    $BuildDir/configure $ConfArgs
+
+    echo "make ... "
+
+	make
+
+}
+
+if ( $BuildOn ) ; then
+	buildMedChem
+fi
