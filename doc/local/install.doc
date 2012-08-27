@@ -1,0 +1,58 @@
+/*!
+\page installation Software Installation 
+\htmlonly
+<html>
+<head>
+    <title>Software Installation</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+</head>
+
+<body>
+<h3>1. VinaLC Installation Requirements:</h3>
+<blockquote>
+  <h4>Supported Operating systems</h4>
+  <ul>
+    <li>Linux</li>
+    <li>Mac OSX</li>
+  </ul>
+  <h4>Software Requirements</h4>
+  <ul>
+    <li>gcc</li>
+    <li>make</li>
+    <li>aclocal/automake/autoconf</li>
+  </ul>
+</blockquote>
+<h3>2. Dependent Libraries </h3>
+<blockquote>
+  <p>The program relies on the user having the following installed. </p>
+  <ul>
+    <li><a href="http://www.boost.org/">BOOST</a></li>
+    <li><a href="http://www.mcs.anl.gov/research/projects/mpi/">MPI </a></li>
+  </ul>
+  <p>The following are required to generate the html documentation. </p>
+  <ul>
+    <li><a href="http://www.stack.nl/~dimitri/doxygen/">Doxygen</a></li>
+  </ul>
+</blockquote>
+<h3>3. Environment Variables</h3>
+<blockquote>
+<pre>setenv PATH etc</pre>
+</blockquote>
+<h3>4. VinaLC Configuration, Compilation and Installation </h3>
+<blockquote>
+  <p>This source code is configured to run on LLNL LC machines. </p>
+  <h4>i)Install Boost library </h4>
+  <p>to install Boost library please follow the step in the Boost document. </p>
+<pre>./bootstrap.sh --prefix=path/to/installation/prefix<br />./b2 install </pre>
+  <p>Beside the standard installation, Boost MPI binding also need to be turn on. copy tools/build/v2/user-config.jam to your home directory. In the file specify the mpi compiler you want to use:</p>
+  <pre>using mpi : /usr/local/tools/mvapich-gnu/bin/mpicxx ; </pre>
+  <h4>ii) Install Vina LC </h4>
+  <p>Download the tarball of VinaLC. Unzip</p>
+  <pre>tar -zxvf VinaLC.tar.gz<br />cd VinaLC </pre>
+  <p>In the VinaLC home directory, there is build script named &quot;build&quot;. Inside the file you have to set your Boost and MPI path. For example</p>  
+  <pre>./makeit --build --boost=/opt/boost/ --mpi=/opt/openmpi/</pre>
+<p>This will configure the program and subsequently compile the executable. The executable, vinalc, can be found under the apps subdirectory.</p><br>
+</blockquote>
+</body>
+\endhtmlonly
+*/

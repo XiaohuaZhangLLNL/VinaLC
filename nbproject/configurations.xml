@@ -1,12 +1,115 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configurationDescriptor version="84">
   <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
-    <df name="VinaLC" root="/home/zhang30/NetBeansProjects/VinaLC">
-      <df name="build">
+    <df name="VinaLC" root=".">
+      <df name="apps">
+        <in>docking.cpp</in>
+        <in>docking.h</in>
+        <in>main.cpp</in>
+        <in>mpiparser.cpp</in>
+        <in>mpiparser.h</in>
+      </df>
+      <df name="autom4te.cache">
+      </df>
+      <df name="doc">
+        <df name="html">
+        </df>
+        <df name="local">
+        </df>
+        <df name="pics">
+        </df>
+      </df>
+      <df name="src">
+        <in>array3d.h</in>
+        <in>atom.h</in>
+        <in>atom_base.h</in>
+        <in>atom_constants.h</in>
+        <in>atom_type.h</in>
+        <in>bfgs.h</in>
+        <in>brick.h</in>
+        <in>cache.cpp</in>
+        <in>cache.h</in>
+        <in>common.h</in>
+        <in>conf.h</in>
+        <in>convert_substring.h</in>
+        <in>coords.cpp</in>
+        <in>coords.h</in>
+        <in>curl.h</in>
+        <in>current_weights.cpp</in>
+        <in>current_weights.h</in>
+        <in>everything.cpp</in>
+        <in>everything.h</in>
+        <in>file.h</in>
+        <in>grid.cpp</in>
+        <in>grid.h</in>
+        <in>grid_dim.h</in>
+        <in>gzstream.cpp</in>
+        <in>gzstream.h</in>
+        <in>igrid.h</in>
+        <in>incrementable.h</in>
+        <in>int_pow.h</in>
+        <in>macros.h</in>
+        <in>manifold.cpp</in>
+        <in>manifold.h</in>
+        <in>matrix.h</in>
+        <in>model.cpp</in>
+        <in>model.h</in>
+        <in>monte_carlo.cpp</in>
+        <in>monte_carlo.h</in>
+        <in>mutate.cpp</in>
+        <in>mutate.h</in>
+        <in>my_pid.cpp</in>
+        <in>my_pid.h</in>
+        <in>naive_non_cache.cpp</in>
+        <in>naive_non_cache.h</in>
+        <in>non_cache.cpp</in>
+        <in>non_cache.h</in>
+        <in>parallel.h</in>
+        <in>parallel_mc.cpp</in>
+        <in>parallel_mc.h</in>
+        <in>parallel_progress.cpp</in>
+        <in>parallel_progress.h</in>
+        <in>parse_error.h</in>
+        <in>parse_pdbqt.cpp</in>
+        <in>parse_pdbqt.h</in>
+        <in>pdb.cpp</in>
+        <in>pdb.h</in>
+        <in>precalculate.h</in>
+        <in>quasi_newton.cpp</in>
+        <in>quasi_newton.h</in>
+        <in>quaternion.cpp</in>
+        <in>quaternion.h</in>
+        <in>random.cpp</in>
+        <in>random.h</in>
+        <in>recent_history.h</in>
+        <in>scoring_function.h</in>
+        <in>ssd.cpp</in>
+        <in>ssd.h</in>
+        <in>statistics.h</in>
+        <in>szv_grid.cpp</in>
+        <in>szv_grid.h</in>
+        <in>tee.h</in>
+        <in>terms.cpp</in>
+        <in>terms.h</in>
+        <in>tokenize.h</in>
+        <in>tree.h</in>
+        <in>triangular_matrix_index.h</in>
+        <in>weighted_terms.cpp</in>
+        <in>weighted_terms.h</in>
+      </df>
+      <df name="testground">
         <df name="linux">
           <df name="debug">
+            <df name="data">
+            </df>
+            <df name="poses">
+            </df>
           </df>
           <df name="release">
+          </df>
+          <df name="testcase">
+            <df name="data">
+            </df>
           </df>
         </df>
         <df name="mac">
@@ -16,427 +119,117 @@
           </df>
         </df>
       </df>
-      <df name="src">
-        <df name="lib">
-          <in>array3d.h</in>
-          <in>atom.h</in>
-          <in>atom_base.h</in>
-          <in>atom_constants.h</in>
-          <in>atom_type.h</in>
-          <in>bfgs.h</in>
-          <in>brick.h</in>
-          <in>cache.cpp</in>
-          <in>cache.h</in>
-          <in>common.h</in>
-          <in>conf.h</in>
-          <in>convert_substring.h</in>
-          <in>coords.cpp</in>
-          <in>coords.h</in>
-          <in>curl.h</in>
-          <in>current_weights.cpp</in>
-          <in>current_weights.h</in>
-          <in>everything.cpp</in>
-          <in>everything.h</in>
-          <in>file.h</in>
-          <in>grid.cpp</in>
-          <in>grid.h</in>
-          <in>grid_dim.h</in>
-          <in>gzstream.cpp</in>
-          <in>gzstream.h</in>
-          <in>igrid.h</in>
-          <in>incrementable.h</in>
-          <in>int_pow.h</in>
-          <in>macros.h</in>
-          <in>manifold.cpp</in>
-          <in>manifold.h</in>
-          <in>matrix.h</in>
-          <in>model.cpp</in>
-          <in>model.h</in>
-          <in>monte_carlo.cpp</in>
-          <in>monte_carlo.h</in>
-          <in>mutate.cpp</in>
-          <in>mutate.h</in>
-          <in>my_pid.cpp</in>
-          <in>my_pid.h</in>
-          <in>naive_non_cache.cpp</in>
-          <in>naive_non_cache.h</in>
-          <in>non_cache.cpp</in>
-          <in>non_cache.h</in>
-          <in>parallel.h</in>
-          <in>parallel_mc.cpp</in>
-          <in>parallel_mc.h</in>
-          <in>parallel_progress.cpp</in>
-          <in>parallel_progress.h</in>
-          <in>parse_error.h</in>
-          <in>parse_pdbqt.cpp</in>
-          <in>parse_pdbqt.h</in>
-          <in>pdb.cpp</in>
-          <in>pdb.h</in>
-          <in>precalculate.h</in>
-          <in>quasi_newton.cpp</in>
-          <in>quasi_newton.h</in>
-          <in>quaternion.cpp</in>
-          <in>quaternion.h</in>
-          <in>random.cpp</in>
-          <in>random.h</in>
-          <in>recent_history.h</in>
-          <in>scoring_function.h</in>
-          <in>ssd.cpp</in>
-          <in>ssd.h</in>
-          <in>statistics.h</in>
-          <in>szv_grid.cpp</in>
-          <in>szv_grid.h</in>
-          <in>tee.h</in>
-          <in>terms.cpp</in>
-          <in>terms.h</in>
-          <in>tokenize.h</in>
-          <in>tree.h</in>
-          <in>triangular_matrix_index.h</in>
-          <in>weighted_terms.cpp</in>
-          <in>weighted_terms.h</in>
-        </df>
-        <df name="main">
-          <in>docking.cpp</in>
-          <in>docking.h</in>
-          <in>main.cpp</in>
-          <in>mpiparser.cpp</in>
-          <in>mpiparser.h</in>
-        </df>
-        <df name="split">
-          <in>split.cpp</in>
-        </df>
+      <df name="tests">
       </df>
+      <in>config.h</in>
     </df>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
                    projectFiles="false"
                    kind="IMPORTANT_FILES_FOLDER">
-      <itemPath>build/linux/debug/Makefile</itemPath>
+      <itemPath>makefile</itemPath>
     </logicalFolder>
   </logicalFolder>
   <sourceFolderFilter>^(nbproject)$</sourceFolderFilter>
   <sourceRootList>
-    <Elem>/home/zhang30/NetBeansProjects/VinaLC</Elem>
+    <Elem>.</Elem>
   </sourceRootList>
-  <projectmakefile>build/linux/debug/Makefile</projectmakefile>
+  <projectmakefile>makefile</projectmakefile>
   <confs>
     <conf name="Default" type="0">
       <toolsSet>
         <remote-sources-mode>LOCAL_SOURCES</remote-sources-mode>
-        <compilerSet>GNU|GNU</compilerSet>
+        <compilerSet>default</compilerSet>
       </toolsSet>
       <codeAssistance>
       </codeAssistance>
       <makefileType>
         <makeTool>
-          <buildCommandWorkingDir>build/linux/debug</buildCommandWorkingDir>
-          <buildCommand>${MAKE} -f Makefile</buildCommand>
-          <cleanCommand>${MAKE} -f Makefile clean</cleanCommand>
-          <executablePath>build/linux/debug/vina</executablePath>
+          <buildCommandWorkingDir>.</buildCommandWorkingDir>
+          <buildCommand>${MAKE} -f makefile</buildCommand>
+          <cleanCommand>${MAKE} -f makefile clean</cleanCommand>
+          <executablePath></executablePath>
           <ccTool>
             <incDir>
-              <pElem>/usr/local/tools/mvapich-gnu/include</pElem>
-              <pElem>build/linux/debug</pElem>
-              <pElem>/home/zhang30/inst/include</pElem>
-              <pElem>src/main</pElem>
-              <pElem>/usr/gapps/medchem/contrib/boost//include</pElem>
-              <pElem>src/lib</pElem>
-              <pElem>/usr/gapps/medchem/contrib/boost/include</pElem>
-              <pElem>src/lib</pElem>
+              <pElem>/opt/boost//include</pElem>
+              <pElem>//opt/openmpi//include</pElem>
+              <pElem>src</pElem>
+              <pElem>.</pElem>
             </incDir>
             <preprocessorList>
-              <Elem>HAVE_STDARG_H=1</Elem>
-              <Elem>HAVE_STDLIB_H=1</Elem>
-              <Elem>HAVE_STRING_H=1</Elem>
-              <Elem>HAVE_UNISTD_H=1</Elem>
-              <Elem>MALLOC_RET_VOID=1</Elem>
+              <Elem>HAVE_CONFIG_H</Elem>
+              <Elem>NDEBUG</Elem>
+              <Elem>PIC</Elem>
               <Elem>USE_MPI</Elem>
-              <Elem>USE_STDARG=1</Elem>
             </preprocessorList>
           </ccTool>
         </makeTool>
       </makefileType>
-      <item path="/home/zhang30/NetBeansProjects/VinaLC/src/lib/cache.cpp"
-            ex="false"
-            tool="1"
-            flavor2="4">
-        <ccTool>
-          <incDir>
-            <pElem>/usr/gapps/medchem/contrib/boost/include</pElem>
-          </incDir>
-        </ccTool>
+      <item path="apps/docking.cpp" ex="true" tool="1" flavor2="0">
       </item>
-      <item path="/home/zhang30/NetBeansProjects/VinaLC/src/lib/coords.cpp"
-            ex="false"
-            tool="1"
-            flavor2="4">
-        <ccTool>
-          <incDir>
-            <pElem>/usr/gapps/medchem/contrib/boost/include</pElem>
-          </incDir>
-        </ccTool>
+      <item path="apps/docking.h" ex="true" tool="3" flavor2="0">
       </item>
-      <item path="/home/zhang30/NetBeansProjects/VinaLC/src/lib/current_weights.cpp"
-            ex="false"
-            tool="1"
-            flavor2="4">
-        <ccTool>
-          <incDir>
-            <pElem>/usr/gapps/medchem/contrib/boost/include</pElem>
-          </incDir>
-        </ccTool>
+      <item path="apps/main.cpp" ex="true" tool="1" flavor2="0">
       </item>
-      <item path="/home/zhang30/NetBeansProjects/VinaLC/src/lib/everything.cpp"
-            ex="false"
-            tool="1"
-            flavor2="4">
-        <ccTool>
-          <incDir>
-            <pElem>/usr/gapps/medchem/contrib/boost/include</pElem>
-          </incDir>
-        </ccTool>
+      <item path="apps/mpiparser.cpp" ex="true" tool="1" flavor2="0">
       </item>
-      <item path="/home/zhang30/NetBeansProjects/VinaLC/src/lib/grid.cpp"
-            ex="false"
-            tool="1"
-            flavor2="4">
-        <ccTool>
-          <incDir>
-            <pElem>/usr/gapps/medchem/contrib/boost/include</pElem>
-          </incDir>
-        </ccTool>
+      <item path="apps/mpiparser.h" ex="true" tool="3" flavor2="0">
       </item>
-      <item path="/home/zhang30/NetBeansProjects/VinaLC/src/lib/gzstream.cpp"
-            ex="false"
-            tool="1"
-            flavor2="4">
-        <ccTool>
-          <incDir>
-            <pElem>/usr/gapps/medchem/contrib/boost/include</pElem>
-          </incDir>
-        </ccTool>
+      <item path="config.h" ex="true" tool="3" flavor2="0">
       </item>
-      <item path="/home/zhang30/NetBeansProjects/VinaLC/src/lib/manifold.cpp"
-            ex="false"
-            tool="1"
-            flavor2="4">
-        <ccTool>
-          <incDir>
-            <pElem>/usr/gapps/medchem/contrib/boost/include</pElem>
-          </incDir>
-        </ccTool>
+      <item path="src/statistics.h" ex="true" tool="3" flavor2="0">
       </item>
-      <item path="/home/zhang30/NetBeansProjects/VinaLC/src/lib/model.cpp"
-            ex="false"
-            tool="1"
-            flavor2="4">
-        <ccTool>
-          <incDir>
-            <pElem>/usr/gapps/medchem/contrib/boost/include</pElem>
-          </incDir>
-        </ccTool>
+      <item path="src/tee.h" ex="true" tool="3" flavor2="0">
       </item>
-      <item path="/home/zhang30/NetBeansProjects/VinaLC/src/lib/monte_carlo.cpp"
-            ex="false"
-            tool="1"
-            flavor2="4">
-        <ccTool>
-          <incDir>
-            <pElem>/usr/gapps/medchem/contrib/boost/include</pElem>
-          </incDir>
-        </ccTool>
+      <item path="src/tokenize.h" ex="true" tool="3" flavor2="0">
       </item>
-      <item path="/home/zhang30/NetBeansProjects/VinaLC/src/lib/mutate.cpp"
-            ex="false"
-            tool="1"
-            flavor2="4">
-        <ccTool>
-          <incDir>
-            <pElem>/usr/gapps/medchem/contrib/boost/include</pElem>
-          </incDir>
-        </ccTool>
+    </conf>
+    <conf name="Sierra" type="0">
+      <toolsSet>
+        <remote-sources-mode>LOCAL_SOURCES</remote-sources-mode>
+        <compilerSet>default</compilerSet>
+      </toolsSet>
+      <codeAssistance>
+      </codeAssistance>
+      <makefileType>
+        <makeTool>
+          <buildCommandWorkingDir>.</buildCommandWorkingDir>
+          <buildCommand>${MAKE} -f makefile</buildCommand>
+          <cleanCommand>${MAKE} -f makefile clean</cleanCommand>
+          <executablePath></executablePath>
+          <ccTool>
+            <incDir>
+              <pElem>/opt/boost//include</pElem>
+              <pElem>//opt/openmpi//include</pElem>
+              <pElem>src</pElem>
+              <pElem>.</pElem>
+            </incDir>
+            <preprocessorList>
+              <Elem>HAVE_CONFIG_H</Elem>
+              <Elem>NDEBUG</Elem>
+              <Elem>PIC</Elem>
+              <Elem>USE_MPI</Elem>
+            </preprocessorList>
+          </ccTool>
+        </makeTool>
+      </makefileType>
+      <item path="apps/docking.cpp" ex="true" tool="1" flavor2="0">
       </item>
-      <item path="/home/zhang30/NetBeansProjects/VinaLC/src/lib/my_pid.cpp"
-            ex="false"
-            tool="1"
-            flavor2="4">
-        <ccTool>
-          <incDir>
-            <pElem>/usr/gapps/medchem/contrib/boost/include</pElem>
-          </incDir>
-        </ccTool>
+      <item path="apps/docking.h" ex="true" tool="3" flavor2="0">
       </item>
-      <item path="/home/zhang30/NetBeansProjects/VinaLC/src/lib/naive_non_cache.cpp"
-            ex="false"
-            tool="1"
-            flavor2="4">
-        <ccTool>
-          <incDir>
-            <pElem>/usr/gapps/medchem/contrib/boost/include</pElem>
-          </incDir>
-        </ccTool>
+      <item path="apps/main.cpp" ex="true" tool="1" flavor2="0">
       </item>
-      <item path="/home/zhang30/NetBeansProjects/VinaLC/src/lib/non_cache.cpp"
-            ex="false"
-            tool="1"
-            flavor2="4">
-        <ccTool>
-          <incDir>
-            <pElem>/usr/gapps/medchem/contrib/boost/include</pElem>
-          </incDir>
-        </ccTool>
+      <item path="apps/mpiparser.cpp" ex="true" tool="1" flavor2="0">
       </item>
-      <item path="/home/zhang30/NetBeansProjects/VinaLC/src/lib/parallel_mc.cpp"
-            ex="false"
-            tool="1"
-            flavor2="4">
-        <ccTool>
-          <incDir>
-            <pElem>/usr/gapps/medchem/contrib/boost/include</pElem>
-          </incDir>
-        </ccTool>
+      <item path="apps/mpiparser.h" ex="true" tool="3" flavor2="0">
       </item>
-      <item path="/home/zhang30/NetBeansProjects/VinaLC/src/lib/parallel_progress.cpp"
-            ex="false"
-            tool="1"
-            flavor2="4">
-        <ccTool>
-          <incDir>
-            <pElem>/usr/gapps/cchem_software/vina/include</pElem>
-            <pElem>/opt/mvapich-gnu-debug-gen2-1.2/include</pElem>
-            <pElem>../../../inst/include</pElem>
-            <pElem>/g/g92/zhang30/inst/include</pElem>
-            <pElem>src/lib</pElem>
-          </incDir>
-        </ccTool>
+      <item path="config.h" ex="true" tool="3" flavor2="0">
       </item>
-      <item path="/home/zhang30/NetBeansProjects/VinaLC/src/lib/parse_pdbqt.cpp"
-            ex="false"
-            tool="1"
-            flavor2="4">
-        <ccTool>
-          <incDir>
-            <pElem>/usr/gapps/medchem/contrib/boost/include</pElem>
-          </incDir>
-        </ccTool>
+      <item path="src/statistics.h" ex="true" tool="3" flavor2="0">
       </item>
-      <item path="/home/zhang30/NetBeansProjects/VinaLC/src/lib/pdb.cpp"
-            ex="false"
-            tool="1"
-            flavor2="4">
-        <ccTool>
-          <incDir>
-            <pElem>/usr/gapps/medchem/contrib/boost/include</pElem>
-          </incDir>
-        </ccTool>
+      <item path="src/tee.h" ex="true" tool="3" flavor2="0">
       </item>
-      <item path="/home/zhang30/NetBeansProjects/VinaLC/src/lib/quasi_newton.cpp"
-            ex="false"
-            tool="1"
-            flavor2="4">
-        <ccTool>
-          <incDir>
-            <pElem>/usr/gapps/medchem/contrib/boost/include</pElem>
-          </incDir>
-        </ccTool>
-      </item>
-      <item path="/home/zhang30/NetBeansProjects/VinaLC/src/lib/quaternion.cpp"
-            ex="false"
-            tool="1"
-            flavor2="4">
-        <ccTool>
-          <incDir>
-            <pElem>/usr/gapps/medchem/contrib/boost/include</pElem>
-          </incDir>
-        </ccTool>
-      </item>
-      <item path="/home/zhang30/NetBeansProjects/VinaLC/src/lib/random.cpp"
-            ex="false"
-            tool="1"
-            flavor2="4">
-        <ccTool>
-          <incDir>
-            <pElem>/usr/gapps/medchem/contrib/boost/include</pElem>
-          </incDir>
-        </ccTool>
-      </item>
-      <item path="/home/zhang30/NetBeansProjects/VinaLC/src/lib/ssd.cpp"
-            ex="false"
-            tool="1"
-            flavor2="4">
-        <ccTool>
-          <incDir>
-            <pElem>/usr/gapps/medchem/contrib/boost/include</pElem>
-          </incDir>
-        </ccTool>
-      </item>
-      <item path="/home/zhang30/NetBeansProjects/VinaLC/src/lib/statistics.h"
-            ex="true"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="/home/zhang30/NetBeansProjects/VinaLC/src/lib/szv_grid.cpp"
-            ex="false"
-            tool="1"
-            flavor2="4">
-        <ccTool>
-          <incDir>
-            <pElem>/usr/gapps/medchem/contrib/boost/include</pElem>
-          </incDir>
-        </ccTool>
-      </item>
-      <item path="/home/zhang30/NetBeansProjects/VinaLC/src/lib/tee.h"
-            ex="true"
-            tool="3"
-            flavor2="0">
-      </item>
-      <item path="/home/zhang30/NetBeansProjects/VinaLC/src/lib/terms.cpp"
-            ex="false"
-            tool="1"
-            flavor2="4">
-        <ccTool>
-          <incDir>
-            <pElem>/usr/gapps/medchem/contrib/boost/include</pElem>
-          </incDir>
-        </ccTool>
-      </item>
-      <item path="/home/zhang30/NetBeansProjects/VinaLC/src/lib/weighted_terms.cpp"
-            ex="false"
-            tool="1"
-            flavor2="4">
-        <ccTool>
-          <incDir>
-            <pElem>/usr/gapps/medchem/contrib/boost/include</pElem>
-          </incDir>
-        </ccTool>
-      </item>
-      <item path="/home/zhang30/NetBeansProjects/VinaLC/src/main/docking.cpp"
-            ex="false"
-            tool="1"
-            flavor2="4">
-        <ccTool>
-        </ccTool>
-      </item>
-      <item path="/home/zhang30/NetBeansProjects/VinaLC/src/main/main.cpp"
-            ex="false"
-            tool="1"
-            flavor2="4">
-        <ccTool>
-        </ccTool>
-      </item>
-      <item path="/home/zhang30/NetBeansProjects/VinaLC/src/main/mpiparser.cpp"
-            ex="false"
-            tool="1"
-            flavor2="4">
-        <ccTool>
-        </ccTool>
-      </item>
-      <item path="/home/zhang30/NetBeansProjects/VinaLC/src/split/split.cpp"
-            ex="false"
-            tool="1"
-            flavor2="4">
-        <ccTool>
-        </ccTool>
+      <item path="src/tokenize.h" ex="true" tool="3" flavor2="0">
       </item>
     </conf>
   </confs>

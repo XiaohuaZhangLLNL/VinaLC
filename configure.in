@@ -1,0 +1,276 @@
+#                                   -*- Autoconf -*-
+# Process this file with autoconf to produce a configure script.
+
+AC_PREREQ(2.59)
+AC_INIT([VinaLC], [1.1.2], [xhzhang1978@gmail.com], [VinaLC])
+
+AM_INIT_AUTOMAKE
+
+AC_CONFIG_SRCDIR([src/model.cpp])
+AM_CONFIG_HEADER([config.h])
+
+AM_MAINTAINER_MODE
+
+AC_LANG(C++)
+
+dnl libtool
+dnl You can set the shared library version in src/Makefile.am
+dnl AM_DISABLE_SHARED
+AM_PROG_LIBTOOL
+AC_SUBST(LIBTOOL_DEPS)
+
+
+dnl ----------------------------------------------------------------------------
+dnl                         BOOST (www.boost.org)
+dnl ----------------------------------------------------------------------------
+boost_dir=
+AC_ARG_WITH(boost,
+        [  --with-boost            Specify boost include directory],
+        [if test -n ${with_boost}; then
+            boost_dir=${with_boost};
+#            CXXFLAGS=$CXXFLAGS" -DNDEBUG "
+         else
+            boost_dir="";
+         fi
+        ],
+        [boost_dir="";]
+)
+AC_SUBST(boost_dir)
+
+dnl CHECK BOOST
+if test "$boost_dir" == ""; then
+   AC_MSG_RESULT()
+   AC_MSG_RESULT( Cannot find boost )
+   AC_MSG_RESULT( Please provide a path to the Boost library )
+   AC_MSG_RESULT( --with-boost = path_to_your_boost_library )
+   AC_MSG_ERROR( aborted )
+fi
+
+dnl ----------------------------------------------------------------------------
+dnl            MPI (http://www.mcs.anl.gov/research/projects/mpi/)
+dnl ----------------------------------------------------------------------------
+mpi_path=
+AC_ARG_WITH(mpi,
+        [  --with-mpi           Specify MPI directory],
+        [if test -n ${with_mpi}; then
+            mpi_path=${with_mpi};
+            MPI_SUPPORT=true
+            test_mpi="yes"
+         else
+            mpi_path="";
+            MPI_SUPPORT=false
+            test_mpi="no"
+         fi
+        ],
+        [mpi_path="";
+         MPI_SUPPORT=false
+         test_mpi="no"
+        ]
+)
+
+AM_CONDITIONAL(USE_MPI, test "$test_mpi" = "yes")
+
+if test "$test_mpi" = "yes"; then
+  AC_SUBST(mpi_path)
+  CFLAGS=$CFLAGS" -DUSE_MPI"
+  CXXFLAGS=$CXXFLAGS" -DUSE_MPI"
+  defines_string=$defines_string" -DUSE_MPI"
+fi
+
+dnl ----------------------------------------------------------------------------
+dnl                         DOXYGEN (www.doxygen.org)
+dnl ----------------------------------------------------------------------------
+html_doc=no
+AC_ARG_ENABLE(doxygen,
+[  --enable-doxygen        build library documentation using doxygen],
+        html_doc=yes
+)
+
+AC_CHECK_PROG(doxygen_ok, doxygen, yes, no)
+AC_CHECK_PROG(dot_ok, dot, yes, no)
+
+if test "$html_doc" != no; then
+  if test "$doxygen_ok" != yes; then
+    echo " doxygen-enabled: However doxygen cannot be found."
+    echo " Take a look at http://www.doxygen.org/"
+    html_doc=no
+  fi 
+fi
+AM_CONDITIONAL([DOC_ON], [test "$html_doc" = yes])
+AM_CONDITIONAL([GOT_DOT], [test "$dot_ok" = yes])
+
+dnl ----------------------------------------------------------------------------
+dnl                         DOCUMENTATION DIRECTORY
+dnl ----------------------------------------------------------------------------
+AC_ARG_WITH(docdir,
+        [AS_HELP_STRING([--with-docdir=DIR], [set documentation directory to DIR])],
+        [DOC_DIR="$withval"], [DOC_DIR=""])
+if test "x$DOC_DIR" != x; then
+        docdir="$DOC_DIR"
+else
+        docdir="${prefix}/doc"
+fi
+AC_SUBST(docdir)
+
+dnl ----------------------------------------------
+dnl                  DEBUG
+dnl ----------------------------------------------
+AC_ARG_ENABLE(debug,
+[  --enable-debug          Print debug messages],
+        debug=yes
+)
+
+if test yes != "$debug"; then
+	CXXFLAGS=$CXXFLAGS" -O2 -DNDEBUG "
+    debug=no
+    debug="Off "
+else
+    AC_DEFINE([DEBUG], [1], [Define DEBUG flag])
+    CXXFLAGS=$CXXFLAGS" -g -pg -DDEBUG"
+    defines_string=$defines_string" -DDEBUG "
+    debug="On "
+fi
+
+
+dnl ----------------------------------------------------------------------------
+dnl                                  HOSTS
+dnl ----------------------------------------------------------------------------
+
+
+# now with all of the initial setup out of the way, we now need to figure out which compilers
+# are available/supported on each platform
+case "${host}" in
+    *-*-linux*)      platform=LINUX
+        tmp_CC='gcc'
+        tmp_CXX='g++'
+        CC=gcc
+        CXX=g++
+        is_linux=yes
+        AC_DEFINE([HOST_LINUX],[1],[DEFINE LINUX])
+    ;;
+    *-apple-darwin*) platform=MACINTOSH
+        tmp_CC='gcc'
+        tmp_CXX='g++'
+        CC=gcc
+        CXX=g++
+        is_darwin=yes
+#        APPLE_LDFLAGS="-framework Accelerate"
+        APPLE_LDFLAGS=" "
+        LDFLAGS="$APPLE_LDFLAGS $LDFLAGS "
+        AC_DEFINE([HOST_DARWIN],[1], [DEFINE DARWIN])
+    ;;
+    *)              platform=UNKNOWN
+        is_unknown=yes
+        echo 'ERROR: this platform is not supported at this time!'
+        exit  ;;
+esac
+AM_CONDITIONAL(IS_DARWIN, test "$is_darwin" = "yes")
+AM_CONDITIONAL(IS_LINUX, test "$is_linux" = "yes")
+
+# add the platform to the defines string:
+defines_string=$defines_string" -D"$platform" "
+
+AC_SUBST(platform)
+AC_SUBST(defines_string)
+
+INCLUDES='-D@platform@'
+
+# Checks for programs.
+AC_PROG_CXX($tmp_CXX)
+AC_PROG_CC($tmp_CC)
+
+# to go on, figure out what our CPPFLAGS will be
+case "${host}" in
+    *-*-linux*)
+           CXXcompiler_options='-Wall -fPIC'
+           CFLAGS=$CXXcompiler_options
+    ;;
+    *-apple-darwin*)
+           CXXcompiler_options='-Wall -fno-common '
+           CFLAGS=$CXXcompiler_options
+    ;;
+esac
+
+CXXFLAGS="$CXXFLAGS $CXXcompiler_options"
+CFLAGS=$CXXFLAGS
+
+if test "$is_darwin" == "yes"; then
+ AC_SUBST([CXXLD], [g++])
+else
+ AC_SUBST([CXXLD], ['$(CXX)'])
+fi
+
+
+# Checks for header files.
+AC_HEADER_STDC
+AC_HEADER_STAT
+AC_HEADER_TIME
+AC_CHECK_HEADERS([sys/time.h \
+  stdlib.h \
+  algorithm \
+  cmath \
+  cstring \
+  fstream \
+  vector \
+  zlib.h \
+  string])
+
+# Checks for typedefs, structures, and compiler characteristics.
+AC_HEADER_STDBOOL
+AC_C_CONST
+AC_C_INLINE
+
+dnl ----------------------------------------------
+
+# Checks for library functions.
+AC_FUNC_STRTOD
+AC_CHECK_FUNCS([pow sqrt])
+AC_OUTPUT(Makefile \
+          doc/Makefile \
+		  doc/Doxyfile \
+          doc/pics/Makefile \
+          doc/local/Makefile \
+          src/Makefile \
+          apps/Makefile  \
+          tests/Makefile )
+
+dnl
+dnl Exit Message
+dnl
+
+echo "
+------------------------------------------------------------------------------
+$PACKAGE-$VERSION package configuration:
+------------------------------------------------------------------------------
+
+Directories:
+  - prefix ....... : ${prefix}
+  - docdir ....... : ${docdir}
+  - exec_prefix .. : ${exec_prefix}
+  - includedir ... : ${includedir}
+  - libdir ....... : ${libdir}
+
+Switches:
+  - debug ........ : ${debug}
+  - html ......... : ${html_doc}
+
+Documentation tools:
+  - Doxygen ...... : ${doxygen_ok}
+
+Testing tools:
+  - Diff ......... : ${diff_ok}
+
+External libs:
+  - BOOST ........ : ${boost_dir}
+  - MPI .......... : ${mpi_path}
+
+Compiler/linker flags/libs/defs:
+  - CXX .......... : ${CXX}
+  - CXXFLAGS ..... : ${CXXFLAGS}
+  - C99 OK ....... : ${c99_ok}
+  - HOST ......... : ${host}
+
+------------------------------------------------------------------------------
+Now type 'make && make install' to build and install $PACKAGE-$VERSION package
+------------------------------------------------------------------------------
+"
