@@ -1,181 +1,83 @@
 /*! \page tutorial Tutorials
-
-\section Run VinaLC 
-
-2. Input files.
-In the vina-release/build/linux/debug, there is a small test case contains input files:
-
-i) receptor
-
-file contains list of receptor file name:  recList.txt
-two receptor pdbqt files: 1KIJ_protH.pdbqt 1KIJ_protH1.pdbqt
-
-ii) ligand
-
-file contains list of ligand file name: ligList.txt
-a "data" directory contains two ligand pdbqt files:
-data/
-ligands1.pdbqt  ligands2.pdbqt
-
-iii) geometry file to save the docking grid information.
-each line is coresponding to each receptor in recList.txt.
-each line has six number where first 3 are center of active site and last 3 are grids dimension with unit of angstrom. The program will compute the num_grid_size on-the-fly by: xnum_grid_size=x_grid/granularity. granularity can be set with program option and its default value is 0.375 angstrom.
-the file is arranged as:
-x_center  y_center  z_center  x_grid  y_grid  z_grid
-x_center  y_center  z_center  x_grid  y_grid  z_grid
-....
-
-iv) The pdbqt files for receptors and ligands are prepared from their pdb file by mgltools
-(http://mgltools.scripps.edu/)
-Two python scripts in MGLTools-1.5.6rc2/MGLToolsPckgs/AutoDockTools/Utilities24/ are used
-
-for receptor
-	prepare_receptor4.py -r rec.pdb -o rec.pdbqt -A checkhydrogens
-for ligand
-	prepare_ligand4.py -l ligand.pdb
-
-3. Running program
-
-i)To run the program with slurm in debug mode:
-
-srun -N4 -n4 -c12 -ppdebug ./vina --recList recList.txt --ligList ligList.txt --geoList geoList.txt
-
--N4: 4 nodes will use
--n4: 4 tasks will  each task run on one node
--c12: 12 threads will run on each node 
--ppdebug: use debug mode
-
-ii) Vina program option:
-
-Input:
-  --recList arg              receptor list file
-  --ligList arg              ligand list file
-  --geoList arg              receptor geometry file
-  --exhaustiveness arg (=8)  exhaustiveness (default value 8) of the global 
-                             search (roughly proportional to time): 1+
-  --granularity arg (=0.375) the granularity of grids (default value 0.375)
-
-Information (optional):
-  --help                display usage summary
-
-iii) Run with different options
-
-srun -N4 -n4 -c12 ./vina --recList recList.txt --ligList ligList.txt --geoList geoList.txt --exhaustiveness 12
-srun -N4 -n4 -c12 ./vina --recList recList.txt --ligList ligList.txt --geoList geoList.txt --exhaustiveness 12 --granularity 0.333
-...
-
-options, --recList --ligList  --geoList must be specified  
-
-
-4. The programs to prepare the input PDBQT file.
-
-In the PDBQT file make sure you have MODEL and ENDMDL to mark beginning and end of the each structures/poses, even for single structure/pose.
-
-a) babel
-If you start with SDF files for the ligands, you can use the babel to convert the SDF to PDBQT directly:
-
-babel -isdf <ligand-file-name>.sdf -opdbqt <ligand-file-name>.pdbqt
-
-b) MGLTools(http://mgltools.scripps.edu/)
-The AutoDock developer team provides graphic user interface, AutoDockTools (ADT), to prepare the input files. The receptor input file MUST use ADT to convert the file format.
-
-There is a Vina video tutorial to show how to use ADT to prepare receptor, ligand, and determine the grid size that use in the program.
-
-http://vina.scripps.edu/tutorial.html
-
-An important thing to remember when calculate the grid size: 
-
-x_grid=<number of poiont in x-dimension>*spacing
-y_grid=<number of poiont in y-dimension>*spacing
-z_grid=<number of poiont in z-dimension>*spacing
-
-spacing in ADT is equal to granularity in Vina.
-
-
-5. Docking with flexible receptor/induced docking capabilities
-
-Split the receptor into two parts: rigid and flexible, with the latter 
-represented somewhat similarly to how the ligand is represented. 
-See the section "Flexible Receptor PDBQT Files" of the AutoDock4.2 
-User Guide (page 14) for how to do this in AutoDock Tools (ADT). 
-Flexibles option is used to assign these residues as flexible. 
-As with the ligand, you can choose which bonds to keep 
-rotatable by clicking on the bonds.
-
-FlexibleResidues>Output>SaveRigidPDBQT: 
-FlexibleResidues>Output>SaveFlexiblePDBQT: 
-
-these two commands launch a browser to write PDBQT files for the 
-rigid portion of the receptor and the flexible portion of the receptor. 
-Two PDBQT files will be saved for rigid and flexible portions respectively.
-
-Then, you can issue this command: 
-
-srun -N4 -n4 -c12 -ppdebug ./vina --recList rigList --ligList ligList.txt --geoList geoList.txt --fleList fleList
-
-Where --recList rigList has a list of PDBQT file names containing 
-rigid part receptors, --fleList fleList has a list of PDBQT file
-names containing rigid part receptors.
-
-[Note 1] You must make two "special" pdbqt files: one of your receptor that is  
-missing the residues that will be flexible, and one that contains the  
-flexible residues (and also contains info on what of them that you  
-wish to be flexible). It is very well explained (better than I  
-possibly can) in the AutoDock4 - ADT manual, so it is suggested that you  
-first exactly repeat the example for making those two pdbqt-files  
-(with the program ADT) as described in that manual (without actually  
-doing the docking but you may try Vina here and it will work!) and  
-thereafter you're set to do the same with your own receptor and  
-ligand. 
-
-[Note 2] From the ADL mailing list as well as the new Vina forum, It' shown
-that new dockers often are setting quite many receptor residues unnecessarily 
-as flexible. Flexibility should be kept for only those few residues that 
-really need it: too many flexibles hampers the prediction. An advise to 
-new dockers to reflect more on your receptor (say, collect all known 3D 
-structures and make a combined automatic overlap - e.g. the Swiss-PDB-viewer 
-can do this - to see where the differences are, check the b-factors of 
-suspect residues, consider the catalytic mechanism if your receptor 
-is an enzyme, ...) before deciding which few residues must remain flexible. 
-And even then you may consider to do test-dockings to possibly further 
-eliminate some flexibles that only minimally affect ligand binding. 
-Plus, the less flexibles, not only the better the prediction, but also 
-quite faster the docking, which is a very important criterion if you are 
-planning virtual screens with large number of compounds.
-
-
-6. Running large number of exhaustiveness
-
-Use the "randomize" options. An example to run the new program:
-
-srun -N6 -n6 -c12 ./vina --recList recList --ligList ligList.txt --geoList geoList.txt --randomize 1
-
-The tricky is: create multiple files of the same receptor. For example, in the recList:
-
-rec1.pdbqt
-rec2.pdbqt
-rec3.pdbqt
-rec4.pdbqt
-rec5.pdbqt
-
-They are the same structure in different file name. So you are actually running 5*12=60 MC which are equivalent to 60 exhaustiveness. And your 5 receptors can be sent to 5 slave nodes at the same time. 
-
-the same can also be done for ligList:
-lig1.pdbqt
-lig2.pdbqt
-lig3.pdbqt
-lig4.pdbqt
-lig5.pdbqt
-
-Then the total exhaustiveness is 5*5*12=300 MC.
-
-You will need to use 'pdbqt2sdf.py' script to parse the results.
-unzip the recList_ligList.txt.pdbqt.gz file
-And run
-
-pdbqt2sdf.py recList_ligList.txt.pdbqt test.sdf -model 4 -pose 20
-
-This will sort the top 4 models of all complex and save top 20 pose in the SDF file.
-You can import the SDF structures into maestro and see the Vina score on the maestro table.
-
+\htmlonly
+<html>
+<head>
+    <title>Software Installation</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+</head>
+ <body>
+    <h3>1. Quick start</h3>
+    <blockquote>
+      <h4><span style="mso-fareast-font-family:&quot;Times New Roman&quot;;mso-bidi-font-family:
+&quot;Times New Roman&quot;">1.1 Install Vina LC <o:p></o:p></span></h4>
+      <div>Download the tarball of VinaLC. Unzip<o:p></o:p></div>
+      <blockquote>
+        <div>
+          <pre>tar -zxvf VinaLC.tar.gz</pre>
+          <pre>cd VinaLC <o:p></o:p></pre>
+        </div>
+      </blockquote>
+      <div>In the VinaLC home directory, there is build script named "build".
+        Inside the file you have to set your Boost and MPI path. For example<o:p></o:p></div>
+      <blockquote>
+        <div>
+          <pre>./makeit --build --boost=/path/to/boost/installation/directory --mpi=/path/to/mpi/installation/directory<o:p></o:p></pre>
+        </div>
+      </blockquote>
+      <div>This will configure the program and subsequently compile the
+        executable. The executable, vinalc, can be found under the apps
+        subdirectory.<br />
+        <br />
+        <h4>1.2 Run VinaLC</h4>
+        <p>To run the program with slurm in debug mode: </p>
+        <blockquote>
+          <pre>srun -N4 -n4 -c12 -ppdebug ./vina --recList recList.txt --ligList ligList.txt --geoList geoList.txt</pre>
+        </blockquote>
+        <p>-N4: 4 nodes will use -n4: 4 tasks will each task run on one node
+          -c12: 12 threads will run on each node -ppdebug: use debug mode</p>
+        <p>1.2.2. Vina program option:</p>
+        <blockquote>
+<pre>
+-----------------------------------------------------------------------------------------------------
+            Correct usage:
+            
+            Input:
+              --recList arg                       receptor list file
+              --fleList arg                       flex part receptor list file
+              --ligList arg                       ligand list file
+              --geoList arg                      receptor geometry file
+              --exhaustiveness arg (=8)  exhaustiveness (default value 8) of the
+            global 
+                                                         search (roughly
+            proportional to time): 1+
+              --granularity arg (=0.375)  the granularity of grids (default
+            value 0.375)
+              --num_modes arg (=9)       maximum number (default value 9) of
+            binding modes 
+                                                         to generate
+              --seed arg                           explicit random seed
+              --randomize arg                 Use different random seeds for
+            complex
+              --energy_range arg (=2)    maximum energy difference (default
+            value 2.0) 
+                                                        between the best binding
+            mode and the worst one 
+                                                        displayed (kcal/mol)
+            
+            Information (optional):
+              --help                display usage summary
+-----------------------------------------------------------------------------------------------------
+            </pre>
+        </blockquote>
+        <h4>1.3. Run with different options</h4>
+        <blockquote>
+          <pre>srun -N4 -n4 -c12 ./vinalc –recList recList.txt –ligList ligList.txt
+            –geoList geoList.txt –exhaustiveness 12 <br />srun -N4 -n4 -c12 ./vinalc –recList recList.txt –ligList ligList.txt <br />	    –geoList geoList.txt –exhaustiveness 12 –granularity 0.333 ...</pre>
+        </blockquote>
+        <strong><em>Options, –recList –ligList –geoList are required to be
+            specified. </em></strong></div>
+    </blockquote>
+    <p></p>
+  </body>
+  \endhtmlonly
 */

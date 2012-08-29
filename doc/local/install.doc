@@ -7,52 +7,254 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 </head>
 
-<body>
-<h3>1. VinaLC Installation Requirements:</h3>
-<blockquote>
-  <h4>Supported Operating systems</h4>
-  <ul>
-    <li>Linux</li>
-    <li>Mac OSX</li>
-  </ul>
-  <h4>Software Requirements</h4>
-  <ul>
-    <li>gcc</li>
-    <li>make</li>
-    <li>aclocal/automake/autoconf</li>
-  </ul>
-</blockquote>
-<h3>2. Dependent Libraries </h3>
-<blockquote>
-  <p>The program relies on the user having the following installed. </p>
-  <ul>
-    <li><a href="http://www.boost.org/">BOOST</a></li>
-    <li><a href="http://www.mcs.anl.gov/research/projects/mpi/">MPI </a></li>
-  </ul>
-  <p>The following are required to generate the html documentation. </p>
-  <ul>
-    <li><a href="http://www.stack.nl/~dimitri/doxygen/">Doxygen</a></li>
-  </ul>
-</blockquote>
-<h3>3. Environment Variables</h3>
-<blockquote>
-<pre>setenv PATH etc</pre>
-</blockquote>
-<h3>4. VinaLC Configuration, Compilation and Installation </h3>
-<blockquote>
-  <p>This source code is configured to run on LLNL LC machines. </p>
-  <h4>i)Install Boost library </h4>
-  <p>to install Boost library please follow the step in the Boost document. </p>
-<pre>./bootstrap.sh --prefix=path/to/installation/prefix<br />./b2 install </pre>
-  <p>Beside the standard installation, Boost MPI binding also need to be turn on. copy tools/build/v2/user-config.jam to your home directory. In the file specify the mpi compiler you want to use:</p>
-  <pre>using mpi : /usr/local/tools/mvapich-gnu/bin/mpicxx ; </pre>
-  <h4>ii) Install Vina LC </h4>
-  <p>Download the tarball of VinaLC. Unzip</p>
-  <pre>tar -zxvf VinaLC.tar.gz<br />cd VinaLC </pre>
-  <p>In the VinaLC home directory, there is build script named &quot;build&quot;. Inside the file you have to set your Boost and MPI path. For example</p>  
-  <pre>./makeit --build --boost=/opt/boost/ --mpi=/opt/openmpi/</pre>
-<p>This will configure the program and subsequently compile the executable. The executable, vinalc, can be found under the apps subdirectory.</p><br>
-</blockquote>
-</body>
+  <body>
+    <p>
+      <!--StartFragment-->
+    </p>
+    <h3><span style="mso-fareast-font-family:&quot;Times New Roman&quot;;mso-bidi-font-family:
+&quot;Times New Roman&quot;">1. VinaLC Installation Requirements:<o:p></o:p></span><span
+        style="mso-fareast-font-family:&quot;Times New Roman&quot;;mso-bidi-font-family:
+&quot;Times New Roman&quot;"></span></h3>
+    <blockquote>
+      <div><span style="mso-fareast-font-family:&quot;Times New Roman&quot;;mso-bidi-font-family:
+&quot;Times New Roman&quot;">1.1. Supported Operating systems<o:p></o:p></span></div>
+      <ul type="disc">
+        <li style="mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l2 level1 lfo1;tab-stops:list .5in" class="MsoNormal">
+          <div><span style="mso-fareast-font-family:
+     &quot;Times New Roman&quot;;mso-bidi-font-family:&quot;Times New Roman&quot;">Linux</span></div>
+        </li>
+        <li style="mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l2 level1 lfo1;tab-stops:list .5in" class="MsoNormal"><span style="mso-fareast-font-family:
+     &quot;Times New Roman&quot;;mso-bidi-font-family:&quot;Times New Roman&quot;">IBM
+            BG/Q<br />
+          </span></li>
+        <li style="mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l2 level1 lfo1;tab-stops:list .5in" class="MsoNormal">
+          <div><span style="mso-fareast-font-family:
+     &quot;Times New Roman&quot;;mso-bidi-font-family:&quot;Times New Roman&quot;">Mac
+              OSX<o:p></o:p></span></div>
+        </li>
+      </ul>
+      <div><span style="mso-fareast-font-family:&quot;Times New Roman&quot;;mso-bidi-font-family:
+&quot;Times New Roman&quot;">1.2. Software Requirements<o:p></o:p></span></div>
+      <ul type="disc">
+        <li style="mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l1 level1 lfo2;tab-stops:list .5in" class="MsoNormal">
+          <div><span style="mso-fareast-font-family:
+     &quot;Times New Roman&quot;;mso-bidi-font-family:&quot;Times New Roman&quot;">gcc<o:p></o:p></span></div>
+        </li>
+        <li style="mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l1 level1 lfo2;tab-stops:list .5in" class="MsoNormal">
+          <div><span style="mso-fareast-font-family:
+     &quot;Times New Roman&quot;;mso-bidi-font-family:&quot;Times New Roman&quot;">make<o:p></o:p></span></div>
+        </li>
+        <li style="mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l1 level1 lfo2;tab-stops:list .5in" class="MsoNormal">
+          <div><span style="mso-fareast-font-family:
+     &quot;Times New Roman&quot;;mso-bidi-font-family:&quot;Times New Roman&quot;">aclocal/automake/autoconf<o:p></o:p></span></div>
+        </li>
+      </ul>
+    </blockquote>
+    <h3><span style="mso-fareast-font-family:&quot;Times New Roman&quot;;mso-bidi-font-family:
+&quot;Times New Roman&quot;">2. Dependent Libraries <o:p></o:p></span></h3>
+    <blockquote>
+      <div>2.1. The program relies on the user having the following installed. <o:p></o:p></div>
+      <ul type="disc">
+        <li style="mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l3 level1 lfo3;tab-stops:list .5in" class="MsoNormal">
+          <div><span style="mso-fareast-font-family:
+     &quot;Times New Roman&quot;;mso-bidi-font-family:&quot;Times New Roman&quot;"><a
+                href="http://www.boost.org/">BOOST</a><o:p></o:p></span></div>
+        </li>
+        <li style="mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l3 level1 lfo3;tab-stops:list .5in" class="MsoNormal">
+          <div><span style="mso-fareast-font-family:
+     &quot;Times New Roman&quot;;mso-bidi-font-family:&quot;Times New Roman&quot;"><a
+                href="http://www.mcs.anl.gov/research/projects/mpi/">MPI
+                <br /></a></span></div>
+        </li>
+        <li style="mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l3 level1 lfo3;tab-stops:list .5in" class="MsoNormal"><span style="mso-fareast-font-family:
+     &quot;Times New Roman&quot;;mso-bidi-font-family:&quot;Times New Roman&quot;"><a
+              href="http://www.zlib.net/">zlib</a>
+            (usually included in the system. Sequoia currently has no zlib.)<br />
+          </span></li>
+      </ul>
+      <div>2.2. The following are required to generate the HTML documentation. <o:p></o:p></div>
+      <ul type="disc">
+        <li style="mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;
+     mso-list:l0 level1 lfo4;tab-stops:list .5in" class="MsoNormal">
+          <div><span style="mso-fareast-font-family:
+     &quot;Times New Roman&quot;;mso-bidi-font-family:&quot;Times New Roman&quot;"><a
+                href="http://www.stack.nl/%7Edimitri/doxygen/">Doxygen</a><o:p></o:p></span></div>
+        </li>
+      </ul>
+    </blockquote>
+    <h3><span style="mso-fareast-font-family:&quot;Times New Roman&quot;;mso-bidi-font-family:
+&quot;Times New Roman&quot;">3. Environment Variables<o:p></o:p></span></h3>
+    <blockquote>
+      <blockquote>
+        <pre></pre>
+      </blockquote>
+      Check the environment variables setting on your computer to make sure also
+      required executables are in the PATH and library in the LD_LIBRARY_PATH<br />
+      <blockquote>
+        <pre>setenv PATH, LD_LIBRARY_PATH etc<o:p></o:p></pre>
+      </blockquote>
+    </blockquote>
+    <h3><span style="mso-fareast-font-family:&quot;Times New Roman&quot;;mso-bidi-font-family:
+&quot;Times New Roman&quot;">4. VinaLC Configuration, Compilation and
+        Installation <o:p></o:p></span></h3>
+    <blockquote>
+      <div>
+        <h4><span style="mso-fareast-font-family:&quot;Times New Roman&quot;;mso-bidi-font-family:
+&quot;Times New Roman&quot;">4.1. Install Boost library <o:p></o:p></span></h4>
+      </div>
+      <div>For most of computer operation systems, installation of Boost library
+        is straight forward. Please follow the steps in the Boost document. <o:p></o:p></div>
+      <blockquote>
+        <div>
+          <pre>./bootstrap.sh --prefix=path/to/installation/prefix</pre>
+          <pre>
+./b2 install <o:p></o:p></pre>
+        </div>
+      </blockquote>
+      <div>Beside the standard installation, you can also turn on the Boost MPI
+        binding. Currently the program uses MPI library directly instead of
+        Boost MPI.  To install Boost MPI, copy tools/build/v2/user-config.jam to
+        your home directory. In the file specify
+        the mpi compiler you want to use:<o:p></o:p></div>
+      <blockquote>
+        <div>
+          <pre>using mpi : /usr/local/tools/mvapich-gnu/bin/mpicxx ; <br /></pre>
+        </div>
+      </blockquote>
+      Boost library on Sequoia ''seq" (BG/Q): IBM has customized version boost
+      library. However, they has not been installed on seq yet. Ryan Day from
+      LC-support make a customized version of Boost. It can be found at gapps
+      space:<br />
+      <blockquote>
+        <pre>/usr/gapps/medchem/bgq/softwares/boost_bgq_new.tar.gz<br /></pre>
+      </blockquote>
+      Untar the file boost_bgq_new.tar.gz :<br />
+      <blockquote>
+        <pre>cd ~/boost_bgq/boost_1_48_0</pre>
+      </blockquote>
+      Note that  ~/boost_bgq/boost_1_48_0/boost/integer_traits.hpp has been
+      edited in order to get rid of compiler warning that WCHAR_MIN had wrapped.
+      Change WCHAR_MIN on line 105 of integer_traits.hpp to 0<br />
+      <blockquote>
+        <pre>./bootstrap.sh --prefix=/usr/gapps/medchem/bgq/contrib/ --with-toolset=vacpp --with-libraries=system,thread,serialization,filesystem,program_options,mpi &gt;&amp; boostrap1.log</pre>
+      </blockquote>
+      In here boost_1_48_0/tools/build/v2/tools/bgq.jam and
+      boost_1_48_0/tools/build/v2/user-config.jam have been edit to point at the
+      appropriate toolsets and compiler wrappers<br />
+      <blockquote>
+        <pre>./b2 --build-type=complete  toolset=bgq stage &gt;&amp; b2.stage.log</pre>
+        <pre>./b2 --build-type=complete  toolset=bgq install &gt;&amp; b2.install.log                                                                         <br /></pre>
+      </blockquote>
+      <div>
+        <h4>4.2. MPI library</h4>
+        <p>Most supercomputers come with their own tuned MPI libraries. For the
+          HPC machines at LLNL, please check the document at <br />
+        </p>
+        <blockquote>
+          <pre>/usr/local/docs<br /></pre>
+        </blockquote>
+        "mpi.basics" tells you which pre-installed MPI libraries are available
+        on the machines. "dotkit.quickstart" tell you how to switch between
+        different versions. <br />
+        <br />
+        If you want to install your own MPI library, there are several
+        distribution available: mpich, openmpi, LAM, etc. <br />
+      </div>
+      <blockquote>
+        <div>
+          <pre><o:p></o:p></pre>
+        </div>
+      </blockquote>
+      <div>
+        <h4><span style="mso-fareast-font-family:&quot;Times New Roman&quot;;mso-bidi-font-family:
+&quot;Times New Roman&quot;">4.3. Install Vina LC <o:p></o:p></span></h4>
+      </div>
+      <div>Download the tarball of VinaLC. Unzip<o:p></o:p></div>
+      <blockquote>
+        <div>
+          <pre>tar -zxvf VinaLC.tar.gz</pre>
+          <pre>
+cd VinaLC <o:p></o:p></pre>
+        </div>
+      </blockquote>
+      <div>In the VinaLC home directory, there is build script named "build".
+        Inside the file you have to set your Boost and MPI path. For example<o:p></o:p></div>
+      <blockquote>
+        <div>
+          <pre>./makeit --build --boost=/path/to/boost/installation/directory --mpi=/path/to/mpi/installation/directory<o:p></o:p></pre>
+        </div>
+      </blockquote>
+      <div>This will configure the program and subsequently compile the
+        executable. The
+        executable, vinalc, can be found under the apps subdirectory.<br />
+        <br />
+        To find the path of MPI on LC HPC machine, for example, if you use
+        mpig++,<br />
+        <blockquote>
+          <pre>$ mpig++ -show </pre>
+          <pre><br />Build Line:</pre>
+          <pre>g++ -Wl,-rpath,/usr/local/tools/mvapich-gnu/lib/shared -DUSE_STDARG -DHAVE_STDLIB_H=1 -DHAVE_STRING_H=1 <br /> -DHAVE_UNISTD_H=1 -DHAVE_STDARG_H=1 -DUSE_STDARG=1 -DMALLOC_RET_VOID=1 <br />-I/usr/local/tools/mvapich-gnu/include -L/usr/local/tools/mvapich-gnu/lib/shared <br /> -L/usr/lib64 -L/usr/local/tools/mvapich-gnu/lib -lmpich</pre>
+        </blockquote>
+        <o:p></o:p></div>
+    </blockquote>
+    <blockquote>
+      <p class="MsoNormal"><span style="mso-fareast-font-family:&quot;Times New Roman&quot;;
+mso-bidi-font-family:&quot;Times New Roman&quot;"><o:p>Thus your MPI
+            installation directory is: </o:p></span><br />
+      </p>
+      <blockquote>
+        <pre>/usr/local/tools/mvapich-gnu/<br /></pre>
+      </blockquote>
+      During the compilation, the configuration information will be printed out
+      as following. Please make sure the setting is right. <br />
+      <br />
+      <blockquote>------------------------------------------------------------------------------<br />
+        VinaLC-1.1.2 package configuration:<br />
+------------------------------------------------------------------------------<br />
+        <br />
+        Directories:<br />
+          - prefix ....... : /usr/local<br />
+          - docdir ....... : NONE/doc<br />
+          - exec_prefix .. : ${prefix}<br />
+          - includedir ... : ${prefix}/include<br />
+          - libdir ....... : ${exec_prefix}/lib<br />
+        <br />
+        Switches:<br />
+          - debug ........ : Off <br />
+          - html ......... : no<br />
+        <br />
+        Documentation tools:<br />
+          - Doxygen ...... : yes<br />
+        <br />
+        Testing tools:<br />
+          - Diff ......... : <br />
+        <br />
+        External libs:<br />
+          - BOOST ........ : /usr/gapps/medchem/contrib/boost<br />
+          - MPI .......... : /usr/local/tools/mvapich-gnu/<br />
+        <br />
+        Compiler/linker flags/libs/defs:<br />
+          - CXX .......... : g++<br />
+          - CXXFLAGS ..... :  -DUSE_MPI -O2 -DNDEBUG  -Wall -fPIC<br />
+          - C99 OK ....... : <br />
+          - HOST ......... : x86_64-unknown-linux-gnu<br />
+        <br />
+------------------------------------------------------------------------------<br />
+        Now type 'make &amp;&amp; make install' to build and install
+        VinaLC-1.1.2 package<br />
+------------------------------------------------------------------------------</blockquote>
+      <br />
+    </blockquote>
+    <!--EndFragment-->
+  </body>
 \endhtmlonly
 */

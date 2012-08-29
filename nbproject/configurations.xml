@@ -3,8 +3,6 @@
   <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
     <df name="VinaLC" root=".">
       <df name="apps">
-        <df name=".libs">
-        </df>
         <in>docking.cpp</in>
         <in>docking.h</in>
         <in>main.cpp</in>
@@ -19,121 +17,7 @@
         <df name="pics">
         </df>
       </df>
-      <df name="lib">
-        <in>array3d.h</in>
-        <in>atom.h</in>
-        <in>atom_base.h</in>
-        <in>atom_constants.h</in>
-        <in>atom_type.h</in>
-        <in>bfgs.h</in>
-        <in>brick.h</in>
-        <in>cache.h</in>
-        <in>common.h</in>
-        <in>conf.h</in>
-        <in>convert_substring.h</in>
-        <in>coords.h</in>
-        <in>curl.h</in>
-        <in>current_weights.h</in>
-        <in>everything.h</in>
-        <in>file.h</in>
-        <in>grid.h</in>
-        <in>grid_dim.h</in>
-        <in>gzstream.h</in>
-        <in>igrid.h</in>
-        <in>incrementable.h</in>
-        <in>int_pow.h</in>
-        <in>macros.h</in>
-        <in>manifold.h</in>
-        <in>matrix.h</in>
-        <in>model.h</in>
-        <in>monte_carlo.h</in>
-        <in>mutate.h</in>
-        <in>my_pid.h</in>
-        <in>naive_non_cache.h</in>
-        <in>non_cache.h</in>
-        <in>parallel.h</in>
-        <in>parallel_mc.h</in>
-        <in>parallel_progress.h</in>
-        <in>parse_error.h</in>
-        <in>parse_pdbqt.h</in>
-        <in>pdb.h</in>
-        <in>precalculate.h</in>
-        <in>quasi_newton.h</in>
-        <in>quaternion.h</in>
-        <in>random.h</in>
-        <in>recent_history.h</in>
-        <in>scoring_function.h</in>
-        <in>ssd.h</in>
-        <in>statistics.h</in>
-        <in>szv_grid.h</in>
-        <in>tee.h</in>
-        <in>terms.h</in>
-        <in>tokenize.h</in>
-        <in>tree.h</in>
-        <in>triangular_matrix_index.h</in>
-        <in>weighted_terms.h</in>
-      </df>
       <df name="src">
-        <df name="apps">
-          <in>docking.h</in>
-          <in>mpiparser.h</in>
-        </df>
-        <df name="lib">
-          <in>array3d.h</in>
-          <in>atom.h</in>
-          <in>atom_base.h</in>
-          <in>atom_constants.h</in>
-          <in>atom_type.h</in>
-          <in>bfgs.h</in>
-          <in>brick.h</in>
-          <in>cache.h</in>
-          <in>common.h</in>
-          <in>conf.h</in>
-          <in>convert_substring.h</in>
-          <in>coords.h</in>
-          <in>curl.h</in>
-          <in>current_weights.h</in>
-          <in>everything.h</in>
-          <in>file.h</in>
-          <in>grid.h</in>
-          <in>grid_dim.h</in>
-          <in>gzstream.h</in>
-          <in>igrid.h</in>
-          <in>incrementable.h</in>
-          <in>int_pow.h</in>
-          <in>macros.h</in>
-          <in>manifold.h</in>
-          <in>matrix.h</in>
-          <in>model.h</in>
-          <in>monte_carlo.h</in>
-          <in>mutate.h</in>
-          <in>my_pid.h</in>
-          <in>naive_non_cache.h</in>
-          <in>non_cache.h</in>
-          <in>parallel.h</in>
-          <in>parallel_mc.h</in>
-          <in>parallel_progress.h</in>
-          <in>parse_error.h</in>
-          <in>parse_pdbqt.h</in>
-          <in>pdb.h</in>
-          <in>precalculate.h</in>
-          <in>quasi_newton.h</in>
-          <in>quaternion.h</in>
-          <in>random.h</in>
-          <in>recent_history.h</in>
-          <in>scoring_function.h</in>
-          <in>ssd.h</in>
-          <in>szv_grid.h</in>
-          <in>terms.h</in>
-          <in>tokenize.h</in>
-          <in>tree.h</in>
-          <in>triangular_matrix_index.h</in>
-          <in>weighted_terms.h</in>
-        </df>
-        <df name="main">
-          <in>docking.h</in>
-          <in>mpiparser.h</in>
-        </df>
         <in>array3d.h</in>
         <in>atom.h</in>
         <in>atom_base.h</in>

@@ -29,5 +29,6 @@
 /tests/Makefile.in
 /apps/vinalc
 /doc/Doxyfile
+/doc/html/
 /src/Makefile
 /src/Makefile.in
