@@ -5,13 +5,18 @@
       <df name="apps">
         <in>docking.cpp</in>
         <in>docking.h</in>
-        <in>main.cpp</in>
+        <in>mainProcedure.cpp</in>
+        <in>mainProcedure.h</in>
         <in>mpiparser.cpp</in>
         <in>mpiparser.h</in>
+        <in>vina.cpp</in>
+        <in>vinalc.cpp</in>
       </df>
       <df name="autom4te.cache">
       </df>
       <df name="doc">
+        <df name="html">
+        </df>
         <df name="local">
         </df>
         <df name="pics">

@@ -19,8 +19,8 @@ dnl AM_DISABLE_SHARED
 AM_PROG_LIBTOOL
 AC_SUBST(LIBTOOL_DEPS)
 
-CFLAGS=" -ansi -Wno-long-long "
-CXXFLAGS=" -ansi -Wno-long-long "
+#CFLAGS=" -ansi -Wno-long-long "
+#CXXFLAGS=" -ansi -Wno-long-long "
 
 
 dnl ----------------------------------------------------------------------------
@@ -185,11 +185,11 @@ AC_PROG_CC($tmp_CC)
 # to go on, figure out what our CPPFLAGS will be
 case "${host}" in
     *-*-linux*)
-           CXXcompiler_options='-Wall -fPIC'
+           CXXcompiler_options=' -ansi -Wno-long-long -fPIC'
            CFLAGS=$CXXcompiler_options
     ;;
     *-apple-darwin*)
-           CXXcompiler_options='-Wall -fno-common '
+           CXXcompiler_options=' -ansi -Wno-long-long -fno-common '
            CFLAGS=$CXXcompiler_options
     ;;
 esac

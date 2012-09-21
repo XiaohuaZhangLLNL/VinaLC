@@ -8,8 +8,6 @@
 #ifndef DOCKING_H
 #define	DOCKING_H
 
-#ifdef USE_MPI
-
 struct JobInputData{
     bool flexible;
     bool randomize;
@@ -36,13 +34,6 @@ struct JobOutData{
 
 int dockjob(JobInputData& jobInput, JobOutData& jobOut);
 
-#endif
-
-struct usage_error : public std::runtime_error {
-
-    usage_error(const std::string & message) : std::runtime_error(message) {
-    }
-};
 
 #endif	/* DOCKING_H */
 

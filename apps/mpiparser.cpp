@@ -27,14 +27,11 @@
 #include "tokenize.h"
 
 
-#ifdef USE_MPI
 #include <mpi.h>
 #include "docking.h"
 #include "mpiparser.h"
-#endif
+#include "mainProcedure.h"
 
-
-#ifdef USE_MPI
 
 void saveStrList(std::string& fileName, std::vector<std::string>& strList){
     std::ifstream inFile;
@@ -250,4 +247,3 @@ Thank you!\n";
     return 0;
 }
 
-#endif
