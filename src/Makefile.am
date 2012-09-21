@@ -1,4 +1,3 @@
-CFLAGS = -Wall 
 
 if USE_MPI
 INCLUDES = -I$(top_srcdir)/src -I@boost_dir@/include -I/@mpi_path@/include
@@ -12,9 +11,14 @@ if USE_MPI
 MPI_LIB= -L/@mpi_path@/lib/ -lmpi -lmpi_cxx
 endif
 
+if USE_MPI
+lib_LTLIBRARIES = libVinaLC.la
+else
 lib_LTLIBRARIES = libVina.la
+endif
 
-libVina_la_SOURCES = \
+
+SOURCEFILES= \
 cache.cpp \
 coords.cpp \
 current_weights.cpp \
@@ -40,9 +44,8 @@ szv_grid.cpp \
 terms.cpp \
 weighted_terms.cpp 
 
-libVinaincludedir = $(includedir)/
 
-libVinainclude_HEADERS = \
+HEADFILES= \
 array3d.h \
 atom.h \
 atom_base.h \
@@ -95,4 +98,15 @@ tokenize.h \
 tree.h \
 triangular_matrix_index.h \
 weighted_terms.h 
+
+if USE_MPI
+libVinaLC_la_SOURCES = $(SOURCEFILES)
+libVinaLCincludedir = $(includedir)/
+libVinaLCinclude_HEADERS = $(HEADFILES)
+else
+libVina_la_SOURCES = $(SOURCEFILES)
+libVinaincludedir = $(includedir)/
+libVinainclude_HEADERS = $(HEADFILES)
+endif
+
 
