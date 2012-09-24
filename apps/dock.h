@@ -1,5 +1,5 @@
 /* 
- * File:   docking.h
+ * File:   dock.h
  * Author: zhang30
  *
  * Created on August 14, 2012, 1:53 PM
@@ -29,7 +29,7 @@ struct JobInputData{
 
 struct JobOutData{       
     char log[1000];
-    char poses[100000];
+    char poses[1000000];
 };
 
 int dockjob(JobInputData& jobInput, JobOutData& jobOut);

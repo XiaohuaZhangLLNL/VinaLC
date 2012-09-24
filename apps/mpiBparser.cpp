@@ -28,8 +28,8 @@
 
 
 #include <mpi.h>
-#include "dock.h"
-#include "mpiparser.h"
+#include "dockBMPI.h"
+#include "mpiBparser.h"
 #include "mainProcedure.h"
 
 

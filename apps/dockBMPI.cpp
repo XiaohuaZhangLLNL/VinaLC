@@ -48,7 +48,7 @@
 //#include "tee.h"
 #include "coords.h" // add_to_output_container
 #include "tokenize.h"
-#include "docking.h"
+#include "dockBMPI.h"
 
 
 #include "mainProcedure.h"
@@ -136,8 +136,11 @@ int dockjob(JobInputData& jobInput, JobOutData& jobOut){
                 gd, exhaustiveness,
                 weights,
                 cpu, seed, verbosity, max_modes_sz, energy_range, log);
-        strcpy(jobOut.log, log.str().c_str());
-        strcpy(jobOut.poses, out_name.str().c_str());
+        
+        jobOut.log=log.str();
+        jobOut.poses=out_name.str();
+//        strcpy(jobOut.log, log.str().c_str());
+//        strcpy(jobOut.poses, out_name.str().c_str());
         
     } catch (file_error& e) {
         std::cerr << "\n\nError: could not open \"" << e.name.string() << "\" for " << (e.in ? "reading" : "writing") << ".\n";

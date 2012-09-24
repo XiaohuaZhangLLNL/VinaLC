@@ -28,11 +28,18 @@
 #include <stack>
 #include <vector> // ligand paths
 #include <cmath> // for ceila
+
 #include <boost/program_options.hpp>
 #include <boost/filesystem/fstream.hpp>
 #include <boost/filesystem/exception.hpp>
 #include <boost/filesystem/convenience.hpp> // filesystem::basename
 #include <boost/thread/thread.hpp> // hardware_concurrency // FIXME rm ?
+#include <boost/timer.hpp>
+
+#include <boost/mpi.hpp>
+#include <boost/mpi/environment.hpp>
+#include <boost/mpi/communicator.hpp>
+
 #include "parse_pdbqt.h"
 #include "parallel_mc.h"
 #include "file.h"
@@ -49,12 +56,10 @@
 #include "coords.h" // add_to_output_container
 #include "tokenize.h"
 
+#include "dockBMPI.h"
+#include "mpiBparser.h"
 
-#include <mpi.h>
-#include <dock.h>
-#include <mpiparser.h>
-
-
+namespace mpi = boost::mpi;
 
 inline void geometry(JobInputData& jobInput, std::vector<double>& geo){
 //    const fl granularity = 0.375;
@@ -71,14 +76,10 @@ inline void geometry(JobInputData& jobInput, std::vector<double>& geo){
 
 int main(int argc, char* argv[]) {
 
-    int nproc, rank, rc;
-
     int jobFlag=1; // 1: doing job,  0: done job
     
     JobInputData jobInput;
     JobOutData jobOut;
-    
-    MPI_Status status1, status2;
         
     int rankTag=1;
     int jobTag=2;
@@ -88,19 +89,12 @@ int main(int argc, char* argv[]) {
     int inpTag=3;
     int outTag=4;
 
-    rc = MPI_Init(&argc, &argv);
-    if (rc != MPI_SUCCESS) {
-        std::cerr << "Error starting MPI program. Terminating.\n";
-        MPI_Abort(MPI_COMM_WORLD, rc);
-    }
-
-    MPI_Comm_size(MPI_COMM_WORLD, &nproc);
-    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+    mpi::timer runingTime;
     
-//    MPI_Barrier(MPI_COMM_WORLD);
-    double time=MPI_Wtime();
+    mpi::environment env(argc, argv);
+    mpi::communicator world;    
 
-    if (nproc < 2) {
+    if (world.size() < 2) {
         std::string recFile;
         std::string fleFile;
         std::string ligFile;      
@@ -113,10 +107,10 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
-    std::cout << "Number of tasks= " << nproc << " My rank= " << rank << std::endl;
+    std::cout << "Number of tasks= " << world.size() << " My rank= " << world.rank() << std::endl;
 
-    if (rank == 0) {
-        std::cout << "Master Node: " << nproc << " My rank= " << rank << std::endl;
+    if (world.rank() == 0) {
+        std::cout << "Master Node: " << world.size() << " My rank= " << world.rank() << std::endl;
         std::string recFile;
         std::string fleFile;
         std::string ligFile;      
@@ -188,29 +182,36 @@ int main(int argc, char* argv[]) {
                
                         ++count;
                         ++ligcount;
-                        if(count >nproc-1){
-                            MPI_Recv(&jobOut, sizeof(JobOutData), MPI_CHAR, MPI_ANY_SOURCE, outTag, MPI_COMM_WORLD, &status2);
+                        if(count >world.size()-1){
+//                            MPI_Recv(&jobOut, sizeof(JobOutData), MPI_CHAR, MPI_ANY_SOURCE, outTag, MPI_COMM_WORLD, &status2);
+                            world.recv(mpi::any_source, outTag, jobOut);
                             logFile << jobOut.log << std::endl;
                             outFile << jobOut.poses << std::endl;
                         }                  
                         int freeProc;
-                        MPI_Recv(&freeProc, 1, MPI_INTEGER, MPI_ANY_SOURCE, rankTag, MPI_COMM_WORLD, &status1);
-                        MPI_Send(&jobFlag, 1, MPI_INTEGER, freeProc, jobTag, MPI_COMM_WORLD); 
+//                        MPI_Recv(&freeProc, 1, MPI_INTEGER, MPI_ANY_SOURCE, rankTag, MPI_COMM_WORLD, &status1);
+                        world.recv(mpi::any_source, rankTag, freeProc);
+//                        MPI_Send(&jobFlag, 1, MPI_INTEGER, freeProc, jobTag, MPI_COMM_WORLD); 
+                        world.send(freeProc, jobTag, jobFlag);
                         // Start to send parameters                        
                         std::stringstream ligName;
                         ligName << "LIGAND " << ligcount;
-                        strcpy(jobInput.ligBuffer, ligName.str().c_str());
-                        strcpy(jobInput.ligFile, ss.str().c_str());
-        //                MPI_Send(ligBuffer, 100, MPI_CHAR, freeProc, ligTag, MPI_COMM_WORLD);  
-                        strcpy(jobInput.recBuffer, recList[i].c_str());
+//                        strcpy(jobInput.ligBuffer, ligName.str().c_str());
+//                        strcpy(jobInput.ligFile, ss.str().c_str()); 
+//                        strcpy(jobInput.recBuffer, recList[i].c_str());
+                        jobInput.ligBuffer=ligName.str();
+                        jobInput.ligFile=ss.str();
+                        jobInput.recBuffer=recList[i];
+                                
                         if(jobInput.flexible){
-                                strcpy(jobInput.fleBuffer, fleList[i].c_str());
+//                                strcpy(jobInput.fleBuffer, fleList[i].c_str());
+                            jobInput.fleBuffer=fleList[i];
                         }
                         
                         std::cout << "At Process: " << freeProc << " working on  Ligand: " << ligName.str() << "  receptor: " <<  recList[i] << std::endl;
-        //                MPI_Send(recBuffer, 100, MPI_CHAR, freeProc, recTag, MPI_COMM_WORLD);
-        //                MPI_Send(geometry, 6, MPI_DOUBLE, freeProc, geoTag, MPI_COMM_WORLD);
-                        MPI_Send(&jobInput, sizeof(JobInputData), MPI_CHAR, freeProc, inpTag, MPI_COMM_WORLD);
+
+//                        MPI_Send(&jobInput, sizeof(JobInputData), MPI_CHAR, freeProc, inpTag, MPI_COMM_WORLD);
+                        world.send(freeProc, inpTag, jobInput);
 
                     }else {
                         ss << fileLine << std::endl;
@@ -230,11 +231,12 @@ int main(int argc, char* argv[]) {
 //        logFile.open(logFName.c_str(), std::ios::app);
 //        outFile.open(outFName.c_str(), std::ios::app);
         int nJobs=count;
-        int ndata=(nJobs<nproc-1)? nJobs: nproc-1;
+        int ndata=(nJobs<world.size()-1)? nJobs: world.size()-1;
         std::cout << "ndata=" << ndata << " nJobs=" << nJobs << std::endl;
     
         for(unsigned i=0; i < ndata; ++i){
-            MPI_Recv(&jobOut, sizeof(JobOutData), MPI_CHAR, MPI_ANY_SOURCE, outTag, MPI_COMM_WORLD, &status2);
+//            MPI_Recv(&jobOut, sizeof(JobOutData), MPI_CHAR, MPI_ANY_SOURCE, outTag, MPI_COMM_WORLD, &status2);
+            world.recv(mpi::any_source, outTag, jobOut);
             logFile << jobOut.log << std::endl;
             outFile << jobOut.poses << std::endl;
         }
@@ -242,36 +244,38 @@ int main(int argc, char* argv[]) {
         outFile.close();
        
         
-        for(unsigned i=1; i < nproc; ++i){
+        for(unsigned i=1; i < world.size(); ++i){
             int freeProc;
-            MPI_Recv(&freeProc, 1, MPI_INTEGER, MPI_ANY_SOURCE, rankTag, MPI_COMM_WORLD, &status1);
-            jobFlag=0;;
-            MPI_Send(&jobFlag, 1, MPI_INTEGER, freeProc, jobTag, MPI_COMM_WORLD);            
+//            MPI_Recv(&freeProc, 1, MPI_INTEGER, MPI_ANY_SOURCE, rankTag, MPI_COMM_WORLD, &status1);
+            world.recv(mpi::any_source, rankTag, freeProc);
+            jobFlag=0;
+//            MPI_Send(&jobFlag, 1, MPI_INTEGER, freeProc, jobTag, MPI_COMM_WORLD); 
+            world.send(freeProc, jobTag, jobFlag);
         }
 
     } else {
         while (1) {
-            MPI_Send(&rank, 1, MPI_INTEGER, 0, rankTag, MPI_COMM_WORLD);
-            MPI_Recv(&jobFlag, 20, MPI_CHAR, 0, jobTag, MPI_COMM_WORLD, &status2);
+//            MPI_Send(&rank, 1, MPI_INTEGER, 0, rankTag, MPI_COMM_WORLD);
+            world.send(0, rankTag, world.rank());
+//            MPI_Recv(&jobFlag, 20, MPI_CHAR, 0, jobTag, MPI_COMM_WORLD, &status2);
+            world.recv(0, jobTag, jobFlag);
             if (jobFlag==0) {
                 break;
             }
             // Receive parameters
-//            MPI_Recv(ligBuffer, 100, MPI_CHAR, 0, ligTag, MPI_COMM_WORLD, &status1);
-//            MPI_Recv(recBuffer, 100, MPI_CHAR, 0, recTag, MPI_COMM_WORLD, &status1);
-//            MPI_Recv(geometry, 6, MPI_DOUBLE, 0, geoTag, MPI_COMM_WORLD, &status1);
-            MPI_Recv(&jobInput, sizeof(JobInputData), MPI_CHAR, 0, inpTag, MPI_COMM_WORLD, &status1);
-                        
+
+//            MPI_Recv(&jobInput, sizeof(JobInputData), MPI_CHAR, 0, inpTag, MPI_COMM_WORLD, &status1);
+            world.recv(0, inpTag, jobInput);
+            
             dockjob(jobInput, jobOut); 
             
-            MPI_Send(&jobOut, sizeof(JobOutData), MPI_CHAR, 0, outTag, MPI_COMM_WORLD);
+//            MPI_Send(&jobOut, sizeof(JobOutData), MPI_CHAR, 0, outTag, MPI_COMM_WORLD);
+            world.send(0, outTag, jobOut);
         }
     }
 
-//    MPI_Barrier(MPI_COMM_WORLD);
-    time=MPI_Wtime()-time;
-    std::cout << "Rank= " << rank << " MPI Wall Time= " << time << std::endl;
-    MPI_Finalize();
+    std::cout << "Rank= " << world.rank() <<" MPI Wall Time= " << runingTime.elapsed() << " Sec."<< std::endl;
+
     return (0);
 
 }

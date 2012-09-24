@@ -1,5 +1,5 @@
 /* 
- * File:   mpiparser.h
+ * File:   mpiBparser.h
  * Author: zhang30
  *
  * Created on August 14, 2012, 1:58 PM
@@ -10,7 +10,7 @@
 #include <string>
 
 #ifdef USE_MPI
-#include "dock.h"
+#include "dockBMPI.h"
 
 int mpiParser(int argc, char* argv[], 
         std::string& recFile,
