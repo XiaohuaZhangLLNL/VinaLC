@@ -1,19 +1,16 @@
 /*!
-\mainpage VinaLC
+\mainpage VinaLC version: 1.1.2
 \htmlonly
 <table cellpadding="10" cellspacing="0" border="0" width="100%">
 <tr>
 <td valign="top" width="18%" align="left">
 
-
-<b>Author:</b><br>
-<a href="mailto:zhang30@llnl.gov"> Xiaohua Zhang </a><br>
-<br>
-
 <b>Getting Started:</b><br>
+<a href="VinaLC.tar.gz" target="_blank">Download</a><br>
 <a href="installation.html">Installation</a><br>
 <a href="usersGuide.html">Users' Guide</a><br>
 <a href="tutorial.html">Tutorial</a><br>
+<a href="citation.html">Citation</a><br>
 <br>
 
 
@@ -22,33 +19,52 @@
 <a href="http://www.mcs.anl.gov/research/projects/mpi/"> MPI </a><br>
 <br>
 
-<b>What's New</b><br>
-<a href="changeLog.html">ChangeLog</a><br>
+<b>License & Disclaimers:</b><br>
+<a href="http://www.apache.org/licenses/LICENSE-2.0"> Apache License 2.0</a><br>
+<a href="https://www.llnl.gov/disclaimer.html"> LLNL Disclaimers</a><br>
+LLNL-WEB-613932<br>
+LLNL-SM-577132<br>
 <br>
 
-<b>What's Next</b><br>
-<a href="FutureWork.html">Future Work</a><br>
-<br>
-
-<b>Bugs</b><br>
+<b>Bugs:</b><br>
+<a href="mailto:zhang30@llnl.gov"> Report Bugs </a><br>
 <a href="bugs.html">Known Bugs</a><br>
 <br>
 
-<b>Acknowledgements</b><br>
+<b>What's New:</b><br>
+<a href="changeLog.html">ChangeLog</a><br>
+<br>
+
+<b>What's Next:</b><br>
+<a href="FutureWork.html">Future Work</a><br>
+<br>
+
+<b>Acknowledgements:</b><br>
 <a href="Acknowledgements.html"> Acknowledgements</a><br>
 <br>
 
-
+<b>External Links:</b><br>
+<a href="http://www.llnl.gov"> LLNL </a><br>
+<a href="https://www-pls.llnl.gov/"> PLS </a><br>
+<a href="https://www-pls.llnl.gov/?url=about_pls-biosciences_and_biotechnology_division"> BBTD </a><br>
+<a href="http://bbs.llnl.gov"> BBS Group </a><br>
+<br>
+ 
 </td>
 <td valign="top">
 
 <h2> Introduction </h2>
 
-<p align="justify"> A very popular PC-based molecular docking program, AutoDock Vina, was modified and parallelized, using an MPI and multithreading hybrid scheme, and potentially can be used in the future on exascale machines, without sacrificing accuracy. The resulting program scales up to more than 15K CPUs with a very low overhead cost. </p>
-
+<p align="justify"> A very popular PC-based molecular docking program, <a href="http://vina.scripps.edu/" target="_blank">AutoDock Vina</a>, was modified and parallelized, using an MPI and multithreading hybrid scheme, and potentially can be used in the future on exascale machines, without sacrificing accuracy. The resulting program scales up to more than 15K CPUs with a very low overhead cost. </p>
+<p align="justify"> The package can be downloaded from <a href="VinaLC.tar.gz" target="_blank">here</a>.</p>
+<p align="justify">Please cite the following reference if you use this software in your work.</p>
+<p align="justify">Xiaohua Zhang, Sergio E. Wong, and Felice C. Lightstone. (2013) <a href="http://onlinelibrary.wiley.com/doi/10.1002/jcc.23214/abstract">Message Passing Interface and Multithreading Hybrid for Parallel Molecular Docking of Large Databases on Petascale High Performance Computing Machines.</a> <i>J. Comput. Chem.</i> <B>34</B>, 915-927. 
+<p align="justify"> The full paper can be found on J. Comput. Chem. Website. <a href="http://onlinelibrary.wiley.com/doi/10.1002/jcc.23214/abstract">DOI: 10.1002/jcc.23214</a></p>
+<p><img src="hpc_docking.png" align="center" alt=""></p>
 </td>
-
+ 
 </table>
+
 \endhtmlonly
 */
 

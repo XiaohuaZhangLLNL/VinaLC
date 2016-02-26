@@ -211,7 +211,7 @@ Thank you!\n";
             jobInput.randomize=false;
         }else{
             jobInput.randomize=true;
-        }
+        }     
         if (jobInput.exhaustiveness < 1)
             throw usage_error("exhaustiveness must be 1 or greater");
         if (jobInput.num_modes < 1)

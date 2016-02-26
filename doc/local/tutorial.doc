@@ -25,13 +25,13 @@
         </div>
       </blockquote>
       <div>This will configure the program and subsequently compile the
-        executable. The executable, vinalc, can be found under the apps
+        executable. The executable, vinaBMPI, can be found under the apps
         subdirectory.<br />
         <br />
         <h4>1.2 Run VinaLC</h4>
         <p>To run the program with slurm in debug mode: </p>
         <blockquote>
-          <pre>srun -N4 -n4 -c12 -ppdebug ./vina --recList recList.txt --ligList ligList.txt --geoList geoList.txt</pre>
+          <pre>srun -N4 -n4 -c12 -ppdebug ./vinaBMPI --recList recList.txt --ligList ligList.txt --geoList geoList.txt</pre>
         </blockquote>
         <p>-N4: 4 nodes will use -n4: 4 tasks will each task run on one node
           -c12: 12 threads will run on each node -ppdebug: use debug mode</p>
@@ -39,45 +39,47 @@
         <blockquote>
 <pre>
 -----------------------------------------------------------------------------------------------------
-            Correct usage:
-            
-            Input:
-              --recList arg                       receptor list file
-              --fleList arg                       flex part receptor list file
-              --ligList arg                       ligand list file
-              --geoList arg                      receptor geometry file
-              --exhaustiveness arg (=8)  exhaustiveness (default value 8) of the
-            global 
-                                                         search (roughly
-            proportional to time): 1+
-              --granularity arg (=0.375)  the granularity of grids (default
-            value 0.375)
-              --num_modes arg (=9)       maximum number (default value 9) of
-            binding modes 
-                                                         to generate
-              --seed arg                           explicit random seed
-              --randomize arg                 Use different random seeds for
-            complex
-              --energy_range arg (=2)    maximum energy difference (default
-            value 2.0) 
-                                                        between the best binding
-            mode and the worst one 
-                                                        displayed (kcal/mol)
-            
-            Information (optional):
-              --help                display usage summary
+./vinaBMPI --help
+
+Input:
+  --recList arg              receptor list file
+  --fleList arg              flex part receptor list file
+  --ligList arg              ligand list file
+  --geoList arg              receptor geometry file
+  --exhaustiveness arg (=8)  exhaustiveness (default value 8) of the global 
+                             search (roughly proportional to time): 1+
+  --granularity arg (=0.375) the granularity of grids (default value 0.375)
+  --num_modes arg (=9)       maximum number (default value 9) of binding modes 
+                             to generate
+  --seed arg                 explicit random seed
+  --randomize arg            Use different random seeds for complex
+  --energy_range arg (=2)    maximum energy difference (default value 2.0) 
+                             between the best binding mode and the worst one 
+                             displayed (kcal/mol)
+  --useScoreCF               Use score cutoff to save ligand with top score 
+                             higher than certain critical value
+  --scoreCF arg (=-8)        Score cutoff to save ligand with top score higher 
+                             than certain value (default -8.0)
+
+Information (optional):
+  --help                display usage summary
+
 -----------------------------------------------------------------------------------------------------
             </pre>
         </blockquote>
         <h4>1.3. Run with different options</h4>
         <blockquote>
-          <pre>srun -N4 -n4 -c12 ./vinalc –recList recList.txt –ligList ligList.txt
-            –geoList geoList.txt –exhaustiveness 12 <br />srun -N4 -n4 -c12 ./vinalc –recList recList.txt –ligList ligList.txt <br />	    –geoList geoList.txt –exhaustiveness 12 –granularity 0.333 ...</pre>
+          <pre>srun -N4 -n4 -c12 ./vinaBMPI --recList recList.txt --ligList ligList.txt
+            --geoList geoList.txt --exhaustiveness 12 <br />
+srun -N4 -n4 -c12 ./vinaBMPI --recList recList.txt --ligList ligList.txt <br />	    
+--geoList geoList.txt --exhaustiveness 12 --granularity 0.333 ...</pre>
         </blockquote>
-        <strong><em>Options, –recList –ligList –geoList are required to be
+        <strong><em>Options, --recList --ligList --geoList are required to be
             specified. </em></strong></div>
     </blockquote>
     <p></p>
   </body>
+  
+  <br> <br> 
   \endhtmlonly
 */

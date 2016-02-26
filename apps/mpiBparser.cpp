@@ -143,8 +143,10 @@ Thank you!\n";
                 ("num_modes", value<int>(&jobInput.num_modes)->default_value(9), "maximum number (default value 9) of binding modes to generate")
 //                ("mc_mult", value<int>(&jobInput.mc_mult)->default_value(1), "MC step multiplier number (default value 1) [multiply MC steps] ")
                 ("seed", value<int>(&jobInput.seed), "explicit random seed")
-                ("randomize", value<bool>(&jobInput.randomize), "Use different random seeds for complex")
+                ("randomize", bool_switch(&jobInput.randomize), "Use different random seeds for complex")
                 ("energy_range", value<fl> (&jobInput.energy_range)->default_value(2.0), "maximum energy difference (default value 2.0) between the best binding mode and the worst one displayed (kcal/mol)")
+                ("useScoreCF", bool_switch(&jobInput.useScoreCF), "Use score cutoff to save ligand with top score higher than certain critical value")
+                ("scoreCF", value<double>(&jobInput.scoreCF)->default_value(-8.0), "Score cutoff to save ligand with top score higher than certain value (default -8.0)")
                 ;   
         options_description info("Information (optional)");
         info.add_options()
@@ -207,11 +209,16 @@ Thank you!\n";
             jobInput.cpu = 1;
         if (vm.count("seed") == 0)
             jobInput.seed = auto_seed();
-        if(vm.count("randomize")==0){
-            jobInput.randomize=false;
-        }else{
-            jobInput.randomize=true;
-        }
+//        if(vm.count("randomize")==0){
+//            jobInput.randomize=false;
+//        }else{
+//            jobInput.randomize=true;
+//        }
+//        if(vm.count("useScoreCF")==0){
+//            jobInput.useScoreCF=false;
+//        }else{
+//            jobInput.useScoreCF=true;
+//        }           
         if (jobInput.exhaustiveness < 1)
             throw usage_error("exhaustiveness must be 1 or greater");
         if (jobInput.num_modes < 1)

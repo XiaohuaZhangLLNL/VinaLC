@@ -1,3 +1,3 @@
 #!/bin/bash
 
-./makeit --build --boost=/Users/zhang30/inst/ --mpi=/Users/zhang30/inst/
+./makeit --build --boost=/opt/boost/ --mpi=/opt/openmpi/

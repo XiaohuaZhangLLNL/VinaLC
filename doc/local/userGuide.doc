@@ -26,6 +26,8 @@
           <p>File contains list of ligand file name: ligList.txt a "data"
             directory contains two ligand pdbqt files: data/ ligands1.pdbqt
             ligands2.pdbqt</p>
+          <p>Each pdbqt file can contain multiple structures. <b>The pdbqt structures for ligands have to be separated by 
+          "MODEL" and "ENDMDL" keywords even if the file contains single structure.</b></p>          
           <p>1.1.3. grid file<br />
           </p>
           <p> Grid file is to save the docking grid information. Each line 
@@ -85,42 +87,42 @@
           <blockquote>
               <pre>
 -----------------------------------------------------------------------------------------------------
-            Correct usage:
-            
-            Input:
-              --recList arg                       receptor list file
-              --fleList arg                       flex part receptor list file
-              --ligList arg                       ligand list file
-              --geoList arg                      receptor geometry file
-              --exhaustiveness arg (=8)  exhaustiveness (default value 8) of the
-            global 
-                                                         search (roughly
-            proportional to time): 1+
-              --granularity arg (=0.375)  the granularity of grids (default
-            value 0.375)
-              --num_modes arg (=9)       maximum number (default value 9) of
-            binding modes 
-                                                         to generate
-              --seed arg                           explicit random seed
-              --randomize arg                 Use different random seeds for
-            complex
-              --energy_range arg (=2)    maximum energy difference (default
-            value 2.0) 
-                                                        between the best binding
-            mode and the worst one 
-                                                        displayed (kcal/mol)
-            
-            Information (optional):
-              --help                display usage summary
+./vinaBMPI --help
+
+Input:
+  --recList arg              receptor list file
+  --fleList arg              flex part receptor list file
+  --ligList arg              ligand list file
+  --geoList arg              receptor geometry file
+  --exhaustiveness arg (=8)  exhaustiveness (default value 8) of the global 
+                             search (roughly proportional to time): 1+
+  --granularity arg (=0.375) the granularity of grids (default value 0.375)
+  --num_modes arg (=9)       maximum number (default value 9) of binding modes 
+                             to generate
+  --seed arg                 explicit random seed
+  --randomize arg            Use different random seeds for complex
+  --energy_range arg (=2)    maximum energy difference (default value 2.0) 
+                             between the best binding mode and the worst one 
+                             displayed (kcal/mol)
+  --useScoreCF               Use score cutoff to save ligand with top score 
+                             higher than certain critical value
+  --scoreCF arg (=-8)        Score cutoff to save ligand with top score higher 
+                             than certain value (default -8.0)
+
+Information (optional):
+  --help                display usage summary
+
 -----------------------------------------------------------------------------------------------------
             </pre>
           </blockquote>
           <p>1.2.3. Run with different options</p>
           <blockquote>
-            <pre>srun -N4 -n4 -c12 ./vinalc –recList recList.txt –ligList ligList.txt
-            –geoList geoList.txt –exhaustiveness 12 <br />srun -N4 -n4 -c12 ./vinalc –recList recList.txt –ligList ligList.txt <br />	    –geoList geoList.txt –exhaustiveness 12 –granularity 0.333 ...</pre>
+            <pre>srun -N4 -n4 -c12 ./vinaBMPI --recList recList.txt --ligList ligList.txt
+            --geoList geoList.txt --exhaustiveness 12 <br />
+              srun -N4 -n4 -c12 ./vinaBMPI --recList recList.txt --ligList ligList.txt <br />
+	    --geoList geoList.txt --exhaustiveness 12 --granularity 0.333 ...</pre>
           </blockquote>
-          <p><strong><em>Options, –recList –ligList –geoList are required to be
+          <p><strong><em>Options, --recList --ligList --geoList are required to be
                 specified. </em></strong><br />
           </p>
           <h4>1.3. More on preparation of the input PDBQT files.</h4>
@@ -182,11 +184,11 @@
             portions respectively.</p>
           <p>Then, you can issue this command:</p>
           <blockquote>
-            <pre>srun -N4 -n4 -c12 -ppdebug ./vina –recList rigList –ligList
-          ligList.txt –geoList geoList.txt –fleList fleList</pre>
+            <pre>srun -N4 -n4 -c12 -ppdebug ./vina --recList rigList --ligList
+          ligList.txt --geoList geoList.txt --fleList fleList</pre>
           </blockquote>
-          <p>Where –recList rigList has a list of PDBQT file names containing
-            rigid part receptors, –fleList fleList has a list of PDBQT file
+          <p>Where --recList rigList has a list of PDBQT file names containing
+            rigid part receptors, --fleList fleList has a list of PDBQT file
             names containing rigid part receptors.</p>
           <h4>2.2 Notes for induced docking<br />
           </h4>
@@ -248,10 +250,42 @@
             in the SDF file. You can import the SDF structures into maestro and
             see the Vina score on the maestro table. </p>
         </blockquote>
+        <h3>4. Running with large number of ligands and only want to keep top a few ligand structures</h3>
+        <blockquote>
+          <ol type="1">
+          </ol>
+          <p>Use the "useScoreCF" options. The Vina score cutoff option "--useScoreCF" will tell the VinaLC to save only the Vina score higher than scoreCF (default –8.0 kcal/mol)</p>
+          <blockquote>
+            <pre>srun -N4 -n4 -c12  vinaBMPI --recList recList.txt --ligList ligList.txt --geoList geoList.txt --useScoreCF</pre>
+          </blockquote>
+          <p>User can also specify the Vina score cutoff value</p>
+          <blockquote>
+            <pre>srun -N4 -n4 -c12  vinaBMPI --recList recList.txt --ligList ligList.txt --geoList geoList.txt --useScoreCF --scoreCF -9.0</pre>
+          </blockquote>
+          <p>There is a python script under the VinaLC/scripts/ directory: sortVinaLC.py can sorted the ligands by its top 1 Vina docking score. A example command line to sort the pdbqt structures would be:</p>
+          <blockquote>
+            <pre>python sortVinaLC.py -i recList_ligList.pdbqt.gz -o sort.pdbqt -n 10</pre>
+          </blockquote>
+          <p>Where recList_ligList.pdbqt.gz is the Gzip file produced by VinaLC, sort.pdbqt is the output sorted pdbqt file, "-n 10" is to tell program to save top 10 structures with highest Vina scores.</p>
+          <p>Here is the help manual for sortVinaLC.py </p>
+<blockquote>
+    <pre>================================================================
+python sortVinaLC.py -h
+Usage: sortVinaLC.py -i <file.pdbqt.gz> -o <out.pdbqt> -n N
+
+    Optional parameters:
+        [-i]    input *.pdbqt.gz file
+        [-o]    output *.pdbqt file
+        [-n]    keep top N ligands with highest Vina Scores
+        [-h]    print command usage
+================================================================</pre>
+</blockquote>
+                
+        </blockquote>        
       </div>
     </div>
     <p></p>
   </body>
-
+<br> <br> 
 \endhtmlonly
 */

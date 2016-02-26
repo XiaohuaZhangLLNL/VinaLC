@@ -11,7 +11,7 @@ autoheader
 if [ `(uname -s) 2>/dev/null` == 'Darwin' ]
 then
  echo "MAC glibtoolize"
- glibtoolize --automake --copy
+ libtoolize --automake --copy
 else
  echo "GNU libtoolize"
  libtoolize --automake --copy

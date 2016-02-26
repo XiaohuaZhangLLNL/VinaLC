@@ -3,6 +3,7 @@ doc_local_sources = \
     $(top_srcdir)/doc/local/install.doc \
     $(top_srcdir)/doc/local/userGuide.doc \
     $(top_srcdir)/doc/local/tutorial.doc \
+    $(top_srcdir)/doc/local/citation.doc \
     $(top_srcdir)/doc/local/changeLog.doc \
     $(top_srcdir)/doc/local/futureWork.doc \
     $(top_srcdir)/doc/local/bugs.doc  \
@@ -10,4 +11,5 @@ doc_local_sources = \
 
 
 html_local_sources = \
-    $(top_srcdir)/doc/local/header.html
+    $(top_srcdir)/doc/local/header.html \
+    $(top_srcdir)/doc/local/footer.html

@@ -12,6 +12,7 @@
 #include <cstdlib>
 #include <string>
 #include <iterator>
+#include <sstream>
 
 
 template < class ContainerT >
@@ -39,6 +40,16 @@ void tokenize(const std::string& str, ContainerT& tokens,
     }
 };
 
+
+template <typename T1, typename T2>
+T1 Sstrm(T2 inValue){
+    std::stringstream ss;
+    ss << inValue;
+    T1 outValue;
+    ss >> outValue;
+    
+    return(outValue);
+}
 
 #endif	/* VINA_TOKENIZE_H */
 

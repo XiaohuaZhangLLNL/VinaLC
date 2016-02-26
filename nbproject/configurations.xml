@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configurationDescriptor version="84">
+<configurationDescriptor version="95">
   <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
-    <df name="VinaLC" root=".">
+    <df root="." name="0">
       <df name="apps">
         <in>dock.cpp</in>
         <in>dock.h</in>
@@ -9,23 +9,12 @@
         <in>dockBMPI.h</in>
         <in>mainProcedure.cpp</in>
         <in>mainProcedure.h</in>
-        <in>mpiBparser.cpp</in>
         <in>mpiBparser.h</in>
         <in>mpiparser.cpp</in>
         <in>mpiparser.h</in>
         <in>vina.cpp</in>
         <in>vinaBMPI.cpp</in>
         <in>vinalc.cpp</in>
-      </df>
-      <df name="autom4te.cache">
-      </df>
-      <df name="doc">
-        <df name="html">
-        </df>
-        <df name="local">
-        </df>
-        <df name="pics">
-        </df>
       </df>
       <df name="src">
         <in>array3d.h</in>
@@ -81,7 +70,6 @@
         <in>parse_pdbqt.cpp</in>
         <in>parse_pdbqt.h</in>
         <in>pdb.cpp</in>
-        <in>pdb.h</in>
         <in>precalculate.h</in>
         <in>quasi_newton.cpp</in>
         <in>quasi_newton.h</in>
@@ -93,10 +81,8 @@
         <in>scoring_function.h</in>
         <in>ssd.cpp</in>
         <in>ssd.h</in>
-        <in>statistics.h</in>
         <in>szv_grid.cpp</in>
         <in>szv_grid.h</in>
-        <in>tee.h</in>
         <in>terms.cpp</in>
         <in>terms.h</in>
         <in>tokenize.h</in>
@@ -105,15 +91,13 @@
         <in>weighted_terms.cpp</in>
         <in>weighted_terms.h</in>
       </df>
-      <df name="tests">
-      </df>
-      <in>config.h</in>
     </df>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
                    projectFiles="false"
                    kind="IMPORTANT_FILES_FOLDER">
       <itemPath>Makefile</itemPath>
+      <itemPath>configure</itemPath>
     </logicalFolder>
   </logicalFolder>
   <sourceFolderFilter>^(nbproject)$</sourceFolderFilter>
@@ -124,8 +108,9 @@
   <confs>
     <conf name="Default" type="0">
       <toolsSet>
-        <remote-sources-mode>LOCAL_SOURCES</remote-sources-mode>
         <compilerSet>default</compilerSet>
+        <dependencyChecking>false</dependencyChecking>
+        <rebuildPropChanged>false</rebuildPropChanged>
       </toolsSet>
       <codeAssistance>
       </codeAssistance>
@@ -137,136 +122,189 @@
           <executablePath></executablePath>
           <ccTool>
             <incDir>
-              <pElem>//home/zhang30/inst//include</pElem>
               <pElem>src</pElem>
               <pElem>.</pElem>
+              <pElem>/opt/boost/include</pElem>
+              <pElem>/opt/openmpi/include</pElem>
             </incDir>
             <preprocessorList>
               <Elem>HAVE_CONFIG_H</Elem>
               <Elem>NDEBUG</Elem>
+              <Elem>PIC</Elem>
               <Elem>USE_MPI</Elem>
             </preprocessorList>
           </ccTool>
         </makeTool>
       </makefileType>
-      <item path="config.h" ex="true" tool="3" flavor2="0">
+      <item path="apps/dock.cpp" ex="false" tool="3" flavor2="0">
       </item>
-      <folder path="VinaLC/apps">
-        <ccTool>
-          <incDir>
-            <pElem>apps</pElem>
-          </incDir>
-        </ccTool>
-      </folder>
-      <folder path="VinaLC/src">
-        <ccTool>
-          <incDir>
-            <pElem>../../inst/include</pElem>
-          </incDir>
-          <preprocessorList>
-            <Elem>PIC</Elem>
-          </preprocessorList>
-        </ccTool>
-      </folder>
-      <item path="src/bfgs.h" ex="true" tool="3" flavor2="0">
+      <item path="apps/dock.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="src/brick.h" ex="true" tool="3" flavor2="0">
+      <item path="apps/dockBMPI.cpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="src/convert_substring.h" ex="true" tool="3" flavor2="0">
+      <item path="apps/dockBMPI.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="src/int_pow.h" ex="true" tool="3" flavor2="0">
+      <item path="apps/mainProcedure.cpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="src/manifold.h" ex="true" tool="3" flavor2="0">
+      <item path="apps/mainProcedure.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="src/mutate.h" ex="true" tool="3" flavor2="0">
+      <item path="apps/mpiBparser.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="src/my_pid.h" ex="true" tool="3" flavor2="0">
+      <item path="apps/mpiparser.cpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="src/parallel.h" ex="true" tool="3" flavor2="0">
+      <item path="apps/mpiparser.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="src/parallel_progress.h" ex="true" tool="3" flavor2="0">
+      <item path="apps/vina.cpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="src/pdb.h" ex="true" tool="3" flavor2="0">
+      <item path="apps/vinaBMPI.cpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="src/recent_history.h" ex="true" tool="3" flavor2="0">
+      <item path="apps/vinalc.cpp" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="src/statistics.h" ex="true" tool="3" flavor2="0">
+      <item path="src/array3d.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="src/tee.h" ex="true" tool="3" flavor2="0">
+      <item path="src/atom.h" ex="false" tool="3" flavor2="0">
       </item>
-    </conf>
-    <conf name="Sierra" type="0">
-      <toolsSet>
-        <remote-sources-mode>LOCAL_SOURCES</remote-sources-mode>
-        <compilerSet>GNU|GNU</compilerSet>
-      </toolsSet>
-      <codeAssistance>
-      </codeAssistance>
-      <makefileType>
-        <makeTool>
-          <buildCommandWorkingDir>.</buildCommandWorkingDir>
-          <buildCommand>${MAKE} -f Makefile</buildCommand>
-          <cleanCommand>${MAKE} -f Makefile clean</cleanCommand>
-          <executablePath></executablePath>
-          <ccTool>
-            <incDir>
-              <pElem>//home/zhang30/inst//include</pElem>
-              <pElem>src</pElem>
-              <pElem>.</pElem>
-              <pElem>/usr/gapps/medchem/NetBeansProjects/VinaLC/src</pElem>
-            </incDir>
-            <preprocessorList>
-              <Elem>HAVE_CONFIG_H</Elem>
-              <Elem>NDEBUG</Elem>
-              <Elem>USE_MPI</Elem>
-            </preprocessorList>
-          </ccTool>
-        </makeTool>
-      </makefileType>
-      <item path="config.h" ex="true" tool="3" flavor2="0">
+      <item path="src/atom_base.h" ex="false" tool="3" flavor2="0">
       </item>
-      <folder path="VinaLC/apps">
-        <ccTool>
-          <incDir>
-            <pElem>apps</pElem>
-          </incDir>
-        </ccTool>
-      </folder>
-      <folder path="VinaLC/src">
-        <ccTool>
-          <incDir>
-            <pElem>../../inst/include</pElem>
-          </incDir>
-          <preprocessorList>
-            <Elem>PIC</Elem>
-          </preprocessorList>
-        </ccTool>
-      </folder>
-      <item path="src/bfgs.h" ex="true" tool="3" flavor2="0">
+      <item path="src/atom_constants.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="src/brick.h" ex="true" tool="3" flavor2="0">
+      <item path="src/atom_type.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="src/convert_substring.h" ex="true" tool="3" flavor2="0">
+      <item path="src/bfgs.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="src/int_pow.h" ex="true" tool="3" flavor2="0">
+      <item path="src/brick.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="src/manifold.h" ex="true" tool="3" flavor2="0">
+      <item path="src/cache.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="src/mutate.h" ex="true" tool="3" flavor2="0">
+      <item path="src/cache.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="src/my_pid.h" ex="true" tool="3" flavor2="0">
+      <item path="src/common.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="src/parallel.h" ex="true" tool="3" flavor2="0">
+      <item path="src/conf.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="src/parallel_progress.h" ex="true" tool="3" flavor2="0">
+      <item path="src/convert_substring.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="src/pdb.h" ex="true" tool="3" flavor2="0">
+      <item path="src/coords.cpp" ex="false" tool="1" flavor2="0">
       </item>
-      <item path="src/recent_history.h" ex="true" tool="3" flavor2="0">
+      <item path="src/coords.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="src/statistics.h" ex="true" tool="3" flavor2="0">
+      <item path="src/curl.h" ex="false" tool="3" flavor2="0">
       </item>
-      <item path="src/tee.h" ex="true" tool="3" flavor2="0">
+      <item path="src/current_weights.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/current_weights.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/everything.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/everything.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/file.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/grid.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/grid.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/grid_dim.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/gzstream.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/gzstream.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/igrid.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/incrementable.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/int_pow.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/macros.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/manifold.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/manifold.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/matrix.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/model.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/model.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/monte_carlo.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/monte_carlo.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/mutate.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/mutate.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/my_pid.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/my_pid.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/naive_non_cache.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/naive_non_cache.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/non_cache.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/non_cache.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/parallel.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/parallel_mc.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/parallel_mc.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/parallel_progress.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/parallel_progress.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/parse_error.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/parse_pdbqt.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/parse_pdbqt.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/pdb.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/precalculate.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/quasi_newton.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/quasi_newton.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/quaternion.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/quaternion.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/random.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/random.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/recent_history.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/scoring_function.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/ssd.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/ssd.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/szv_grid.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/szv_grid.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/terms.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/terms.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/tokenize.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/tree.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/triangular_matrix_index.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/weighted_terms.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/weighted_terms.h" ex="false" tool="3" flavor2="0">
       </item>
     </conf>
   </confs>

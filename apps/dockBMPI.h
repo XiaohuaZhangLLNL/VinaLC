@@ -16,6 +16,8 @@
 #include <boost/archive/text_oarchive.hpp>
 #include <boost/archive/text_iarchive.hpp>
 
+
+
 class JobInputData{
     
 public:
@@ -26,6 +28,7 @@ public:
     template<class Archive>
     void serialize(Archive & ar, const unsigned int version)
     {
+        ar & useScoreCF;
         ar & flexible;
         ar & randomize;
         ar & cpu;
@@ -33,6 +36,7 @@ public:
         ar & num_modes;
         ar & seed;
         ar & n; 
+        ar & scoreCF; 
         ar & energy_range;
         ar & granularity;
         ar & begin;
@@ -40,9 +44,10 @@ public:
         ar & ligBuffer;
         ar & ligFile;
         ar & recBuffer;
-        ar & fleBuffer;
+        ar & fleBuffer;        
     }
-    
+
+    bool useScoreCF; //switch to turn on score cutoff    
     bool flexible;
     bool randomize;
     int cpu;
@@ -51,10 +56,11 @@ public:
 //    int mc_mult;
     int seed;
     int n[3]; 
+    double scoreCF;  // value for score cutoff     
     double energy_range;
     double granularity;
     double begin[3];
-    double end[3];        
+    double end[3];       
     std::string ligBuffer;
     std::string ligFile;
     std::string recBuffer;

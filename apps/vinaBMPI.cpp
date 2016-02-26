@@ -58,6 +58,7 @@
 
 #include "dockBMPI.h"
 #include "mpiBparser.h"
+#include "mpiparser.h"
 
 namespace mpi = boost::mpi;
 
@@ -74,6 +75,21 @@ inline void geometry(JobInputData& jobInput, std::vector<double>& geo){
     }    
 }
 
+double getTopScore(std::string& log){
+    double score=0;
+    std::vector<std::string> lines;
+    tokenize(log, lines, "\n");  
+    if(lines.size()<7) return score;
+     
+    std::vector<std::string> values;    
+    tokenize(lines[6], values);
+    if(values.size()<2) return score;
+    
+    score=Sstrm<double, std::string>(values[1]);
+    
+    return score;
+}
+
 int main(int argc, char* argv[]) {
 
     int jobFlag=1; // 1: doing job,  0: done job
@@ -83,9 +99,7 @@ int main(int argc, char* argv[]) {
         
     int rankTag=1;
     int jobTag=2;
-//    int ligTag=3;
-//    int recTag=4;
-//    int geoTag=5;
+
     int inpTag=3;
     int outTag=4;
 
@@ -185,8 +199,18 @@ int main(int argc, char* argv[]) {
                         if(count >world.size()-1){
 //                            MPI_Recv(&jobOut, sizeof(JobOutData), MPI_CHAR, MPI_ANY_SOURCE, outTag, MPI_COMM_WORLD, &status2);
                             world.recv(mpi::any_source, outTag, jobOut);
-                            logFile << jobOut.log << std::endl;
-                            outFile << jobOut.poses << std::endl;
+                            bool saveResults=true;
+                            if(jobInput.useScoreCF){
+                                double score=getTopScore(jobOut.log);
+                                if(score>jobInput.scoreCF){
+                                    saveResults=false;
+                                }
+                            }
+
+                            if(saveResults){
+                                logFile << jobOut.log << std::endl;
+                                outFile << jobOut.poses << std::endl;
+                            }
                         }                  
                         int freeProc;
 //                        MPI_Recv(&freeProc, 1, MPI_INTEGER, MPI_ANY_SOURCE, rankTag, MPI_COMM_WORLD, &status1);
@@ -237,8 +261,18 @@ int main(int argc, char* argv[]) {
         for(unsigned i=0; i < ndata; ++i){
 //            MPI_Recv(&jobOut, sizeof(JobOutData), MPI_CHAR, MPI_ANY_SOURCE, outTag, MPI_COMM_WORLD, &status2);
             world.recv(mpi::any_source, outTag, jobOut);
-            logFile << jobOut.log << std::endl;
-            outFile << jobOut.poses << std::endl;
+            bool saveResults=true;
+            if(jobInput.useScoreCF){
+                double score=getTopScore(jobOut.log);
+                if(score>jobInput.scoreCF){
+                    saveResults=false;
+                }
+            }
+            
+            if(saveResults){
+                logFile << jobOut.log << std::endl;
+                outFile << jobOut.poses << std::endl;
+            }
         }
         logFile.close();
         outFile.close();

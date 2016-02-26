@@ -1,0 +1,21 @@
+/*! \page citation Citation
+\htmlonly
+<html>
+    <head>
+        <title>Acknowledgements</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+</head>
+
+<body lang=EN-US link=blue vlink=purple style='tab-interval:.5in'>
+<div class=WordSection1>
+
+<p align="justify">Xiaohua Zhang, Sergio E. Wong, and Felice C. Lightstone. (2013) <a href="http://onlinelibrary.wiley.com/doi/10.1002/jcc.23214/abstract">Message Passing Interface and Multithreading Hybrid for Parallel Molecular Docking of Large Databases on Petascale High Performance Computing Machines.</a> <i>J. Comput. Chem.</i> <B>34</B>, 915-927. 
+
+</div>
+
+</body>
+
+
+</html>
+\endhtmlonly    
+*/
