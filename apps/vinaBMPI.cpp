@@ -103,10 +103,10 @@ int main(int argc, char* argv[]) {
     int inpTag=3;
     int outTag=4;
 
-    mpi::timer runingTime;
-    
     mpi::environment env(argc, argv);
     mpi::communicator world;    
+
+    mpi::timer runingTime;
 
     if (world.size() < 2) {
         std::string recFile;
