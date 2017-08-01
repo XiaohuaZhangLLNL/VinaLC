@@ -49,7 +49,7 @@ make install
 ```
 
 ## 2. Input files.
-In the vina-release/build/linux/debug, there is a small test case contains input files:
+In the vinalc/examples, there is a small test case contains input files:
 
 ### 2.1 receptor
 
