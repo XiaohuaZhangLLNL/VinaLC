@@ -1,11 +1,11 @@
-#MPI and Multi-threading mix Parallel AutoDock Vina.
+# MPI and Multi-threading mix Parallel AutoDock Vina.
 
 
-##1. Compile the program.
+## 1. Compile the program.
 
 This source code is configured to run on LLNL LC machines. 
 
-###i) Boost library (www.boost.org) is require for Vina.
+### 1.1 Boost library (www.boost.org) is require for Vina.
 to install Boost library please follow the step in the Boost document. 
 
 ```
@@ -25,8 +25,7 @@ On quartz:
 ```
 module load boost/1.62.0
 ```
-
-###ii) Obtain the code 
+### 1.2 Obtain the code 
 
 The code can be download from:
 
@@ -38,7 +37,7 @@ git clone ssh://git@cz-bitbucket.llnl.gov:7999/xzr/vinalc.git
 ```
 
 
-###iii) Installation
+### 1.3 Installation
 
 Installing it by using cmake is straight forward:
 
@@ -49,10 +48,10 @@ make
 make install
 ```
 
-##2. Input files.
+## 2. Input files.
 In the vina-release/build/linux/debug, there is a small test case contains input files:
 
-i) receptor
+### 2.1 receptor
 
 file contains list of receptor file name:  recList.txt
 two receptor pdbqt files: 
@@ -61,7 +60,7 @@ two receptor pdbqt files:
 1KIJ_protH.pdbqt 1KIJ_protH1.pdbqt
 ```
 
-ii) ligand
+### 2.2 ligand
 
 file contains list of ligand file name: ligList.txt
 a "data" directory contains two ligand pdbqt files:
@@ -71,7 +70,7 @@ data/
 ligands1.pdbqt  ligands2.pdbqt
 ```
 
-iii) geometry file to save the docking grid information.
+### 2.3 geometry file to save the docking grid information.
 each line is coresponding to each receptor in recList.txt.
 each line has six number where first 3 are center of active site and last 3 are grids dimension.
 the file is arranged as:
@@ -81,7 +80,7 @@ x_center  y_center  z_center  x_grid  y_grid  z_grid
 ....
 ```
 
-iv) The pdbqt files for receptors and ligands are prepared from their pdb file by mgltools
+### 2.4 The pdbqt files for receptors and ligands are prepared from their pdb file by mgltools
 (http://mgltools.scripps.edu/)
 Two python scripts in MGLTools-1.5.6rc2/MGLToolsPckgs/AutoDockTools/Utilities24/ are used
 
@@ -95,9 +94,9 @@ for ligand
 prepare_ligand4.py -l ligand.pdb
 ```
 
-##3. Running program
+## 3. Running program
 
-i)To run the program with slurm in debug mode:
+### 3.1 To run the program with slurm in debug mode:
 
 ```
 srun -N4 -n4 -c12 -ppdebug ./vina --recList recList.txt --ligList ligList.txt --geoList geoList.txt
@@ -108,7 +107,7 @@ srun -N4 -n4 -c12 -ppdebug ./vina --recList recList.txt --ligList ligList.txt --
 -ppdebug: use debug mode
 ```
 
-ii) Vina program option:
+### 3.2 Vina program option:
 ```
 Input:
   --recList arg              receptor list file
@@ -122,7 +121,7 @@ Information (optional):
   --help                display usage summary
 ```
 
-iii) Run with different options
+### 3.3 Run with different options
 
 ```
 srun -N4 -n4 -c12 ./vina --recList recList.txt --ligList ligList.txt --geoList geoList.txt --exhaustiveness 12
@@ -132,15 +131,15 @@ srun -N4 -n4 -c12 ./vina --recList recList.txt --ligList ligList.txt --geoList g
 options, --recList --ligList  --geoList must be specified  
 ```
 
-##4. The programs to prepare the input PDBQT file.
+## 4. The programs to prepare the input PDBQT file.
 
-###a) babel
+### 4.1 babel
 If you start with SDF files for the ligands, you can use the babel to convert the SDF to PDBQT directly:
 ```
 babel -isdf <ligand-file-name>.sdf -opdbqt <ligand-file-name>.pdbqt
 ```
 
-###b) MGLTools(http://mgltools.scripps.edu/)
+### 4.2 MGLTools(http://mgltools.scripps.edu/)
 The AutoDock developer team provides graphic user interface, AutoDockTools (ADT), to prepare the input files. The receptor input file MUST use ADT to convert the file format.
 
 There is a Vina video tutorial to show how to use ADT to prepare receptor, ligand, and determine the grid size that use in the program.
