@@ -1,0 +1,30 @@
+BEGIN_RES LYS A 102
+REMARK  5 active torsions:
+REMARK  status: ('A' for Active; 'I' for Inactive)
+REMARK    1  A    between atoms: CA   and  CB  
+REMARK    2  A    between atoms: CB   and  CG  
+REMARK    3  A    between atoms: CG   and  CD  
+REMARK    4  A    between atoms: CD   and  CE  
+REMARK    5  A    between atoms: CE   and  NZ  
+ROOT
+ATOM      1  CA  LYS A 102      25.300   9.299  41.560  1.00 31.10     0.176 C 
+ENDROOT
+BRANCH   1   2
+ATOM      2  CB  LYS A 102      26.394   8.956  42.594  1.00 33.00     0.035 C 
+BRANCH   2   3
+ATOM      3  CG  LYS A 102      27.029   7.562  42.467  1.00 36.40     0.004 C 
+BRANCH   3   4
+ATOM      4  CD  LYS A 102      26.175   6.509  43.174  1.00 37.65     0.027 C 
+BRANCH   4   5
+ATOM      5  CE  LYS A 102      26.718   5.100  43.020  1.00 39.71     0.229 C 
+BRANCH   5   6
+ATOM      6  NZ  LYS A 102      25.851   4.095  43.726  1.00 39.76    -0.079 N 
+ATOM      7  HZ1 LYS A 102      26.216   3.148  43.623  1.00  0.00     0.274 HD
+ATOM      8  HZ2 LYS A 102      24.881   4.157  43.417  1.00  0.00     0.274 HD
+ATOM      9  HZ3 LYS A 102      25.720   4.339  44.708  1.00  0.00     0.274 HD
+ENDBRANCH   5   6
+ENDBRANCH   4   5
+ENDBRANCH   3   4
+ENDBRANCH   2   3
+ENDBRANCH   1   2
+END_RES LYS A 102

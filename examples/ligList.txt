@@ -1,0 +1,2 @@
+./data/ligands1.pdbqt
+./data/ligands2.pdbqt
