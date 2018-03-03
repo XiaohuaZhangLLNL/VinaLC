@@ -1,0 +1,20 @@
+THE APACHE OPEN SOURCE LICENSE
+
+The following is The Apache Open Source License template to be used in each of the source files of a program where we assert LLNS copyright.
+
+Attach the following notices to each source file. In this notice there should be a pointer to where The Apache notice is to be found.
+
+Copyright (c) <2013>, Lawrence Livermore National Security, LLC. Produced at the Lawrence Livermore National Laboratory
+
+Written by Xiaohua Zhang <zhang30@llnl.gov>. CODE-747117.
+
+All rights reserved.
+
+This file is part of VinaLC. For details, see https://plsuser.llnl.gov/bbs/vinalc/. 
+
+Licensed under the Apache License, Version 2.0 (the "Licensee"); you may not use this file except in compliance with the License.  You may obtain a copy of the License at:
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the license.
+
