@@ -29,11 +29,11 @@ module load boost/1.62.0
 
 The code can be download from:
 
-https://lc.llnl.gov/bitbucket/projects/XZR/repos/vinalc/browse
+https://github.com/XiaohuaZhangLLNL/VinaLC
 
 by git:
 ```
-git clone ssh://git@cz-bitbucket.llnl.gov:7999/xzr/vinalc.git
+git clone git@github.com:XiaohuaZhangLLNL/VinaLC.git
 ```
 
 
