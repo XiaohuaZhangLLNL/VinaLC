@@ -25,6 +25,8 @@
 #include "coords.h"
 #include "parallel_progress.h"
 
+#include <vector>
+
 struct parallel_mc_task {
 	model m;
 	output_container out;
@@ -33,6 +35,7 @@ struct parallel_mc_task {
 };
 
 typedef boost::ptr_vector<parallel_mc_task> parallel_mc_task_container;
+//typedef std::vector<parallel_mc_task*> parallel_mc_task_container;
 
 struct parallel_mc_aux {
 	const monte_carlo* mc;
