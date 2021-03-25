@@ -14,8 +14,8 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 
-   Author: Dr. Oleg Trott <ot14@columbia.edu>, 
-           The Olson Lab, 
+   Author: Dr. Oleg Trott <ot14@columbia.edu>,
+           The Olson Lab,
            The Scripps Research Institute
 
  */
@@ -58,7 +58,7 @@
 
 #include "dockBMPI.h"
 #include "mpiBparser.h"
-#include "mpiparser.h"
+//#include "mpiparser.h"
 
 namespace mpi = boost::mpi;
 
@@ -72,31 +72,31 @@ inline void geometry(JobInputData& jobInput, std::vector<double>& geo){
         fl real_span = jobInput.granularity * jobInput.n[j];
         jobInput.begin[j]=center[j] - real_span / 2;
         jobInput.end[j]=jobInput.begin[j] + real_span;
-    }    
+    }
 }
 
 double getTopScore(std::string& log){
     double score=0;
     std::vector<std::string> lines;
-    tokenize(log, lines, "\n");  
+    tokenize(log, lines, "\n");
     if(lines.size()<7) return score;
-     
-    std::vector<std::string> values;    
+
+    std::vector<std::string> values;
     tokenize(lines[6], values);
     if(values.size()<2) return score;
-    
+
     score=Sstrm<double, std::string>(values[1]);
-    
+
     return score;
 }
 
 int main(int argc, char* argv[]) {
 
     int jobFlag=1; // 1: doing job,  0: done job
-    
+
     JobInputData jobInput;
     JobOutData jobOut;
-        
+
     int rankTag=1;
     int jobTag=2;
 
@@ -104,18 +104,18 @@ int main(int argc, char* argv[]) {
     int outTag=4;
 
     mpi::environment env(argc, argv);
-    mpi::communicator world;    
+    mpi::communicator world;
 
     mpi::timer runingTime;
 
     if (world.size() < 2) {
         std::string recFile;
         std::string fleFile;
-        std::string ligFile;      
+        std::string ligFile;
         std::vector<std::string> recList;
         std::vector<std::string> fleList;
         std::vector<std::string> ligList;
-        std::vector<std::vector<double> > geoList; 
+        std::vector<std::vector<double> > geoList;
         int success=mpiParser(argc, argv, recFile, fleFile, ligFile, ligList, recList, fleList, geoList, jobInput);
         std::cerr << "Error: Total process less than 2" << std::endl;
         return 1;
@@ -127,73 +127,73 @@ int main(int argc, char* argv[]) {
         std::cout << "Master Node: " << world.size() << " My rank= " << world.rank() << std::endl;
         std::string recFile;
         std::string fleFile;
-        std::string ligFile;      
+        std::string ligFile;
         std::vector<std::string> recList;
         std::vector<std::string> fleList;
         std::vector<std::string> ligList;
         std::vector<std::vector<double> > geoList;
-       
+
         int success=mpiParser(argc, argv, recFile, fleFile, ligFile, ligList, recList, fleList, geoList, jobInput);
         if(success!=0) {
             std::cerr << "Error: Parser input error" << std::endl;
-            return 1;            
+            return 1;
         }
-        
+
         unsigned num_cpus = boost::thread::hardware_concurrency();
         if (num_cpus > 0)
             jobInput.cpu = num_cpus;
         else
-            jobInput.cpu = 1;    
-        
-        
+            jobInput.cpu = 1;
+
+
         int count=0;
-        
+
         std::string logFName;
         std::string outFName;
-        
+
 //        std::ofstream logFile;
 //        std::ofstream outFile;
-        
+
         ogzstream logFile;
         ogzstream outFile;
-        
+
         const std::string modStr="MODEL";
         const std::string endStr="ENDMDL";
-        
+
         logFName=recFile+"_"+ligFile+".log.gz";
         logFile.open(logFName.c_str());
 
         outFName = recFile+"_"+ligFile+".pdbqt.gz";
-        outFile.open(outFName.c_str()); 
-        
+        outFile.open(outFName.c_str());
+
         jobInput.flexible=false;
         if(fleList.size()==recList.size()){
             jobInput.flexible=true;
         }
-        
+
         if(jobInput.randomize){
             srand(unsigned(std::time(NULL)));
         }
-        
+
         for(unsigned i=0; i<recList.size(); ++i){
             std::vector<double> geo=geoList[i];
             geometry(jobInput, geo);
-            int ligcount=0; // make the ligand # identical to each receptor.           
+            int ligcount=0; // make the ligand # identical to each receptor.
             for(unsigned j=0; j<ligList.size(); ++j){
                 if(jobInput.randomize){
                     jobInput.seed = rand();
                 }
-                
+
                 std::ifstream ligFile;
                 ligFile.open(ligList[j].c_str());
-                
+
                 std::string fileLine;
                 std::stringstream ss;
                 while(std::getline(ligFile, fileLine)){
                     if(fileLine.compare(0,5, modStr)==0){
                         ss.str(std::string());
                     }else if(fileLine.compare(0,6, endStr)==0){
-               
+
                         ++count;
                         ++ligcount;
                         if(count >world.size()-1){
@@ -211,27 +211,27 @@ int main(int argc, char* argv[]) {
                                 logFile << jobOut.log << std::endl;
                                 outFile << jobOut.poses << std::endl;
                             }
-                        }                  
+                        }
                         int freeProc;
 //                        MPI_Recv(&freeProc, 1, MPI_INTEGER, MPI_ANY_SOURCE, rankTag, MPI_COMM_WORLD, &status1);
                         world.recv(mpi::any_source, rankTag, freeProc);
-//                        MPI_Send(&jobFlag, 1, MPI_INTEGER, freeProc, jobTag, MPI_COMM_WORLD); 
+//                        MPI_Send(&jobFlag, 1, MPI_INTEGER, freeProc, jobTag, MPI_COMM_WORLD);
                         world.send(freeProc, jobTag, jobFlag);
-                        // Start to send parameters                        
+                        // Start to send parameters
                         std::stringstream ligName;
                         ligName << "LIGAND " << ligcount;
 //                        strcpy(jobInput.ligBuffer, ligName.str().c_str());
-//                        strcpy(jobInput.ligFile, ss.str().c_str()); 
+//                        strcpy(jobInput.ligFile, ss.str().c_str());
 //                        strcpy(jobInput.recBuffer, recList[i].c_str());
                         jobInput.ligBuffer=ligName.str();
                         jobInput.ligFile=ss.str();
                         jobInput.recBuffer=recList[i];
-                                
+
                         if(jobInput.flexible){
 //                                strcpy(jobInput.fleBuffer, fleList[i].c_str());
                             jobInput.fleBuffer=fleList[i];
                         }
-                        
+
                         std::cout << "At Process: " << freeProc << " working on  Ligand: " << ligName.str() << "  receptor: " <<  recList[i] << std::endl;
 
 //                        MPI_Send(&jobInput, sizeof(JobInputData), MPI_CHAR, freeProc, inpTag, MPI_COMM_WORLD);
@@ -239,8 +239,8 @@ int main(int argc, char* argv[]) {
 
                     }else {
                         ss << fileLine << std::endl;
-                    }                        
-                }  
+                    }
+                }
                 logFile.flush();
                 outFile.flush();
             }
@@ -250,14 +250,14 @@ int main(int argc, char* argv[]) {
 //                outFile.close();
 //            }
         }
-        
+
 
 //        logFile.open(logFName.c_str(), std::ios::app);
 //        outFile.open(outFName.c_str(), std::ios::app);
         int nJobs=count;
         int ndata=(nJobs<world.size()-1)? nJobs: world.size()-1;
         std::cout << "ndata=" << ndata << " nJobs=" << nJobs << std::endl;
-    
+
         for(unsigned i=0; i < ndata; ++i){
 //            MPI_Recv(&jobOut, sizeof(JobOutData), MPI_CHAR, MPI_ANY_SOURCE, outTag, MPI_COMM_WORLD, &status2);
             world.recv(mpi::any_source, outTag, jobOut);
@@ -268,7 +268,7 @@ int main(int argc, char* argv[]) {
                     saveResults=false;
                 }
             }
-            
+
             if(saveResults){
                 logFile << jobOut.log << std::endl;
                 outFile << jobOut.poses << std::endl;
@@ -276,14 +276,14 @@ int main(int argc, char* argv[]) {
         }
         logFile.close();
         outFile.close();
-       
-        
+
+
         for(unsigned i=1; i < world.size(); ++i){
             int freeProc;
 //            MPI_Recv(&freeProc, 1, MPI_INTEGER, MPI_ANY_SOURCE, rankTag, MPI_COMM_WORLD, &status1);
             world.recv(mpi::any_source, rankTag, freeProc);
             jobFlag=0;
-//            MPI_Send(&jobFlag, 1, MPI_INTEGER, freeProc, jobTag, MPI_COMM_WORLD); 
+//            MPI_Send(&jobFlag, 1, MPI_INTEGER, freeProc, jobTag, MPI_COMM_WORLD);
             world.send(freeProc, jobTag, jobFlag);
         }
 
@@ -300,9 +300,9 @@ int main(int argc, char* argv[]) {
 
 //            MPI_Recv(&jobInput, sizeof(JobInputData), MPI_CHAR, 0, inpTag, MPI_COMM_WORLD, &status1);
             world.recv(0, inpTag, jobInput);
-            
-            dockjob(jobInput, jobOut); 
-            
+
+            dockjob(jobInput, jobOut);
+
 //            MPI_Send(&jobOut, sizeof(JobOutData), MPI_CHAR, 0, outTag, MPI_COMM_WORLD);
             world.send(0, outTag, jobOut);
         }
@@ -313,5 +313,3 @@ int main(int argc, char* argv[]) {
     return (0);
 
 }
-
-

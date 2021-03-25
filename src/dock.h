@@ -1,4 +1,4 @@
-/* 
+/*
  * File:   dock.h
  * Author: zhang30
  *
@@ -8,26 +8,28 @@
 #ifndef DOCKING_H
 #define	DOCKING_H
 
+#include <stdint.h>
+
 struct JobInputData{
     bool flexible;
     bool randomize;
-    int cpu;
+    uint32_t cpu;
     int exhaustiveness;
     int num_modes;
 //    int mc_mult;
     int seed;
-    int n[3]; 
+    int n[3];
     double energy_range;
     double granularity;
     double begin[3];
-    double end[3];        
+    double end[3];
     char ligBuffer[100];
     char ligFile[100000];
     char recBuffer[100];
     char fleBuffer[100];
 };
 
-struct JobOutData{       
+struct JobOutData{
     char log[1000];
     char poses[1000000];
 };
@@ -36,4 +38,3 @@ int dockjob(JobInputData& jobInput, JobOutData& jobOut);
 
 
 #endif	/* DOCKING_H */
-
