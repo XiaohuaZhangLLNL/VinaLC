@@ -3,37 +3,40 @@
 
 ## 1. Compile the program.
 
-This source code is configured to run on LLNL LC machines. 
+### 1.1 MPI and Boost libraries are required for VinaLC.
 
-### 1.1 Boost library (www.boost.org) is require for Vina.
-to install Boost library please follow the step in the Boost document. 
+VinaLC depends on two external libraries: MPI (https://www.open-mpi.org or https://www.mpich.org) and boost (https://www.boost.org).
+
+Please install the MPI first. Users can use open-mpi or mpich. Either one is OK. Then install the boost. You need to enable the boost-mpi build. In the project-config.jam add one line to the end of the file:
+```
+using mpi : <path_to_your_MPI_installation_directory>/bin/mpicxx ;
+```
+
+to install Boost library please follow the step in the Boost document.
 
 ```
 ./bootstrap.sh --prefix=path/to/installation/prefix
 ./b2 install
 ```
 
-Beside the standard installation, Boost MPI binding also need to be turn on.
-copy tools/build/v2/user-config.jam to your home directory. In the file 
-specify the mpi compiler you want to use:
-
-```
-using mpi : /usr/local/tools/mvapich-gnu/bin/mpicxx ;
-```
+On the LC machines, the MPI and Boost are installed. Users can source the environment and then compile the code.
 
 On quartz:
 ```
 module load boost/1.62.0
 ```
-### 1.2 Obtain the code 
+
+
+
+### 1.2 Obtain the code
 
 The code can be download from:
 
-https://lc.llnl.gov/bitbucket/projects/XZR/repos/vinalc/browse
+https://github.com/XiaohuaZhangLLNL/VinaLC
 
 by git:
 ```
-git clone ssh://git@cz-bitbucket.llnl.gov:7999/xzr/vinalc.git
+git clone git@github.com:XiaohuaZhangLLNL/VinaLC.git
 ```
 
 
@@ -41,9 +44,13 @@ git clone ssh://git@cz-bitbucket.llnl.gov:7999/xzr/vinalc.git
 
 Installing it by using cmake is straight forward:
 
+After you install or source the environment variables for both MPI and boost, run the cmake in the home directory of VinaLC:
 ```
-cd vinalc
-cmake . -DCMAKE_INSTALL_PREFIX:PATH=/usr/gapps/bbs/vinalc-quartz
+cd <Home_Directory_VinaLC>
+mkdir build
+cd build
+ccmake ../ -DCMAKE_INSTALL_PREFIX=<path_where_you_want_to_install_VinaLC> -DBOOST_ROOT=<path_to_boost_installation>  -DMPI_CXX_COMPILER=<path_to_your_MPI_installation_directory>/bin/mpicxx
+
 make
 make install
 ```
@@ -54,7 +61,7 @@ In the vinalc/examples, there is a small test case contains input files:
 ### 2.1 receptor
 
 file contains list of receptor file name:  recList.txt
-two receptor pdbqt files: 
+two receptor pdbqt files:
 
 ```
 1KIJ_protH.pdbqt 1KIJ_protH1.pdbqt
@@ -103,7 +110,7 @@ srun -N4 -n4 -c12 -ppdebug ./vina --recList recList.txt --ligList ligList.txt --
 
 -N4: 4 nodes will use
 -n4: 4 tasks will  each task run on one node
--c12: 12 threads will run on each node 
+-c12: 12 threads will run on each node
 -ppdebug: use debug mode
 ```
 
@@ -116,17 +123,17 @@ Input:
   --fleList arg               flex part receptor list file
   --ligList arg               ligand list file
   --geoList arg               receptor geometry file
-  --exhaustiveness arg (=8)   exhaustiveness (default value 8) of the global 
+  --exhaustiveness arg (=8)   exhaustiveness (default value 8) of the global
                               search (roughly proportional to time): 1+
   --granularity arg (=0.375)  the granularity of grids (default value 0.375)
   --num_modes arg (=9)        maximum number (default value 9) of binding modes
                               to generate
   --seed arg                  explicit random seed
   --randomize                 Use different random seeds for complex
-  --energy_range arg (=2)     maximum energy difference (default value 2.0) 
-                              between the best binding mode and the worst one 
+  --energy_range arg (=2)     maximum energy difference (default value 2.0)
+                              between the best binding mode and the worst one
                               displayed (kcal/mol)
-  --useScoreCF                Use score cutoff to save ligand with top score 
+  --useScoreCF                Use score cutoff to save ligand with top score
                               higher than certain critical value
   --scoreCF arg (=-8)         Score cutoff to save ligand with top score higher
                               than certain value (default -8.0)
@@ -163,7 +170,7 @@ There is a Vina video tutorial to show how to use ADT to prepare receptor, ligan
 
 http://vina.scripps.edu/tutorial.html
 
-An important thing to remember when calculate the grid size: 
+An important thing to remember when calculate the grid size:
 ```
 x_grid=<number of poiont in x-dimension>*spacing
 y_grid=<number of poiont in y-dimension>*spacing
@@ -171,6 +178,3 @@ z_grid=<number of poiont in z-dimension>*spacing
 ```
 
 spacing in ADT is equal to granularity in Vina.
-
-
-
