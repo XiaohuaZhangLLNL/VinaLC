@@ -36,7 +36,7 @@
 #include <boost/filesystem/exception.hpp>
 #include <boost/filesystem/convenience.hpp> // filesystem::basename
 // TODO: remove this - no autodetection, should always be set explicetly
-#include <boost/thread/thread.hpp> // hardware_concurrency // FIXME rm ?
+//#include <boost/thread/thread.hpp> // hardware_concurrency // FIXME rm ?
 #include "parse_pdbqt.h"
 #include "parallel_mc.h"
 #include "file.h"
@@ -338,7 +338,7 @@ int main(int argc, char* argv[]) {
 
     // TODO: test whether this can be unsigned int
     int count = 0; // simple counter for job counts
-
+    // TODO: make this string handling stuff more C++alike
         std::string logFName;
         std::string outFName;
 
@@ -430,6 +430,7 @@ int main(int argc, char* argv[]) {
 //        outFile.open(outFName.c_str(), std::ios::app);
         int nJobs=count;
         int ndata=(nJobs<nproc-1)? nJobs: nproc-1;
+        // TODO: output only in verbose mode
         std::cout << "ndata=" << ndata << " nJobs=" << nJobs << std::endl;
 
         for(unsigned i=0; i < ndata; ++i){
