@@ -35,8 +35,6 @@
 #include <boost/filesystem/fstream.hpp>
 #include <boost/filesystem/exception.hpp>
 #include <boost/filesystem/convenience.hpp> // filesystem::basename
-// TODO: remove this - no autodetection, should always be set explicetly
-//#include <boost/thread/thread.hpp> // hardware_concurrency // FIXME rm ?
 #include "parse_pdbqt.h"
 #include "parallel_mc.h"
 #include "file.h"
