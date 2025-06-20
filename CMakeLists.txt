@@ -1,7 +1,4 @@
-#set(CMAKE_C_COMPILER "/opt/local/bin/gcc-mp-4.9")
-#set(CMAKE_CXX_COMPILER "/opt/local/bin/g++-mp-4.9")
-# stop if cmake version below 2.8
-cmake_minimum_required(VERSION 2.8 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.29 FATAL_ERROR)
 
 # project name
 project(VinaLC)
@@ -15,6 +12,8 @@ set(VERSION_MINOR 0)
 set(VERSION_PATCH 0)
 set(VERSION_STRING ${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH})
 
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(CMAKE_BUILD_TYPE Release)
 
@@ -68,5 +67,3 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src)
 
 add_subdirectory(src)
 #add_subdirectory(apps)
-
-
