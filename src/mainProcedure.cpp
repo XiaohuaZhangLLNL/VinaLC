@@ -282,7 +282,6 @@ void main_procedure(model& m, const boost::optional<model>& ref, // m is non-con
     par.mc.hunt_cap = vec(10, 10, 10);
     par.num_tasks = exhaustiveness;
     par.num_threads = cpu;
-    par.display_progress = (verbosity > 1);
 
     const fl slope = 1e6; // FIXME: too large? used to be 100
     if (randomize_only) {

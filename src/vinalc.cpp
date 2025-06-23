@@ -1,3 +1,4 @@
+//TODO: remove copyright statement - the license requires referals and License and NOTICE files, not an in-code statement
 /*
 
    Copyright (c) 2006-2010, The Scripps Research Institute
@@ -19,22 +20,24 @@
            The Scripps Research Institute
 
  */
-// which copy
+// TODO: get rid of all non-needed includes ...
 #include <iostream>
 #include <fstream>
 #include <string>
 #include <sstream>
 #include <exception>
 #include <stack>
+#include <stdlib.h> // for exit values
+#include <stdint.h>
 #include <vector> // ligand paths
 #include <cmath> // for ceila
+#include <sys/stat.h> // for kernel retrieved file system info
+#include <thread> // for std::thread::hardware_concurrency
 
 #include <boost/program_options.hpp>
 #include <boost/filesystem/fstream.hpp>
 #include <boost/filesystem/exception.hpp>
 #include <boost/filesystem/convenience.hpp> // filesystem::basename
-#include <boost/thread/thread.hpp> // hardware_concurrency // FIXME rm ?
-#include <boost/timer.hpp>
 
 #include <boost/mpi.hpp>
 #include <boost/mpi/environment.hpp>
@@ -52,9 +55,9 @@
 #include "current_weights.h"
 #include "quasi_newton.h"
 #include "gzstream.h"
-//#include "tee.h"
 #include "coords.h" // add_to_output_container
 #include "tokenize.h"
+#include "../include/io_utils.hpp"
 
 #include "dockBMPI.h"
 #include "mpiBparser.h"
@@ -139,7 +142,7 @@ int main(int argc, char* argv[]) {
             return 1;
         }
 
-        unsigned num_cpus = boost::thread::hardware_concurrency();
+        unsigned num_cpus = std::thread::hardware_concurrency();
         if (num_cpus > 0)
             jobInput.cpu = num_cpus;
         else
@@ -308,8 +311,11 @@ int main(int argc, char* argv[]) {
         }
     }
 
+    #ifdef DEBUG
     std::cout << "Rank= " << world.rank() <<" MPI Wall Time= " << runingTime.elapsed() << " Sec."<< std::endl;
+    #endif
 
-    return (0);
+    MPI_Finalize();
+    exit(EXIT_SUCCESS);
 
 }
