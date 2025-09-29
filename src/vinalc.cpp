@@ -37,7 +37,6 @@
 #include <boost/program_options.hpp>
 #include <boost/filesystem/fstream.hpp>
 #include <boost/filesystem/exception.hpp>
-#include <boost/filesystem/convenience.hpp> // filesystem::basename
 
 #include <boost/mpi.hpp>
 #include <boost/mpi/environment.hpp>
